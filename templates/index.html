@@ -7,6 +7,9 @@
 </head>
 <body>
     <h2>Welcome to Word assassins!</h2>
+    {% if  error %}
+        <p style="color: red;">Error: {{error}}</p>
+    {% endif  %}
     <p>This is the index page</p>
     <form action="/_login" method = "post">
         <p><input type = "password" name = "key" placeholder="Enter your personal key" /></p>

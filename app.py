@@ -24,7 +24,8 @@ app.secret_key = "this is an arbitrary string"
 def index():
     session['loggedIn'] = False
     session['key'] = ""
-    return render_template('index.html')
+    error = request.args.get('error')
+    return render_template('index.html', error = error)
 
 
 ### _login helper route ###
@@ -34,14 +35,24 @@ def index():
 @app.route('/_login', methods=['POST'])
 def _login():
     key = request.form['key']
-    with sqlite3.connect("database.db") as con:  
-        cur = con.cursor() 
-        if cur.execute("SELECT count(*) FROM Players WHERE key= ? ", (key, )).fetchone()[0] > 0: #if key is in database
-            session['loggedIn'] = True
-            session['key'] = key
-            return redirect(url_for('home'))
-        else:
-            abort(401)
+    error = check_valid_login_key(key)
+    if error:
+        return redirect(url_for('index', error = error))
+    else:
+        session['loggedIn'] = True
+        session['key'] = key
+        return redirect(url_for('home'))
+            
+
+def check_valid_login_key(key):
+    if len(key) < 5:
+        return "The key can't be less than 5 characters long"
+    with sqlite3.connect("database.db") as con:
+        cur = con.cursor()
+        if cur.execute("SELECT count(*) FROM Players WHERE key= ? ", (key, )).fetchone()[0] == 0:
+            return "This key does not exist"
+    return  False
+
 
 
 ### signup page route ###
@@ -77,7 +88,7 @@ def _signup():
 @app.route('/home')
 def home():
     if not verify_session_logged_in():
-        return redirect(url_for('index'))
+        return redirect(url_for('index', error="please enter your key!"))
     
     with sqlite3.connect("database.db") as con:  
         con.row_factory = sqlite3.Row  
@@ -95,7 +106,7 @@ def home():
 @app.route('/_join/', methods = ['POST'])
 def _join():
     if not verify_session_logged_in():
-        return redirect(url_for('index'))
+        return redirect(url_for('index', error="please enter your key!"))
 
     code = request.form['code']
     with sqlite3.connect("database.db") as con:  
@@ -105,7 +116,7 @@ def _join():
             cur.execute("SELECT * from Games WHERE code = ? ", (code, ))
             players = json.dumps(json.loads(cur.fetchone()["players"])+[session['key']]) #adds user to the player list of the game
             cur.execute("UPDATE Games SET players = ? WHERE code = ? ", (players, code))
-            return redirect(url_for('game'))
+            return redirect(url_for('game', code = code))
         else:
             abort(401)
 
@@ -116,7 +127,7 @@ def _join():
 @app.route('/_create',  methods = ['POST'])
 def _create():
     if not verify_session_logged_in():
-        return redirect(url_for('index'))
+        return redirect(url_for('index', error="please enter your key!"))
 
     code = request.form["code"]
     name = request.form["name"]  
@@ -132,16 +143,16 @@ def _create():
         cur = con.cursor() 
         cur.execute("INSERT into Games (code, name, host, started, players, alive, targets) values (?, ?, ?, ?, ?, ?, ?)", (code, name, host, started, players, alive, targets))   #creates new key
         con.commit()
-    return redirect(url_for('game'))
+    return redirect(url_for('game', code = code))
 
 ### game page route ###
 ## Page for viewing a specific game. Accessible from home page ##
 ## If user is the host, has: list of players, start button, kick button, back button ##
 ## If user is not host, has: list of players, leave game button, back button ##
-@app.route('/game/')
-def game():
+@app.route('/game/<code>')
+def game(code):
     if not verify_session_logged_in():
-        return redirect(url_for('index'))
+        return redirect(url_for('index', error="please enter your key!"))
 
     return render_template('game.html')
 
@@ -174,4 +185,4 @@ def debug():
 #### MAIN APP RUN BELOW THIS LINE ####
 
 if __name__ == "__main__":
-    app.run(debug = True)
+    app.run(debug = True) #set debug to false if you don't want auto updating
