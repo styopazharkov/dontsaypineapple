@@ -35,7 +35,7 @@ def index():
 @app.route('/_login', methods=['POST'])
 def _login():
     key = request.form['key']
-    error = check_valid_login_key(key)
+    error = check_for_login_error(key)
     if error:
         return redirect(url_for('index', error = error))
     else:
@@ -43,17 +43,6 @@ def _login():
         session['key'] = key
         return redirect(url_for('home'))
             
-
-def check_valid_login_key(key):
-    if len(key) < 5:
-        return "The key can't be less than 5 characters long"
-    with sqlite3.connect("database.db") as con:
-        cur = con.cursor()
-        if cur.execute("SELECT count(*) FROM Players WHERE key= ? ", (key, )).fetchone()[0] == 0:
-            return "This key does not exist"
-    return  False
-
-
 
 ### signup page route ###
 ## Page for creating a new key. ##
@@ -162,8 +151,30 @@ def game(code):
 ### verfier that a user is logged in on a page ###
 def verify_session_logged_in():
     return session['loggedIn'] and session['key']
-## Makes sure the session variables are ##
+
+### verifier that checks that a key is good to log in with. makes sure it's long and is in the database ###
+## returns an error message if there is an error. False if there is no error ##
+def check_for_login_error(key):
+    if len(key) < 5:
+        return "The key can't be less than 5 characters long"
+    with sqlite3.connect("database.db") as con:
+        cur = con.cursor()
+        if cur.execute("SELECT count(*) FROM Players WHERE key= ? ", (key, )).fetchone()[0] == 0:
+            return "This key does not exist"
+    return  False
         
+### verifier that checks that a key and name are good to sign up with. makes sure it's long and is in the database ###
+## returns an error message if there is an error. False if there is no error ##
+def check_for_signup_error(key, name):
+    if len(key) < 5:
+        return "The key can't be less than 5 characters long."
+    if len(name.strip()) == 0:
+        return "You must have a name!"
+    with sqlite3.connect("database.db") as con:
+        cur = con.cursor()
+        if cur.execute("SELECT count(*) FROM Players WHERE key= ? ", (key, )).fetchone()[0] > 0:
+            return "Oh no! Someone already took this key."
+    return  False
 
 #### DEBUG CODE BELOW THIS LINE ####
 
