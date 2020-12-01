@@ -103,6 +103,24 @@ def join():
 
     return render_template('join.html')
 
+@app.route('/_join/', methods = ['POST'])
+def _join():
+    if not verify_session_logged_in():
+        return redirect(url_for('index'))
+
+    code = request.form['code']
+    with sqlite3.connect("database.db") as con:  
+        con.row_factory = sqlite3.Row
+        cur = con.cursor() 
+        if cur.execute("SELECT count(*) FROM Games WHERE code = ? ", (code, )).fetchone()[0] > 0: #if game code is in database
+            cur.execute("SELECT * from Games WHERE code = ? ", (code, ))
+            waiting = json.dumps(json.loads(cur.fetchone()["waiting"])+[session['key']]) #adds user to the waiting list of the game
+            cur.execute("UPDATE Games SET waiting = ? WHERE code = ? ", (waiting, code))
+            return redirect(url_for('game'))
+        else:
+            abort(401)
+
+
 ### create page route ###
 ## Page for creating a new game. Accessible from home page ##
 ## Has: game code input box, a few game settings, create button, back button ##
