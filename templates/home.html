@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Word Assassins - Home</title>
+</head>
+<body>
+    <p>Hello, {{name}}</p>
+    <form action="/join" >
+        <input type="submit" value="Join a game">
+    </form>
+    <form action="/create" >
+        <input type="submit" value="Create a new game">
+    </form>
+    <table border=5>  
+        <thead>  
+        <td>ID</td>  
+        <td>Key</td>  
+        <td>Name</td> 
+        </thead>  
+        {% for row in rows %}  
+        <tr>  
+        <td>{{row["id"]}}</td>  
+        <td>{{row["key"]}}</td>
+        <td>{{row["name"]}}</td>  
+        </tr>  
+        {% endfor %}   
+        </table> 
+        <form action="/" >
+            <input type="submit" value="Log Out">
+        </form>
+</body>
+</html>
