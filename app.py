@@ -5,8 +5,6 @@
 #####################################
 
 
-
-
 ### The following code is the imported packages ###
 from flask import Flask, redirect, url_for, render_template, request, session, abort
 import sqlite3, json
@@ -105,8 +103,8 @@ def _join():
         cur = con.cursor() 
         if cur.execute("SELECT count(*) FROM Games WHERE code = ? ", (code, )).fetchone()[0] > 0: #if game code is in database
             cur.execute("SELECT * from Games WHERE code = ? ", (code, ))
-            waiting = json.dumps(json.loads(cur.fetchone()["waiting"])+[session['key']]) #adds user to the waiting list of the game
-            cur.execute("UPDATE Games SET waiting = ? WHERE code = ? ", (waiting, code))
+            players = json.dumps(json.loads(cur.fetchone()["players"])+[session['key']]) #adds user to the player list of the game
+            cur.execute("UPDATE Games SET players = ? WHERE code = ? ", (players, code))
             return redirect(url_for('game'))
         else:
             abort(401)
@@ -125,21 +123,20 @@ def _create():
     host = session['key']
     started = 0
     players = json.dumps([session['key']])
-    waiting = json.dumps([])
-    alive = players
+    alive = json.dumps([])
     targets = json.dumps({})
     #winner is not set
 
     #TODO check that everything is valid
     with sqlite3.connect("database.db") as con:  
         cur = con.cursor() 
-        cur.execute("INSERT into Games (code, name, host, started, players, waiting, alive, targets) values (?, ?, ?, ?, ?, ?, ?, ?)", (code, name, host, started, players, waiting, alive, targets))   #creates new key
+        cur.execute("INSERT into Games (code, name, host, started, players, alive, targets) values (?, ?, ?, ?, ?, ?, ?)", (code, name, host, started, players, alive, targets))   #creates new key
         con.commit()
     return redirect(url_for('game'))
 
 ### game page route ###
 ## Page for viewing a specific game. Accessible from home page ##
-## If user is the host, has: list of players, players in waiting room, start button, kick button, back button ##
+## If user is the host, has: list of players, start button, kick button, back button ##
 ## If user is not host, has: list of players, leave game button, back button ##
 @app.route('/game/')
 def game():

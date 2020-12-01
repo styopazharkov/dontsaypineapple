@@ -21,7 +21,7 @@ con.execute("create table Players ( \
 print("Players table created successfully")  
 
 ### Games table for storing information about each game ###
-## Format: int id, str code, str name, str host, bool started, list<str> players, list<str> waiting, ##
+## Format: int id, str code, str name, str host, bool started, list<str> players, ##
 ## set<str> alive, map<str, (str, str)> targets, str winner ##
 con.execute("create table Games ( \
     id INTEGER PRIMARY KEY AUTOINCREMENT, \
@@ -30,7 +30,6 @@ con.execute("create table Games ( \
     host TEXT NOT NULL, \
     started BOOLEAN NOT NULL CHECK (started IN (0,1)), \
     players TEXT NOT NULL, \
-    waiting TEXT NOT NULL, \
     alive TEXT NOT NULL, \
     targets TEXT NOT NULL, \
     winner TEXT)") 
