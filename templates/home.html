@@ -13,20 +13,7 @@
     <form action="/create" >
         <input type="submit" value="Create a new game">
     </form>
-    <table border=5>  
-        <thead>  
-        <td>ID</td>  
-        <td>Key</td>  
-        <td>Name</td> 
-        </thead>  
-        {% for row in rows %}  
-        <tr>  
-        <td>{{row["id"]}}</td>  
-        <td>{{row["key"]}}</td>
-        <td>{{row["name"]}}</td>  
-        </tr>  
-        {% endfor %}   
-        </table> 
+
         <form action="/" >
             <input type="submit" value="Log Out">
         </form>

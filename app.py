@@ -9,7 +9,7 @@
 
 ### The following code is the imported packages ###
 from flask import Flask, redirect, url_for, render_template, request, session, abort
-import sqlite3
+import sqlite3, json
 
 
 ### The following code creates the app variable and assigns a secret key for the session dictionary ###
@@ -59,13 +59,14 @@ def signup():
 ## It checks that the info is good (TODO), adds the info to the database, and redirects to the home page ##
 @app.route('/_signup', methods = ['POST'])
 def _signup():
-    key = request.form["key"]  
-    print(key) 
+    key = request.form["key"]
     keyRepeat = request.form["keyRepeat"]  
     name = request.form["name"]  
+    games = json.dumps([])
+    #TODO check that everything is valid
     with sqlite3.connect("database.db") as con:  
         cur = con.cursor() 
-        cur.execute("INSERT into Players (key, name) values (?,?)",(key, name))   #creates new key
+        cur.execute("INSERT into Players (key, name, games) values (?, ?, ?)", (key, name, games))   #creates new key
         con.commit()
     session['loggedIn'] = True
     session['key'] = key
@@ -83,11 +84,13 @@ def home():
     with sqlite3.connect("database.db") as con:  
         con.row_factory = sqlite3.Row  
         cur = con.cursor()  
-        cur.execute("select * from Players")   
-        rows = cur.fetchall()   
-    return render_template('home.html', name=session['key'], rows=rows)
 
+        cur.execute("SELECT * from Players")   
+        rows = cur.fetchall()   #rows of the players database, delete later
 
+        cur.execute("SELECT * from Players WHERE key = ?", (session['key'], )) 
+        name = cur.fetchone()["name"]
+    return render_template('home.html', name=name)
 
 
 ### join page route (TODO) ###
@@ -100,8 +103,7 @@ def join():
 
     return render_template('join.html')
 
-
-### create page route (TODO) ###
+### create page route ###
 ## Page for creating a new game. Accessible from home page ##
 ## Has: game code input box, a few game settings, create button, back button ##
 @app.route('/create/')
@@ -111,6 +113,31 @@ def create():
     
     return render_template('create.html')
 
+
+### _create helper route ###
+## This helper page is accessed when info is entered from the create page. ##
+## It checks that the info is good, adds the info to the database, and redirects to the game page ##
+@app.route('/_create',  methods = ['POST'])
+def _create():
+    if not verify_session_logged_in():
+        return redirect(url_for('index'))
+
+    code = request.form["code"]
+    name = request.form["name"]  
+    host = session['key']
+    started = 0
+    players = json.dumps([session['key']])
+    waiting = json.dumps([])
+    alive = players
+    targets = json.dumps({})
+    #winner is not set
+
+    #TODO check that everything is valid
+    with sqlite3.connect("database.db") as con:  
+        cur = con.cursor() 
+        cur.execute("INSERT into Games (code, name, host, started, players, waiting, alive, targets) values (?, ?, ?, ?, ?, ?, ?, ?)", (code, name, host, started, players, waiting, alive, targets))   #creates new key
+        con.commit()
+    return redirect(url_for('game'))
 
 ### game page route ###
 ## Page for viewing a specific game. Accessible from home page ##
@@ -132,6 +159,22 @@ def verify_session_logged_in():
     return session['loggedIn'] and session['key']
         
 
+#### DEBUG CODE BELOW THIS LINE ####
+
+### debugging page with database tables ###
+@app.route('/debug/')
+def debug():
+    with sqlite3.connect("database.db") as con:  
+        con.row_factory = sqlite3.Row  
+        cur = con.cursor()  
+
+        cur.execute("SELECT * from Players")   
+        playerRows = cur.fetchall()   #rows of the Players table
+
+        cur.execute("SELECT * from Games")   
+        gameRows = cur.fetchall()   #rows of the Games table
+
+    return render_template('debug.html', playerRows = playerRows, gameRows = gameRows)
 
 #### MAIN APP RUN BELOW THIS LINE ####
 
