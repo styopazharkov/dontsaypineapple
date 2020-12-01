@@ -7,11 +7,14 @@
 </head>
 <body>
     <p>Hello, {{name}}</p>
-    <form action="/join" >
-        <input type="submit" value="Join a game">
+    <form action="/_join/" method = "post">
+        <p><input type = "text" name = "code" placeholder="Enter the game code" /></p>
+        <p><input type = "submit" value = "Join" /></p>
     </form>
-    <form action="/create" >
-        <input type="submit" value="Create a new game">
+    <form action="/_create" method="POST">
+        <p><input type = "text" name = "name" placeholder="Enter a game name" /></p>
+        <p><input type = "text" name = "code" placeholder="Enter a game code" /></p>
+        <p><input type = "submit" value = "Create" /></p>
     </form>
 
         <form action="/" >

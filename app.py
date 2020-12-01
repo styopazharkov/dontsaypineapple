@@ -93,15 +93,6 @@ def home():
     return render_template('home.html', name=name)
 
 
-### join page route (TODO) ###
-## Page for joining a new game. Accessible from home page ##
-## Has: game code input box, join button, back button ##
-@app.route('/join/')
-def join():
-    if not verify_session_logged_in():
-        return redirect(url_for('index'))
-
-    return render_template('join.html')
 
 @app.route('/_join/', methods = ['POST'])
 def _join():
@@ -119,17 +110,6 @@ def _join():
             return redirect(url_for('game'))
         else:
             abort(401)
-
-
-### create page route ###
-## Page for creating a new game. Accessible from home page ##
-## Has: game code input box, a few game settings, create button, back button ##
-@app.route('/create/')
-def create():
-    if not verify_session_logged_in():
-        return redirect(url_for('index'))
-    
-    return render_template('create.html')
 
 
 ### _create helper route ###
@@ -172,9 +152,9 @@ def game():
 #### HELPER FUNCTIONS BELOW THIS LINE ####
 
 ### verfier that a user is logged in on a page ###
-## Makes sure the session variables are ##
 def verify_session_logged_in():
     return session['loggedIn'] and session['key']
+## Makes sure the session variables are ##
         
 
 #### DEBUG CODE BELOW THIS LINE ####
