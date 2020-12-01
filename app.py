@@ -70,18 +70,21 @@ def _signup():
 #The following code is the join page route.
 @app.route('/join/')
 def join():
-    return "join"
+    return render_template('join.html')
 
 
 #The following code is the create page route.
 @app.route('/create/')
 def create():
-    return "create"
+    return render_template('create.html')
+
 
 #The following code is the game page route.
 @app.route('/game/')
 def game():
-    return "game"
+    return render_template('game.html')
 
+
+#the following code runs the application
 if __name__ == "__main__":
     app.run(debug = True)
