@@ -24,7 +24,10 @@ app.secret_key = "this is an arbitrary string"
 def index():
     session['loggedIn'] = False
     session['key'] = ""
-    error = request.args.get('error')
+    try:
+        error = session.pop('error')
+    except KeyError:
+        error = ""
     return render_template('index.html', error = error)
 
 
@@ -37,7 +40,8 @@ def _login():
     key = request.form['key']
     error = check_for_login_error(key)
     if error:
-        return redirect(url_for('index', error = error))
+        session['error']=error
+        return redirect(url_for('index'))
     else:
         session['loggedIn'] = True
         session['key'] = key
@@ -49,14 +53,18 @@ def _login():
 ## Has: key repeatKey and name input boxes, pfp input (TODO), back button (TODO), signup button ## 
 @app.route('/signup/')
 def signup():
-    error = request.args.get('error')
-    name = request.args.get('name')
+    try:
+        error = session.pop('error')
+        name = session.pop('name')
+    except KeyError:
+        error = ""
+        name = ""
     return render_template('signup.html', error = error, name = name)
 
 
 ### _signup helper route ###
 ## This helper page is accessed when info is entered from the signup page. ##
-## It checks that the info is good (TODO), adds the info to the database, and redirects to the home page ##
+## It checks that the info is good, adds the info to the database, and redirects to the home page ##
 @app.route('/_signup', methods = ['POST'])
 def _signup():
     key = request.form["key"]
@@ -65,7 +73,9 @@ def _signup():
     games = json.dumps([])
     error = check_for_signup_error(key, keyRepeat, name)
     if error:
-        return redirect(url_for('signup', error = error, name = name))
+        session['error']=error
+        session['name']=name
+        return redirect(url_for('signup'))
     else:
         with sqlite3.connect("database.db") as con:  
             cur = con.cursor() 
@@ -100,7 +110,8 @@ def home():
 @app.route('/_join/', methods = ['POST'])
 def _join():
     if not verify_session_logged_in():
-        return redirect(url_for('index', error="please enter your key!"))
+        session['error']="please enter your key!"
+        return redirect(url_for('index'))
 
     code = request.form['code']
     with sqlite3.connect("database.db") as con:  
@@ -121,7 +132,8 @@ def _join():
 @app.route('/_create',  methods = ['POST'])
 def _create():
     if not verify_session_logged_in():
-        return redirect(url_for('index', error="please enter your key!"))
+        session['error']="please enter your key!"
+        return redirect(url_for('index'))
 
     code = request.form["code"]
     name = request.form["name"]  
@@ -146,7 +158,8 @@ def _create():
 @app.route('/game/<code>')
 def game(code):
     if not verify_session_logged_in():
-        return redirect(url_for('index', error="please enter your key!"))
+        session['error']="please enter your key!"
+        return redirect(url_for('index'))
 
     return render_template('game.html')
 
