@@ -229,9 +229,16 @@ def game(code):
 
     return render_template('game.html', data = data)
 
+### _start helper route starts a game that isnt started ###
+## only possible by host ##
 @app.route('/_start/<code>', methods = ['POST'])
 def _start(code):
-    #TODO verify that requester is host
+    if not verify_session_logged_in():
+        session['error']="please enter your key!"
+        return redirect(url_for('index'))
+
+    if not verify_host(code):
+        return redirect(url_for('home'))
 
     with sqlite3.connect("database.db") as con:  
         con.row_factory = sqlite3.Row
@@ -249,9 +256,20 @@ def _start(code):
         cur.execute("UPDATE Games SET started = ?,  alive = ?, targets = ? WHERE code = ? ", (started, alive, targets, code))
     return redirect(url_for('game', code = code))
 
+### _cancel helper route cancels a game that isn't yet started ###
+## only possible by host ##
 @app.route('/_cancel/<code>', methods = ['POST'])
 def _cancel(code):
+    if not verify_session_logged_in():
+        session['error']="please enter your key!"
+        return redirect(url_for('index'))
 
+    if not verify_host(code):
+        return redirect(url_for('home'))
+    
+    with sqlite3.connect("database.db") as con:  
+        cur = con.cursor() 
+        cur.execute("DELETE FROM Games WHERE code = ? ", (code, ))
     return redirect(url_for('home'))
 
 @app.route('/_killed/<code>', methods = ['POST'])
@@ -284,6 +302,14 @@ def verify_user_in_game(code):
         if cur.execute("SELECT count(*) FROM Games WHERE code = ? ", (code, )).fetchone()[0] == 0:
             return False
         return session['key'] in cur.execute("SELECT * FROM Games WHERE code = ? ", (code, )).fetchone()['players']
+
+def verify_host(code):
+        with sqlite3.connect("database.db") as con:  
+            con.row_factory = sqlite3.Row
+            cur = con.cursor() 
+            if cur.execute("SELECT count(*) FROM Games WHERE code = ? ", (code, )).fetchone()[0] == 0:
+                return False
+            return session['key'] == cur.execute("SELECT * FROM Games WHERE code = ? ", (code, )).fetchone()['host']
 
 ### verifier that checks that a key is good to log in with. makes sure it's long and is in the database ###
 ## returns an error message if there is an error. False if there is no error ##
