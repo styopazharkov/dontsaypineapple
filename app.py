@@ -205,10 +205,12 @@ def game(code):
         return redirect(url_for('index'))
     
     if not verify_user_in_game(code):
-        #need to add error message
+        #(TODO) add error message
         return redirect(url_for('home'))
 
-    return render_template('game.html')
+    data={"code": code}
+
+    return render_template('game.html', data = data)
 
 
 #### HELPER FUNCTIONS BELOW THIS LINE ####
@@ -221,7 +223,7 @@ def verify_user_in_game(code):
     with sqlite3.connect("database.db") as con:  
         con.row_factory = sqlite3.Row
         cur = con.cursor() 
-        return session['key'] in cur.execute("SELECT * FROM Games WHERE code = ? ", (code, )).fetchone()['players']:
+        return session['key'] in cur.execute("SELECT * FROM Games WHERE code = ? ", (code, )).fetchone()['players']
 
 ### verifier that checks that a key is good to log in with. makes sure it's long and is in the database ###
 ## returns an error message if there is an error. False if there is no error ##
