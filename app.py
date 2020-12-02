@@ -54,11 +54,9 @@ def _login():
 @app.route('/signup/')
 def signup():
     try:
-        error = session.pop('error')
-        name = session.pop('name')
+        error, name = session.pop('error'), session.pop('name')
     except KeyError:
-        error = ""
-        name = ""
+        error, name = "", ""
     return render_template('signup.html', error = error, name = name)
 
 
@@ -92,19 +90,29 @@ def _signup():
 @app.route('/home')
 def home():
     if not verify_session_logged_in():
-        return redirect(url_for('index', error="please enter your key!"))
-    
+        session['error'] = "please enter your key!"
+        return redirect(url_for('index'))
+
+
     with sqlite3.connect("database.db") as con:  
         con.row_factory = sqlite3.Row  
         cur = con.cursor()  
-
-        cur.execute("SELECT * from Players")   
-        rows = cur.fetchall()   #rows of the players database, delete later
 
         cur.execute("SELECT * from Players WHERE key = ?", (session['key'], )) 
         name = cur.fetchone()["name"]
     return render_template('home.html', name=name)
 
+
+@app.route('/join/')
+def join():
+    if not verify_session_logged_in():
+        session['error']="please enter your key!"
+        return redirect(url_for('index'))
+    try:
+        error = session.pop('error')
+    except KeyError:
+        error = ""
+    return render_template('join.html', error = error)
 
 
 @app.route('/_join/', methods = ['POST'])
@@ -114,17 +122,31 @@ def _join():
         return redirect(url_for('index'))
 
     code = request.form['code']
-    with sqlite3.connect("database.db") as con:  
-        con.row_factory = sqlite3.Row
-        cur = con.cursor() 
-        if cur.execute("SELECT count(*) FROM Games WHERE code = ? ", (code, )).fetchone()[0] > 0: #if game code is in database
+    error = check_for_join_error(code)
+    if error:
+        session['error'] = error
+        return redirect(url_for('join'))
+    else:
+        with sqlite3.connect("database.db") as con:  
+            con.row_factory = sqlite3.Row
+            cur = con.cursor() 
             cur.execute("SELECT * from Games WHERE code = ? ", (code, ))
             players = json.dumps(json.loads(cur.fetchone()["players"])+[session['key']]) #adds user to the player list of the game
             cur.execute("UPDATE Games SET players = ? WHERE code = ? ", (players, code))
-            return redirect(url_for('game', code = code))
-        else:
-            abort(401)
+        return redirect(url_for('game', code = code))
 
+
+
+@app.route('/create/')
+def create():
+    if not verify_session_logged_in():
+        session['error']="please enter your key!"
+        return redirect(url_for('index'))
+    try:
+        error = session.pop('error')
+    except KeyError:
+        error = ""
+    return render_template('create.html', error = error)
 
 ### _create helper route ###
 ## This helper page is accessed when info is entered from the create page. ##
@@ -150,6 +172,8 @@ def _create():
         cur.execute("INSERT into Games (code, name, host, started, players, alive, targets) values (?, ?, ?, ?, ?, ?, ?)", (code, name, host, started, players, alive, targets))   #creates new key
         con.commit()
     return redirect(url_for('game', code = code))
+
+
 
 ### game page route ###
 ## Page for viewing a specific game. Accessible from home page ##
@@ -195,6 +219,20 @@ def check_for_signup_error(key, keyRepeat, name):
         if cur.execute("SELECT count(*) FROM Players WHERE key= ? ", (key, )).fetchone()[0] > 0:
             return "Oh no! Someone already took this key."
     return  False
+
+### verifier that checks that a code is good to join with. makes sure it's an actual game and that the user is not already in the game ###
+## returns an error message if there is an error. False if there is no error ##
+def check_for_join_error(code):
+    if not code:
+        return "please enter a game code"
+    with sqlite3.connect("database.db") as con:  
+        con.row_factory = sqlite3.Row
+        cur = con.cursor() 
+        if cur.execute("SELECT count(*) FROM Games WHERE code = ? ", (code, )).fetchone()[0] == 0:
+            return "no such game exists" 
+        if session['key'] in cur.execute("SELECT * FROM Games WHERE code = ? ", (code, )).fetchone()['players']:
+            return "you are already in this game"
+    return False
 
 #### DEBUG CODE BELOW THIS LINE ####
 
