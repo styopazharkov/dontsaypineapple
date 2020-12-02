@@ -174,7 +174,7 @@ def _create():
     started = 0
     players = json.dumps([session['key']])
     alive = json.dumps([])
-    kicked = json.dumps([])
+    purged = json.dumps([])
     targets = json.dumps({})
     #winner is not set
 
@@ -189,7 +189,7 @@ def _create():
             con.row_factory = sqlite3.Row
             cur = con.cursor() 
 
-            cur.execute("INSERT into Games (code, name, settings, host, started, players, alive, kicked, targets) values (?, ?, ?, ?, ?, ?, ?, ?, ?)", (code, name, settings, host, started, players, alive, kicked, targets))   #creates new key
+            cur.execute("INSERT into Games (code, name, settings, host, started, players, alive, purged, targets) values (?, ?, ?, ?, ?, ?, ?, ?, ?)", (code, name, settings, host, started, players, alive, purged, targets))   #creates new key
             con.commit()
 
             cur.execute("SELECT * from Players WHERE key = ? ", (session['key'], ))
@@ -213,7 +213,6 @@ def game(code):
         return redirect(url_for('home'))
 
     data={"code": code}
-
     with sqlite3.connect("database.db") as con:  
         con.row_factory = sqlite3.Row
         cur = con.cursor()
@@ -223,8 +222,10 @@ def game(code):
         data['started'] = gameRow['started']
         data['settings'] = gameRow['settings']
         data['players'] = json.loads(gameRow['players'])
-        data['word'] = "nothing, for now"
-        data['alive'] = session['key'] in gameRow['alive']
+        if gameRow['started']:
+            data['word'] = json.loads(gameRow['targets'])[session['key']][0]
+            data['target'] = json.loads(gameRow['targets'])[session['key']][1]
+        data['isAlive'] = session['key'] in gameRow['alive']
 
 
     return render_template('game.html', data = data)
@@ -268,8 +269,17 @@ def _cancel(code):
         return redirect(url_for('home'))
     
     with sqlite3.connect("database.db") as con:  
+        con.row_factory = sqlite3.Row
         cur = con.cursor() 
-        cur.execute("DELETE FROM Games WHERE code = ? ", (code, ))
+        players = json.loads(cur.execute("SELECT * from Games WHERE code = ? ", (code, )).fetchone()['players'])
+        for player in players: #delets the game from each players game list
+            cur.execute("SELECT * from Players WHERE key = ? ", (player, ))
+            games = json.loads(cur.fetchone()["games"])
+            games.remove(code) #removes game to the games list of the user
+            games = json.dumps(games) 
+            cur.execute("UPDATE Players SET games = ? WHERE key = ? ", (games, player))
+
+        cur.execute("DELETE FROM Games WHERE code = ? ", (code, )) #deletes the game from the games database
     return redirect(url_for('home'))
 
 @app.route('/_killed/<code>', methods = ['POST'])

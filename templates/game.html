@@ -38,9 +38,10 @@
             {% endif %}
         </div>
     {% else %}
-        {% if data['alive'] %}
+        {% if data['isAlive'] %}
             <div class = "word">
-                <p>{{data['word']}}</p>
+                <p>Your word is: {{data['word']}}</p>
+                <p>Your target is: {{data['target']}}</p>
             </div>
         {% endif %}
         <div class = "killed">

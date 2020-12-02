@@ -34,7 +34,7 @@ con.execute("create table Games ( \
     started BOOLEAN NOT NULL CHECK (started IN (0,1)), \
     players TEXT NOT NULL, \
     alive TEXT NOT NULL, \
-    kicked TEXT NOT NULL, \
+    purged TEXT NOT NULL, \
     targets TEXT NOT NULL)") 
 print("Games table created successfully") 
 
