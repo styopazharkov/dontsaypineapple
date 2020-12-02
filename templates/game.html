@@ -6,6 +6,54 @@
     <title>Word Assassins</title>
 </head>
 <body>
-    <h2>{{data['code']}}</h2>
+
+    <h2>{{data['title']}}</h2>
+    <h6>({{data['code']}})</h6>
+    <div class="settings">
+        <h4>Settings:</h4>
+    </div>
+
+    <div class = "players">
+        <h4>Players:</h4>   
+        {% for player in data['players'] %}
+            <p>{{player}}</p>
+            {% if data['admin'] %}
+                <button type="submit"> kick  </button>
+            {% endif %}
+        {% endfor %}
+    </div>
+
+    {% if not data['started'] %}
+        <div class = "start">
+            {% if data['admin'] %}
+                <button type="submit">Start Game</button>
+                <button type="submit">Cancel Game</button>
+            {% else %}
+                <p>Waiting for host to start game</p>
+            {% endif %}
+        </div>
+    {% else %}
+        {% if data['alive'] %}
+            <div class = "word">
+                <p>{{data['word']}}</p>
+            </div>
+        {% endif %}
+        <div class = "killed">
+            <button type="submit">I got killed</button>
+        </div>
+    {% endif %}
+
+
 </body>
 </html>
+
+<!-- 
+{% if data['admin'] %}
+{% if not data['started'] %}
+{% else %}
+{% endif %}
+{% else %}
+{% if not data['started'] %}
+{% else %}
+{% endif %}
+{% endif %} -->

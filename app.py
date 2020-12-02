@@ -193,7 +193,6 @@ def _create():
         return redirect(url_for('game', code = code))
 
 
-
 ### game page route ###
 ## Page for viewing a specific game. Accessible from home page ##
 ## If user is the host, has: list of players, start button, kick button, back button ##
@@ -210,7 +209,37 @@ def game(code):
 
     data={"code": code}
 
+    with sqlite3.connect("database.db") as con:  
+        con.row_factory = sqlite3.Row
+        cur = con.cursor() 
+        gameRow = cur.execute("SELECT * FROM Games WHERE code = ? ", (code, )).fetchone()
+        data['title'] = gameRow['name']
+        data['admin'] = (gameRow['host'] == session['key'])
+        data['started'] = gameRow['started']
+        data['players'] = json.loads(gameRow['players'])
+        data['word'] = "nothing, for now"
+        data['alive'] = session['key'] in gameRow['alive']
+
+
+    print(data) ##
+
     return render_template('game.html', data = data)
+
+@app.route('/_start', methods = ['POST'])
+def _start():
+    return redirect(url_for('game', code = code))
+
+@app.route('/_cancel', methods = ['POST'])
+def _cancel():
+    return redirect(url_for('game', code = code))
+
+@app.route('/_killed', methods = ['POST'])
+def _killed():
+    return redirect(url_for('game', code = code))
+
+@app.route('/_kick', methods = ['POST'])
+def _kick():
+    return redirect(url_for('game', code = code))
 
 
 #### HELPER FUNCTIONS BELOW THIS LINE ####

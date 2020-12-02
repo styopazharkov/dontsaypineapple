@@ -1,4 +1,6 @@
 # WordAssassins
 2020 Word Assassins Website Repository
+-Styopa 
 
-Styopa Zharkov and Arpit Ranasaria
+Contributors:
+Stepan (Styopa) Zharkov,  Arpit Ranasaria
