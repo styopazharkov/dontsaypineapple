@@ -108,6 +108,7 @@ def join():
     if not verify_session_logged_in():
         session['error']="please enter your key!"
         return redirect(url_for('index'))
+        
     try:
         error = session.pop('error')
     except KeyError:
@@ -136,17 +137,17 @@ def _join():
         return redirect(url_for('game', code = code))
 
 
-
 @app.route('/create/')
 def create():
     if not verify_session_logged_in():
         session['error']="please enter your key!"
         return redirect(url_for('index'))
+    
     try:
-        error = session.pop('error')
+        error, code, name = session.pop('error'), session.pop('code'), session.pop('name')
     except KeyError:
-        error = ""
-    return render_template('create.html', error = error)
+        error, code, name = "", "", ""
+    return render_template('create.html', error = error, code = code, name=name)
 
 ### _create helper route ###
 ## This helper page is accessed when info is entered from the create page. ##
@@ -166,12 +167,18 @@ def _create():
     targets = json.dumps({})
     #winner is not set
 
-    #TODO check that everything is valid
-    with sqlite3.connect("database.db") as con:  
-        cur = con.cursor() 
-        cur.execute("INSERT into Games (code, name, host, started, players, alive, targets) values (?, ?, ?, ?, ?, ?, ?)", (code, name, host, started, players, alive, targets))   #creates new key
-        con.commit()
-    return redirect(url_for('game', code = code))
+    error = check_for_create_error(code, name)
+    if error:
+        session['error'] = error
+        session['code'] = code
+        session['name'] = name
+        return redirect(url_for('create'))
+    else:
+        with sqlite3.connect("database.db") as con:  
+            cur = con.cursor() 
+            cur.execute("INSERT into Games (code, name, host, started, players, alive, targets) values (?, ?, ?, ?, ?, ?, ?)", (code, name, host, started, players, alive, targets))   #creates new key
+            con.commit()
+        return redirect(url_for('game', code = code))
 
 
 
@@ -232,6 +239,20 @@ def check_for_join_error(code):
             return "no such game exists" 
         if session['key'] in cur.execute("SELECT * FROM Games WHERE code = ? ", (code, )).fetchone()['players']:
             return "you are already in this game"
+    return False
+
+### verifier that checks that a code and name are good to c with. makes sure code is long enough, name is non empty, and that the game doesnt already exist ###
+## returns an error message if there is an error. False if there is no error ##
+def check_for_create_error(code, name):
+    if len(code)<5:
+        return "game code must be at least 5 characters long"
+    if len(name.strip())==0:
+        return "your game must have a name"
+    with sqlite3.connect("database.db") as con:  
+        con.row_factory = sqlite3.Row
+        cur = con.cursor() 
+        if cur.execute("SELECT count(*) FROM Games WHERE code = ? ", (code, )).fetchone()[0] > 0:
+            return "a game with this code already exists"
     return False
 
 #### DEBUG CODE BELOW THIS LINE ####

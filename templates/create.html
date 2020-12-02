@@ -10,8 +10,8 @@
         <p style="color: red;">Error: {{error}}</p>
     {% endif  %}
     <form action="/_create" method="POST">
-        <p><input type = "text" name = "name" placeholder="Enter a game name" /></p>
-        <p><input type = "text" name = "code" placeholder="Enter a game code" /></p>
+        <p><input type = "text" name = "name" placeholder="Enter a game name" value="{{name}}"/></p>
+        <p><input type = "text" name = "code" placeholder="Enter a game code" value="{{code}}"/></p>
         <p><input type = "submit" value = "Create" /></p>
     </form>
 </body>
