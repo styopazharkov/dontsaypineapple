@@ -102,20 +102,20 @@ def home():
         name = cur.fetchone()["name"]
     return render_template('home.html', name=name)
 
-
+### join page ###
 @app.route('/join/')
 def join():
     if not verify_session_logged_in():
         session['error']="please enter your key!"
         return redirect(url_for('index'))
-        
+
     try:
         error = session.pop('error')
     except KeyError:
         error = ""
     return render_template('join.html', error = error)
 
-
+### join helper route ###
 @app.route('/_join/', methods = ['POST'])
 def _join():
     if not verify_session_logged_in():
@@ -134,9 +134,13 @@ def _join():
             cur.execute("SELECT * from Games WHERE code = ? ", (code, ))
             players = json.dumps(json.loads(cur.fetchone()["players"])+[session['key']]) #adds user to the player list of the game
             cur.execute("UPDATE Games SET players = ? WHERE code = ? ", (players, code))
+
+            cur.execute("SELECT * from Players WHERE key = ? ", (session['key'], ))
+            games = json.dumps(json.loads(cur.fetchone()["games"])+[code]) #adds game to the games list of the user
+            cur.execute("UPDATE Players SET games = ? WHERE key = ? ", (games, session['key']))
         return redirect(url_for('game', code = code))
 
-
+### create page ###
 @app.route('/create/')
 def create():
     if not verify_session_logged_in():
@@ -175,9 +179,14 @@ def _create():
         return redirect(url_for('create'))
     else:
         with sqlite3.connect("database.db") as con:  
+            con.row_factory = sqlite3.Row
             cur = con.cursor() 
             cur.execute("INSERT into Games (code, name, host, started, players, alive, targets) values (?, ?, ?, ?, ?, ?, ?)", (code, name, host, started, players, alive, targets))   #creates new key
             con.commit()
+
+            cur.execute("SELECT * from Players WHERE key = ? ", (session['key'], ))
+            games = json.dumps(json.loads(cur.fetchone()["games"])+[code]) #adds game to the games list of the user
+            cur.execute("UPDATE Players SET games = ? WHERE key = ? ", (games, session['key']))
         return redirect(url_for('game', code = code))
 
 
