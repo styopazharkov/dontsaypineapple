@@ -29,6 +29,7 @@ con.execute("create table Games ( \
     id INTEGER PRIMARY KEY AUTOINCREMENT, \
     code TEXT NOT NULL, \
     name TEXT NOT NULL,\
+    settings TEXT NOT NULL, \
     host TEXT NOT NULL, \
     started BOOLEAN NOT NULL CHECK (started IN (0,1)), \
     players TEXT NOT NULL, \

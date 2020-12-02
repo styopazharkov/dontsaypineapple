@@ -168,6 +168,7 @@ def _create():
 
     code = request.form["code"]
     name = request.form["name"]  
+    settings = json.dumps({})
     host = session['key']
     started = 0
     players = json.dumps([session['key']])
@@ -187,7 +188,7 @@ def _create():
             con.row_factory = sqlite3.Row
             cur = con.cursor() 
 
-            cur.execute("INSERT into Games (code, name, host, started, players, alive, kicked, targets) values (?, ?, ?, ?, ?, ?, ?, ?)", (code, name, host, started, players, alive, kicked, targets))   #creates new key
+            cur.execute("INSERT into Games (code, name, settings, host, started, players, alive, kicked, targets) values (?, ?, ?, ?, ?, ?, ?, ?, ?)", (code, name, settings, host, started, players, alive, kicked, targets))   #creates new key
             con.commit()
 
             cur.execute("SELECT * from Players WHERE key = ? ", (session['key'], ))
@@ -219,6 +220,7 @@ def game(code):
         data['title'] = gameRow['name']
         data['admin'] = (gameRow['host'] == session['key'])
         data['started'] = gameRow['started']
+        data['settings'] = gameRow['settings']
         data['players'] = json.loads(gameRow['players'])
         data['word'] = "nothing, for now"
         data['alive'] = session['key'] in gameRow['alive']
