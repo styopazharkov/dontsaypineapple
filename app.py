@@ -8,6 +8,7 @@
 ### The following code is the imported packages ###
 from flask import Flask, redirect, url_for, render_template, request, session, abort
 import sqlite3, json
+import numpy
 
 
 ### The following code creates the app variable and assigns a secret key for the session dictionary ###
@@ -215,7 +216,7 @@ def game(code):
 
     with sqlite3.connect("database.db") as con:  
         con.row_factory = sqlite3.Row
-        cur = con.cursor() 
+        cur = con.cursor()
         gameRow = cur.execute("SELECT * FROM Games WHERE code = ? ", (code, )).fetchone()
         data['title'] = gameRow['name']
         data['admin'] = (gameRow['host'] == session['key'])
@@ -226,24 +227,39 @@ def game(code):
         data['alive'] = session['key'] in gameRow['alive']
 
 
-    print(data) ##
-
     return render_template('game.html', data = data)
 
-@app.route('/_start', methods = ['POST'])
-def _start():
+@app.route('/_start/<code>', methods = ['POST'])
+def _start(code):
+    #TODO verify that requester is host
+
+    with sqlite3.connect("database.db") as con:  
+        con.row_factory = sqlite3.Row
+        cur = con.cursor() 
+        row = cur.execute("SELECT * from Games WHERE code = ? ", (code, )).fetchone()
+        started = 1
+        alive = row['players']
+        players = json.loads(row["players"])
+        targets = {}
+        permutation = numpy.random.permutation(len(players))
+        for i in range(-1, len(permutation)-1):
+            #TODO implement words here
+            targets[players[permutation[i]]] = ("word", players[permutation[i+1]])
+        targets = json.dumps(targets)
+        cur.execute("UPDATE Games SET started = ?,  alive = ?, targets = ? WHERE code = ? ", (started, alive, targets, code))
     return redirect(url_for('game', code = code))
 
-@app.route('/_cancel', methods = ['POST'])
-def _cancel():
+@app.route('/_cancel/<code>', methods = ['POST'])
+def _cancel(code):
+
+    return redirect(url_for('home'))
+
+@app.route('/_killed/<code>', methods = ['POST'])
+def _killed(code):
     return redirect(url_for('game', code = code))
 
-@app.route('/_killed', methods = ['POST'])
-def _killed():
-    return redirect(url_for('game', code = code))
-
-@app.route('/_kick', methods = ['POST'])
-def _kick():
+@app.route('/_kick/<code>/<key>', methods = ['POST'])
+def _kick(code, key):
     return redirect(url_for('game', code = code))
 
 
@@ -305,7 +321,10 @@ def check_for_join_error(code):
         cur = con.cursor() 
         if cur.execute("SELECT count(*) FROM Games WHERE code = ? ", (code, )).fetchone()[0] == 0:
             return "no such game exists" 
-        if session['key'] in cur.execute("SELECT * FROM Games WHERE code = ? ", (code, )).fetchone()['players']:
+        row =  cur.execute("SELECT * FROM Games WHERE code = ? ", (code, )).fetchone()
+        if row['started']:
+            return "this game has already started"
+        if session['key'] in row['players']:
             return "you are already in this game"
     return False
 

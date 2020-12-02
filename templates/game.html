@@ -27,8 +27,12 @@
     {% if not data['started'] %}
         <div class = "start">
             {% if data['admin'] %}
-                <button type="submit">Start Game</button>
-                <button type="submit">Cancel Game</button>
+                <form action="/_start/{{data['code']}}" method="post">
+                    <input type="submit" value="Start Game">
+                </form>
+                <form action="/_cancel/{{data['code']}}" method="post">
+                    <input type="submit" value="Cancel Game">
+                </form>
             {% else %}
                 <p>Waiting for host to start game</p>
             {% endif %}
