@@ -100,7 +100,9 @@ def home():
 
         cur.execute("SELECT * from Players WHERE key = ?", (session['key'], )) 
         name = cur.fetchone()["name"]
-    return render_template('home.html', name=name)
+        cur.execute("SELECT * from Players WHERE key = ?", (session['key'], )) 
+        games = json.loads(cur.fetchone()["games"])
+    return render_template('home.html', name=name, games = games)
 
 ### join page ###
 @app.route('/join/')
@@ -181,6 +183,7 @@ def _create():
         with sqlite3.connect("database.db") as con:  
             con.row_factory = sqlite3.Row
             cur = con.cursor() 
+
             cur.execute("INSERT into Games (code, name, host, started, players, alive, targets) values (?, ?, ?, ?, ?, ?, ?)", (code, name, host, started, players, alive, targets))   #creates new key
             con.commit()
 
@@ -200,6 +203,10 @@ def game(code):
     if not verify_session_logged_in():
         session['error']="please enter your key!"
         return redirect(url_for('index'))
+    
+    if not verify_user_in_game(code):
+        #need to add error message
+        return redirect(url_for('home'))
 
     return render_template('game.html')
 
@@ -209,6 +216,12 @@ def game(code):
 ### verfier that a user is logged in on a page ###
 def verify_session_logged_in():
     return session['loggedIn'] and session['key']
+
+def verify_user_in_game(code):
+    with sqlite3.connect("database.db") as con:  
+        con.row_factory = sqlite3.Row
+        cur = con.cursor() 
+        return session['key'] in cur.execute("SELECT * FROM Games WHERE code = ? ", (code, )).fetchone()['players']:
 
 ### verifier that checks that a key is good to log in with. makes sure it's long and is in the database ###
 ## returns an error message if there is an error. False if there is no error ##
