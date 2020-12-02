@@ -12,6 +12,8 @@
         <td>Key</td>  
         <td>Name</td> 
         <td>Games</td>
+        <td>Past Games</td>
+        <td>Stats</td>
         <td>pfp</td>
         </thead>  
         {% for row in playerRows %}  
@@ -20,6 +22,8 @@
         <td>{{row["key"]}}</td>
         <td>{{row["name"]}}</td>  
         <td>{{row["games"]}}</td>  
+        <td>{{row["pastGames"]}}</td>  
+        <td>{{row["stats"]}}</td>  
         <td>{{row["pfpPath"]}}</td>  
         </tr>  
         {% endfor %}   
@@ -34,8 +38,8 @@
             <td>Started</td>
             <td>Players</td>
             <td>Alive</td>
+            <td>Kicked</td>
             <td>Targets</td>
-            <td>Winner</td>
             </thead>  
             {% for row in gameRows %}  
             <tr>  
@@ -46,10 +50,31 @@
             <td>{{row["started"]}}</td>  
             <td>{{row["players"]}}</td>  
             <td>{{row["alive"]}}</td>  
+            <td>{{row["kicked"]}}</td>  
             <td>{{row["targets"]}}</td>  
-            <td>{{row["winner"]}}</td>  
             </tr>  
             {% endfor %}   
             </table> 
+            <br>
+            <table border=5>  
+                <thead>  
+                <td>ID</td>  
+                <td>Code</td>  
+                <td>Name</td> 
+                <td>Host</td>
+                <td>Players</td>
+                <td>Winner</td>
+                </thead>  
+                {% for row in  pastRows %}  
+                <tr>  
+                <td>{{row["id"]}}</td>  
+                <td>{{row["code"]}}</td>
+                <td>{{row["name"]}}</td>  
+                <td>{{row["host"]}}</td>  
+                <td>{{row["players"]}}</td>  
+                <td>{{row["winner"]}}</td>  
+                </tr>  
+                {% endfor %}   
+                </table> 
 </body>
 </html>

@@ -69,6 +69,8 @@ def _signup():
     keyRepeat = request.form["keyRepeat"]  
     name = request.form["name"]  
     games = json.dumps([])
+    pastGames = json.dumps([])
+    stats = json.dumps({"played": 0, "won": 0, "kills": 0})
     error = check_for_signup_error(key, keyRepeat, name)
     if error:
         session['error']=error
@@ -77,7 +79,7 @@ def _signup():
     else:
         with sqlite3.connect("database.db") as con:  
             cur = con.cursor() 
-            cur.execute("INSERT into Players (key, name, games) values (?, ?, ?)", (key, name, games))   #creates new key
+            cur.execute("INSERT into Players (key, name, games, pastGames, stats) values (?, ?, ?, ?, ?)", (key, name, games, pastGames, stats))   #creates new key
             con.commit()
         session['loggedIn'] = True
         session['key'] = key
@@ -170,6 +172,7 @@ def _create():
     started = 0
     players = json.dumps([session['key']])
     alive = json.dumps([])
+    kicked = json.dumps([])
     targets = json.dumps({})
     #winner is not set
 
@@ -184,7 +187,7 @@ def _create():
             con.row_factory = sqlite3.Row
             cur = con.cursor() 
 
-            cur.execute("INSERT into Games (code, name, host, started, players, alive, targets) values (?, ?, ?, ?, ?, ?, ?)", (code, name, host, started, players, alive, targets))   #creates new key
+            cur.execute("INSERT into Games (code, name, host, started, players, alive, kicked, targets) values (?, ?, ?, ?, ?, ?, ?, ?)", (code, name, host, started, players, alive, kicked, targets))   #creates new key
             con.commit()
 
             cur.execute("SELECT * from Players WHERE key = ? ", (session['key'], ))
@@ -333,7 +336,10 @@ def debug():
         cur.execute("SELECT * from Games")   
         gameRows = cur.fetchall()   #rows of the Games table
 
-    return render_template('debug.html', playerRows = playerRows, gameRows = gameRows)
+        cur.execute("SELECT * from pastGames")   
+        pastRows = cur.fetchall()   #rows of the pastGames table
+
+    return render_template('debug.html', playerRows = playerRows, gameRows = gameRows, pastRows=pastRows)
 
 #### MAIN APP RUN BELOW THIS LINE ####
 
