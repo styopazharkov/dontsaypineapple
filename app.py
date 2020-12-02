@@ -49,7 +49,9 @@ def _login():
 ## Has: key repeatKey and name input boxes, pfp input (TODO), back button (TODO), signup button ## 
 @app.route('/signup/')
 def signup():
-    return render_template('signup.html')
+    error = request.args.get('error')
+    name = request.args.get('name')
+    return render_template('signup.html', error = error, name = name)
 
 
 ### _signup helper route ###
@@ -61,14 +63,17 @@ def _signup():
     keyRepeat = request.form["keyRepeat"]  
     name = request.form["name"]  
     games = json.dumps([])
-    #TODO check that everything is valid
-    with sqlite3.connect("database.db") as con:  
-        cur = con.cursor() 
-        cur.execute("INSERT into Players (key, name, games) values (?, ?, ?)", (key, name, games))   #creates new key
-        con.commit()
-    session['loggedIn'] = True
-    session['key'] = key
-    return redirect(url_for('home'))
+    error = check_for_signup_error(key, keyRepeat, name)
+    if error:
+        return redirect(url_for('signup', error = error, name = name))
+    else:
+        with sqlite3.connect("database.db") as con:  
+            cur = con.cursor() 
+            cur.execute("INSERT into Players (key, name, games) values (?, ?, ?)", (key, name, games))   #creates new key
+            con.commit()
+        session['loggedIn'] = True
+        session['key'] = key
+        return redirect(url_for('home'))
    
 
 ### home page route ###
@@ -165,9 +170,11 @@ def check_for_login_error(key):
         
 ### verifier that checks that a key and name are good to sign up with. makes sure it's long and is in the database ###
 ## returns an error message if there is an error. False if there is no error ##
-def check_for_signup_error(key, name):
+def check_for_signup_error(key, keyRepeat, name):
     if len(key) < 5:
         return "The key can't be less than 5 characters long."
+    if key != keyRepeat:
+        return "The keys must match"
     if len(name.strip()) == 0:
         return "You must have a name!"
     with sqlite3.connect("database.db") as con:

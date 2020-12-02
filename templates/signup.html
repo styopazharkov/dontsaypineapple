@@ -6,10 +6,13 @@
     <title>Word Assassins – Sign Up</title>
 </head>
 <body>
+    {% if  error %}
+        <p style="color: red;">Error: {{error}}</p>
+    {% endif  %}
     <form action="/_signup" method="POST">
         <p><input type = "password" name = "key" placeholder="Enter your personal key" /></p>
         <p><input type = "password" name = "keyRepeat" placeholder="Confirm your personal key" /></p>
-        <p><input type = "text" name = "name" placeholder="Enter your name" /></p>
+        <p><input type = "text" name = "name" placeholder="Enter your name" {% if name %} value="{{name}}" {% endif  %}/></p>
         <p><input type = "submit" value = "Sign Up" /></p>
     </form>
 </body>
