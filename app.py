@@ -224,8 +224,8 @@ def game(code):
         data['host'] = gameRow['host']
         data['players'] = json.loads(gameRow['players'])
         if gameRow['started']:
-            data['word'] = json.loads(gameRow['targets'])[session['key']][0]
-            data['target'] = json.loads(gameRow['targets'])[session['key']][1]
+            data['word'] = json.loads(gameRow['targets'])[session['key']]['word']
+            data['target'] = json.loads(gameRow['targets'])[session['key']]['target']
         data['isAlive'] = session['key'] in gameRow['alive']
 
 
@@ -250,10 +250,11 @@ def _start(code):
         alive = row['players']
         players = json.loads(row["players"])
         targets = {}
-        permutation = numpy.random.permutation(len(players))
-        for i in range(-1, len(permutation)-1):
+        n=len(players)
+        permutation = numpy.random.permutation(n)
+        for i in range(n):
             #TODO implement words here
-            targets[players[permutation[i]]] = ("word", players[permutation[i+1]])
+            targets[players[permutation[i]]] = {"word": "word"+str(i), "target": players[permutation[(i+1)%n]], "assassin": players[permutation[i-1]]}
         targets = json.dumps(targets)
         cur.execute("UPDATE Games SET started = ?,  alive = ?, targets = ? WHERE code = ? ", (started, alive, targets, code))
     return redirect(url_for('game', code = code))
@@ -316,6 +317,25 @@ def _kick(code, key):
     
 @app.route('/_killed/<code>', methods = ['POST'])
 def _killed(code):
+    if not verify_session_logged_in():
+        session['error']="please enter your key!"
+        return redirect(url_for('index'))
+    
+    with sqlite3.connect("database.db") as con:  
+        con.row_factory = sqlite3.Row
+        cur = con.cursor() 
+        key = session['key']
+        row = cur.execute("SELECT * from Games WHERE code = ? ", (code, )).fetchone()
+        alive = json.loads(row["alive"])
+        alive.remove(key)  #removes key from the alive list of the game
+        alive = json.dumps(alive)
+        targets = json.loads(row['targets'])
+        targets[targets[key]['assassin']]['word'], targets[key]['word'] = targets[key]['word'], targets[targets[key]['assassin']]['word'] #swaps words with the assassin
+        targets[targets[key]['assassin']]['target'] = targets[key]['target'] #changes assassin's target
+        targets[targets[key]['target']]['assassin'] = targets[key]['assassin'] #changes target's assassin
+        targets[key]['target'] = targets[key]['assassin'] #sets target to assassin
+        targets = json.dumps(targets)
+        cur.execute("UPDATE Games SET alive = ?, targets = ? WHERE code = ? ", (alive, targets, code))
     return redirect(url_for('game', code = code))
 
 

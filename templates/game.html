@@ -45,10 +45,10 @@
                 <p>Your word is: {{data['word']}}</p>
                 <p>Your target is: {{data['target']}}</p>
             </div>
+            <form action="/_killed/{{data['code']}}" method="post">
+                <input type="submit" value="I was killed">
+            </form>
         {% endif %}
-        <div class = "killed">
-            <button type="submit">I got killed</button>
-        </div>
     {% endif %}
 
 
