@@ -223,6 +223,19 @@ def game(code):
 
 def pastGame(code):
     data={}
+    with sqlite3.connect("database.db") as con:  
+        con.row_factory = sqlite3.Row
+        cur = con.cursor()
+        gameRow = cur.execute("SELECT * FROM PastGames WHERE code = ? ", (code, )).fetchone()
+        data['code'] = code
+        data['user'] = session['user']
+        data['title'] = gameRow['name']
+        data['settings'] = gameRow['settings']
+        data['host'] = gameRow['host']
+        data['players'] = json.loads(gameRow['players'])
+        data['survivalWinner'] = gameRow['survivalWinner']
+        data['killWinners'] = gameRow['killWinners']
+        data['killLog'] = json.loads(gameRow['killLog'])
     return render_template('pastGame.html', data = data)
 
 def activeGame(code):

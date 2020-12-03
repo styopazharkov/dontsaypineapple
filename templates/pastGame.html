@@ -13,64 +13,16 @@
         <h4>Settings:</h4>
         <p>{{data['settings']}}</p>
     </div>
-
-    <div class = "players">
-        <h4>Players:</h4>   
-        {% for player in data['players'] %}
-            <p  
-            {% if player in data['purged'] %}
-                style="color:indianred"
-            {% elif player not in data['alive'] %}
-                style="color: grey"
-            {% endif %}
-            >{{player}}</p>
-            {% if data['admin'] and player != data['host'] %}
-                {% if not data['started'] %}
-                    <form action="/_kick/{{data['code']}}/{{player}}" method="post">
-                        <input type="submit" value="kick">
-                    </form>
-                {% elif player in data['alive'] %}
-                    <form action="/_purge/{{data['code']}}/{{player}}" method="post">
-                        <input type="submit" value="purge">
-                    </form>
-                {% endif %}
-            {% endif %}
+    <div class="winners">
+        <p>Last one alive: {{data['survivalWinner']}}</p>
+        <p>Most Kills: {{data['killWinners']}}</p>
+    </div>
+    <div class = "killLog">
+        <h4>Kill Log:</h4>   
+        {% for entry in data['killLog'] %}
+            <p>{{entry}}</p>
         {% endfor %}
     </div>
-
-    {% if not data['started'] %}
-        <div class = "start">
-            {% if data['admin'] %}
-                {% if data['numberOfPlayers'] > 1 %}
-                <form action="/_start/{{data['code']}}" method="post">
-                    <input type="submit" value="Start Game">
-                </form>
-                {% else %}
-                    <button disabled type="button" >Need 2 players to Start Game</button>
-                {% endif %}
-                <form action="/_cancel/{{data['code']}}" method="post">
-                    <input type="submit" value="Cancel Game">
-                </form>
-            {% else %}
-                <p>Waiting for host to start game</p>
-            {% endif %}
-        </div>
-    {% else %}
-        {% if data['isAlive'] %}
-            <div class = "word">
-                <p>Your word is: {{data['word']}}</p>
-                <p>Your target is: {{data['target']}}</p>
-            </div>
-            <form action="/_killed/{{data['code']}}" method="post">
-                <input type="submit" value="I was killed">
-            </form>
-        {% else %}
-            <div class = "word">
-                <p>{{data['target']}} killed you with {{data['word']}}</p>
-            </div>
-        {% endif %}
-    {% endif %}
-
 
 </body>
 </html>
