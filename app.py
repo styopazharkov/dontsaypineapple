@@ -329,18 +329,32 @@ def _killed(code):
         alive = json.loads(row["alive"])
         alive.remove(key)  #removes key from the alive list of the game
         alive = json.dumps(alive)
-        targets = json.loads(row['targets'])
-        targets[targets[key]['assassin']]['word'], targets[key]['word'] = targets[key]['word'], targets[targets[key]['assassin']]['word'] #swaps words with the assassin
-        targets[targets[key]['assassin']]['target'] = targets[key]['target'] #changes assassin's target
-        targets[targets[key]['target']]['assassin'] = targets[key]['assassin'] #changes target's assassin
-        targets[key]['target'] = targets[key]['assassin'] #sets target to assassin
-        targets = json.dumps(targets)
+        targets = json.dumps(edit_targets_on_kill(key, json.loads(row['targets'])))
         cur.execute("UPDATE Games SET alive = ?, targets = ? WHERE code = ? ", (alive, targets, code))
     return redirect(url_for('game', code = code))
 
 
 @app.route('/_purge/<code>/<key>', methods = ['POST'])
 def _purge(code, key):
+    if not verify_session_logged_in():
+        session['error']="please enter your key!"
+        return redirect(url_for('index'))
+
+    if not verify_host(code) or not verify_user_in_game(key, code) or key == session['key']:
+        session['error']="something is not right!"
+        return redirect(url_for('index'))
+
+    with sqlite3.connect("database.db") as con:  
+        con.row_factory = sqlite3.Row
+        cur = con.cursor()
+        row = cur.execute("SELECT * from Games WHERE code = ? ", (code, )).fetchone()
+        alive = json.loads(row["alive"])
+        alive.remove(key)  #removes key from the alive list of the game
+        alive = json.dumps(alive)
+        purged = json.dumps(json.loads(row["purged"])+[key]) #adds user to the purged list of the game
+        targets = json.dumps(edit_targets_on_kill(key, json.loads(row['targets'])))
+        cur.execute("UPDATE Games SET alive = ?, targets = ?, purged = ? WHERE code = ? ", (alive, targets, purged, code))
+
     return redirect(url_for('game', code = code))
 
 
@@ -431,6 +445,15 @@ def check_for_create_error(code, name):
         if cur.execute("SELECT count(*) FROM Games WHERE code = ? ", (code, )).fetchone()[0] > 0:
             return "a game with this code already exists"
     return False
+
+### modifies the targets map after key is killed ###
+def edit_targets_on_kill(key, targets):
+    targets[targets[key]['assassin']]['word'], targets[key]['word'] = targets[key]['word'], targets[targets[key]['assassin']]['word'] #swaps words with the assassin
+    targets[targets[key]['assassin']]['target'] = targets[key]['target'] #changes assassin's target
+    targets[targets[key]['target']]['assassin'] = targets[key]['assassin'] #changes target's assassin
+    targets[key]['target'] = targets[key]['assassin'] #sets target to assassin
+    return targets
+
 
 #### DEBUG CODE BELOW THIS LINE ####
 
