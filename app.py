@@ -180,6 +180,8 @@ def _create():
     alive = json.dumps([])
     purged = json.dumps([])
     targets = json.dumps({})
+    killCount = json.dumps({})
+    killLog = json.dumps([])
     #winner is not set
 
     error = checks.check_for_create_error(code, name)
@@ -193,7 +195,7 @@ def _create():
             con.row_factory = sqlite3.Row
             cur = con.cursor() 
 
-            cur.execute("INSERT into Games (code, name, settings, host, started, players, alive, purged, targets) values (?, ?, ?, ?, ?, ?, ?, ?, ?)", (code, name, settings, host, started, players, alive, purged, targets))   #creates new user
+            cur.execute("INSERT into Games (code, name, settings, host, started, players, alive, purged, targets, killCount, killLog) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", (code, name, settings, host, started, players, alive, purged, targets, killCount, killLog))   #creates new user
             con.commit()
 
             cur.execute("SELECT * from Players WHERE user = ? ", (session['user'], ))
@@ -284,7 +286,11 @@ def _start(code):
             #TODO implement words here
             targets[players[permutation[i]]] = {"word": "word"+str(i), "target": players[permutation[(i+1)%n]], "assassin": players[permutation[i-1]]}
         targets = json.dumps(targets)
-        cur.execute("UPDATE Games SET started = ?,  alive = ?, targets = ? WHERE code = ? ", (started, alive, targets, code))
+        killCount={}
+        for player in players:
+            killCount[player] = 0
+        killCount = json.dumps(killCount)
+        cur.execute("UPDATE Games SET started = ?,  alive = ?, targets = ?, killCount = ? WHERE code = ? ", (started, alive, targets, killCount, code))
     return redirect(url_for('game', code = code))
 
 ### _cancel helper route cancels a game that isn't yet started ###
@@ -356,8 +362,12 @@ def _killed(code):
         alive = json.loads(row["alive"])
         alive.remove(user)  #removes user from the alive list of the game
         alive = json.dumps(alive)
-        targets = json.dumps(maff.edit_targets_on_kill(user, json.loads(row['targets'])))
-        cur.execute("UPDATE Games SET alive = ?, targets = ? WHERE code = ? ", (alive, targets, code))
+        targets = maff.edit_targets_on_kill(user, json.loads(row['targets']))
+        killCount = json.loads(row['killCount'])
+        killCount[targets[user]['assassin']] += 1 #adds to assassin's kill count
+        killLog = json.loads(row['killLog'])+[(targets[user]['assassin'], "killed", user, targets[user]['word'])] #adds to kill log
+        targets, killCount, killLog = json.dumps(targets), json.dumps(killCount), json.dumps(killLog) #json encripts everything
+        cur.execute("UPDATE Games SET alive = ?, targets = ?, killCount = ?, killLog = ? WHERE code = ? ", (alive, targets, killCount, killLog, code))
     return redirect(url_for('game', code = code))
 
 ### purge page for purging a player by game host ###
@@ -379,8 +389,10 @@ def _purge(code, user):
         alive.remove(user)  #removes user from the alive list of the game
         alive = json.dumps(alive)
         purged = json.dumps(json.loads(row["purged"])+[user]) #adds user to the purged list of the game
-        targets = json.dumps(maff.edit_targets_on_kill(user, json.loads(row['targets'])))
-        cur.execute("UPDATE Games SET alive = ?, targets = ?, purged = ? WHERE code = ? ", (alive, targets, purged, code))
+        targets = maff.edit_targets_on_kill(user, json.loads(row['targets']))
+        killLog = json.loads(row['killLog'])+[(targets[user]['assassin'], "purged", user, targets[user]['word'])] #adds to kill log
+        targets,  killLog = json.dumps(targets), json.dumps(killLog) #json encripts everything
+        cur.execute("UPDATE Games SET alive = ?, targets = ?, purged = ?, killLog = ? WHERE code = ? ", (alive, targets, purged, killLog, code))
 
     return redirect(url_for('game', code = code))
 

@@ -23,7 +23,7 @@ con.execute("create table Players ( \
     pfpPath TEXT)") 
 print("Players table created successfully")  
 
-### Games table for storing information about each game ###
+### Games table for storing information about each game ### TODO: update this comment
 ## Format: int id, str code, str name, str host, bool started, list<str> players, ##
 ## set<str> alive, map<str, (str, str)> targets, str winner ##
 con.execute("create table Games ( \
@@ -36,17 +36,21 @@ con.execute("create table Games ( \
     players TEXT NOT NULL, \
     alive TEXT NOT NULL, \
     purged TEXT NOT NULL, \
-    targets TEXT NOT NULL)") 
+    targets TEXT NOT NULL, \
+    killCount TEXT NOT NULL, \
+    killLog TEXT NOT NULL)") 
 print("Games table created successfully") 
 
 con.execute("create table PastGames ( \
     id INTEGER PRIMARY KEY AUTOINCREMENT, \
     code TEXT NOT NULL, \
     name TEXT NOT NULL,\
+    settings TEXT NOT NULL, \
     host TEXT NOT NULL, \
     players TEXT NOT NULL, \
     survivalWinner TEXT NOT NULL, \
-    killWinners TEXT NOT NULL)") 
+    killWinners TEXT NOT NULL, \
+    killLog TEXT NOT NULL)") 
 print("PastGames table created successfully")
 
 con.close()  

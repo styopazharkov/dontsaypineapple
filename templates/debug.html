@@ -43,6 +43,8 @@
             <td>Alive</td>
             <td>Purged</td>
             <td>Targets</td>
+            <td>Kill Count</td>
+            <td>Kill Log</td>
             </thead>  
             {% for row in gameRows %}  
             <tr>  
@@ -56,6 +58,8 @@
             <td>{{row["alive"]}}</td>  
             <td>{{row["purged"]}}</td>  
             <td>{{row["targets"]}}</td>  
+            <td>{{row["killCount"]}}</td>  
+            <td>{{row["killLog"]}}</td>
             </tr>  
             {% endfor %}   
             </table> 
