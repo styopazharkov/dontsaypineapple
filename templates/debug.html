@@ -9,7 +9,8 @@
     <table border=5>  
         <thead>  
         <td>ID</td>  
-        <td>Key</td>  
+        <td>Username</td>  
+        <td>Password</td>
         <td>Name</td> 
         <td>Games</td>
         <td>Past Games</td>
@@ -19,7 +20,8 @@
         {% for row in playerRows %}  
         <tr>  
         <td>{{row["id"]}}</td>  
-        <td>{{row["key"]}}</td>
+        <td>{{row["user"]}}</td>
+        <td>{{row["password"]}}</td>
         <td>{{row["name"]}}</td>  
         <td>{{row["games"]}}</td>  
         <td>{{row["pastGames"]}}</td>  

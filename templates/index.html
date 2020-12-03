@@ -12,7 +12,8 @@
     {% endif  %}
     <p>This is the index page</p>
     <form action="/_login" method = "post">
-        <p><input type = "password" name = "key" placeholder="Enter your personal key" /></p>
+        <p><input type = "text" name = "user" placeholder="Enter your username" value="{{user}}"/></p>
+        <p><input type="password" name="password" placeholder="password"></p>
         <p><input type = "submit" value = "Enter" /></p>
     </form>
     <form action="/signup">

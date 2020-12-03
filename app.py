@@ -20,45 +20,53 @@ app.secret_key = "this is an arbitrary string"
 
 
 ### index page route. ###
-## The main page of the website. Has: personal key input box, create new key button ##
+## The main page of the website. Has: personal user input box, create new user button ##
 @app.route('/')
 def index():
     session['loggedIn'] = False
-    session['key'] = ""
+    session['password'] = ""
     try:
         error = session.pop('error')
     except KeyError:
         error = ""
-    return render_template('index.html', error = error)
+    try:
+        user = session.pop('user')
+    except KeyError:
+        user = ""
+    
+    return render_template('index.html', error = error, user = user)
 
 
 ### _login helper route ###
-## This helper page is accessed when a personal key is entered from the index page. ##
-## It checks that the key is good and then redirects to the home page of the user ##
-## If the key is not good, the user is redirected back to the index page with an 'invalid key' message (TODO) ## 
+## This helper page is accessed when a personal user is entered from the index page. ##
+## It checks that the user is good and then redirects to the home page of the user ##
+## If the user is not good, the user is redirected back to the index page with an 'invalid user' message ## 
 @app.route('/_login', methods=['POST'])
 def _login():
-    key = request.form['key']
-    error = check_for_login_error(key)
+    user = request.form['user']
+    session['user'] = user
+    password = request.form['password']
+    hashPass = password #TODO make hash function
+    error = check_for_login_error(user, password)
     if error:
         session['error']=error
         return redirect(url_for('index'))
     else:
         session['loggedIn'] = True
-        session['key'] = key
+        session['password'] = password
         return redirect(url_for('home'))
             
 
 ### signup page route ###
-## Page for creating a new key. ##
-## Has: key repeatKey and name input boxes, pfp input (TODO), back button (TODO), signup button ## 
+## Page for creating a new user. ##
+## Has: user repeatuser and name input boxes, pfp input (TODO), back button (TODO), signup button ## 
 @app.route('/signup/')
 def signup():
     try:
-        error, name = session.pop('error'), session.pop('name')
+        error, user, name = session.pop('error'), session.pop('user'), session.pop('name')
     except KeyError:
-        error, name = "", ""
-    return render_template('signup.html', error = error, name = name)
+        error, user, name = "", "", ""
+    return render_template('signup.html', error = error, user = user, name = name)
 
 
 ### _signup helper route ###
@@ -66,24 +74,28 @@ def signup():
 ## It checks that the info is good, adds the info to the database, and redirects to the home page ##
 @app.route('/_signup', methods = ['POST'])
 def _signup():
-    key = request.form["key"]
-    keyRepeat = request.form["keyRepeat"]  
-    name = request.form["name"]  
+    user = request.form["user"]
+    password = request.form["password"]
+    hashPass = password ##TODO this needs to be hashed
+    passwordRepeat = request.form["passwordRepeat"]
+    name = request.form["name"] 
     games = json.dumps([])
     pastGames = json.dumps([])
     stats = json.dumps({"played": 0, "won": 0, "kills": 0})
-    error = check_for_signup_error(key, keyRepeat, name)
+    error = check_for_signup_error(user, password, passwordRepeat, name)
     if error:
         session['error']=error
+        session['user']=user
         session['name']=name
         return redirect(url_for('signup'))
     else:
         with sqlite3.connect("database.db") as con:  
             cur = con.cursor() 
-            cur.execute("INSERT into Players (key, name, games, pastGames, stats) values (?, ?, ?, ?, ?)", (key, name, games, pastGames, stats))   #creates new key
+            cur.execute("INSERT into Players (user, password, name, games, pastGames, stats) values (?, ?, ?, ?, ?, ?)", (user, hashPass, name, games, pastGames, stats))   #creates new user
             con.commit()
         session['loggedIn'] = True
-        session['key'] = key
+        session['user'] = user
+        session['password'] = password
         return redirect(url_for('home'))
    
 
@@ -93,25 +105,24 @@ def _signup():
 @app.route('/home')
 def home():
     if not verify_session_logged_in():
-        session['error'] = "please enter your key!"
+        session['error'] = "You cant access home page before logging in!"
         return redirect(url_for('index'))
-
 
     with sqlite3.connect("database.db") as con:  
         con.row_factory = sqlite3.Row  
         cur = con.cursor()  
 
-        cur.execute("SELECT * from Players WHERE key = ?", (session['key'], )) 
+        cur.execute("SELECT * from Players WHERE user = ?", (session['user'], )) 
         name = cur.fetchone()["name"]
-        cur.execute("SELECT * from Players WHERE key = ?", (session['key'], )) 
+        cur.execute("SELECT * from Players WHERE user = ?", (session['user'], )) 
         games = json.loads(cur.fetchone()["games"])
-    return render_template('home.html', name=name, games = games)
+    return render_template('home.html', name=name, user=session['user'], games = games)
 
 ### join page ###
 @app.route('/join/')
 def join():
     if not verify_session_logged_in():
-        session['error']="please enter your key!"
+        session['error']="You cant access join page before logging in!"
         return redirect(url_for('index'))
 
     try:
@@ -124,7 +135,7 @@ def join():
 @app.route('/_join/', methods = ['POST'])
 def _join():
     if not verify_session_logged_in():
-        session['error']="please enter your key!"
+        session['error']="You cant access _join page before logging in!"
         return redirect(url_for('index'))
 
     code = request.form['code']
@@ -137,18 +148,18 @@ def _join():
             con.row_factory = sqlite3.Row
             cur = con.cursor() 
             cur.execute("SELECT * from Games WHERE code = ? ", (code, ))
-            players = json.dumps(json.loads(cur.fetchone()["players"])+[session['key']]) #adds user to the player list of the game
+            players = json.dumps(json.loads(cur.fetchone()["players"])+[session['user']]) #adds user to the player list of the game
             cur.execute("UPDATE Games SET players = ? WHERE code = ? ", (players, code))
-            cur.execute("SELECT * from Players WHERE key = ? ", (session['key'], ))
+            cur.execute("SELECT * from Players WHERE user = ? ", (session['user'], ))
             games = json.dumps(json.loads(cur.fetchone()["games"])+[code]) #adds game to the games list of the user
-            cur.execute("UPDATE Players SET games = ? WHERE key = ? ", (games, session['key']))
+            cur.execute("UPDATE Players SET games = ? WHERE user = ? ", (games, session['user']))
         return redirect(url_for('game', code = code))
 
 ### create page ###
 @app.route('/create/')
 def create():
     if not verify_session_logged_in():
-        session['error']="please enter your key!"
+        session['error']="You cant access create page before logging in!"
         return redirect(url_for('index'))
     
     try:
@@ -163,15 +174,15 @@ def create():
 @app.route('/_create',  methods = ['POST'])
 def _create():
     if not verify_session_logged_in():
-        session['error']="please enter your key!"
+        session['error']="You cant access _create page before logging in!"
         return redirect(url_for('index'))
 
     code = request.form["code"]
-    name = request.form["name"]  
+    name = request.form["name"]
     settings = json.dumps({})
-    host = session['key']
+    host = session['user']
     started = 0
-    players = json.dumps([session['key']])
+    players = json.dumps([session['user']])
     alive = json.dumps([])
     purged = json.dumps([])
     targets = json.dumps({})
@@ -188,12 +199,12 @@ def _create():
             con.row_factory = sqlite3.Row
             cur = con.cursor() 
 
-            cur.execute("INSERT into Games (code, name, settings, host, started, players, alive, purged, targets) values (?, ?, ?, ?, ?, ?, ?, ?, ?)", (code, name, settings, host, started, players, alive, purged, targets))   #creates new key
+            cur.execute("INSERT into Games (code, name, settings, host, started, players, alive, purged, targets) values (?, ?, ?, ?, ?, ?, ?, ?, ?)", (code, name, settings, host, started, players, alive, purged, targets))   #creates new user
             con.commit()
 
-            cur.execute("SELECT * from Players WHERE key = ? ", (session['key'], ))
+            cur.execute("SELECT * from Players WHERE user = ? ", (session['user'], ))
             games = json.dumps(json.loads(cur.fetchone()["games"])+[code]) #adds game to the games list of the user
-            cur.execute("UPDATE Players SET games = ? WHERE key = ? ", (games, session['key']))
+            cur.execute("UPDATE Players SET games = ? WHERE user = ? ", (games, session['user']))
         return redirect(url_for('game', code = code))
 
 
@@ -204,10 +215,10 @@ def _create():
 @app.route('/game/<code>')
 def game(code):
     if not verify_session_logged_in():
-        session['error']="please enter your key!"
+        session['error']="You cant access game page before logging in!"
         return redirect(url_for('index'))
     
-    if not verify_user_in_game(session['key'], code):
+    if not verify_user_in_game(session['user'], code):
         return redirect(url_for('home'))
 
     try:
@@ -221,9 +232,9 @@ def game(code):
         cur = con.cursor()
         gameRow = cur.execute("SELECT * FROM Games WHERE code = ? ", (code, )).fetchone()
         data['code'] = code
-        data['key'] = session['key']
+        data['user'] = session['user']
         data['title'] = gameRow['name']
-        data['admin'] = (gameRow['host'] == session['key'])
+        data['admin'] = (gameRow['host'] == session['user'])
         data['started'] = gameRow['started']
         data['settings'] = gameRow['settings']
         data['host'] = gameRow['host']
@@ -232,9 +243,9 @@ def game(code):
         data['alive'] = json.loads(gameRow['alive'])
         data['purged'] = json.loads(gameRow['purged'])
         if gameRow['started']:
-            data['word'] = json.loads(gameRow['targets'])[session['key']]['word']
-            data['target'] = json.loads(gameRow['targets'])[session['key']]['target']
-        data['isAlive'] = session['key'] in gameRow['alive']
+            data['word'] = json.loads(gameRow['targets'])[session['user']]['word']
+            data['target'] = json.loads(gameRow['targets'])[session['user']]['target']
+        data['isAlive'] = session['user'] in gameRow['alive']
 
 
     return render_template('game.html', data = data, error=error)
@@ -244,7 +255,7 @@ def game(code):
 @app.route('/_start/<code>', methods = ['POST'])
 def _start(code):
     if not verify_session_logged_in():
-        session['error']="please enter your key!"
+        session['error']="You cant access _start page before logging in!"
         return redirect(url_for('index'))
 
     if not verify_host(code):
@@ -277,7 +288,7 @@ def _start(code):
 @app.route('/_cancel/<code>', methods = ['POST'])
 def _cancel(code):
     if not verify_session_logged_in():
-        session['error']="please enter your key!"
+        session['error']="You cant access _cancel page before logging in!"
         return redirect(url_for('index'))
 
     if not verify_host(code):
@@ -288,11 +299,11 @@ def _cancel(code):
         cur = con.cursor() 
         players = json.loads(cur.execute("SELECT * from Games WHERE code = ? ", (code, )).fetchone()['players'])
         for player in players: #delets the game from each players game list
-            cur.execute("SELECT * from Players WHERE key = ? ", (player, ))
+            cur.execute("SELECT * from Players WHERE user = ? ", (player, ))
             games = json.loads(cur.fetchone()["games"])
             games.remove(code) #removes game to the games list of the user
             games = json.dumps(games) 
-            cur.execute("UPDATE Players SET games = ? WHERE key = ? ", (games, player))
+            cur.execute("UPDATE Players SET games = ? WHERE user = ? ", (games, player))
 
         cur.execute("DELETE FROM Games WHERE code = ? ", (code, )) #deletes the game from the games database
     return redirect(url_for('home'))
@@ -300,29 +311,29 @@ def _cancel(code):
 
 ### _kick helper route removes a player from a game that hasn't started ###
 ## only possible by admin ##
-@app.route('/_kick/<code>/<key>', methods = ['POST'])
-def _kick(code, key):
+@app.route('/_kick/<code>/<user>', methods = ['POST'])
+def _kick(code, user):
 
     if not verify_session_logged_in():
-        session['error']="please enter your key!"
+        session['error']="You cant access _kick page before logging in!"
         return redirect(url_for('index'))
 
-    if not verify_host(code) or not verify_user_in_game(key, code) or key == session['key']:
-        session['error']="something is not right!"
+    if not verify_host(code) or not verify_user_in_game(user, code) or user == session['user']:
+        session['error']="something is not right! (_kick page error)"
         return redirect(url_for('index'))
 
     with sqlite3.connect("database.db") as con:  
         con.row_factory = sqlite3.Row
         cur = con.cursor() 
-        cur.execute("SELECT * from Players WHERE key = ? ", (key, ))
+        cur.execute("SELECT * from Players WHERE user = ? ", (user, ))
         games = json.loads(cur.fetchone()["games"])
         games.remove(code) #removes game from the games list of the user
         games = json.dumps(games) 
-        cur.execute("UPDATE Players SET games = ? WHERE key = ? ", (games, key))
+        cur.execute("UPDATE Players SET games = ? WHERE user = ? ", (games, user))
 
         cur.execute("SELECT * from Games WHERE code = ? ", (code, ))
         players = json.loads(cur.fetchone()["players"])
-        players.remove(key)  #removes key from the player list of the game
+        players.remove(user)  #removes user from the player list of the game
         players = json.dumps(players) 
         cur.execute("UPDATE Games SET players = ? WHERE code = ? ", (players, code))
     return redirect(url_for('game', code = code))
@@ -330,30 +341,30 @@ def _kick(code, key):
 @app.route('/_killed/<code>', methods = ['POST'])
 def _killed(code):
     if not verify_session_logged_in():
-        session['error']="please enter your key!"
+        session['error']="You cant access _killed page before logging in!"
         return redirect(url_for('index'))
     
     with sqlite3.connect("database.db") as con:  
         con.row_factory = sqlite3.Row
         cur = con.cursor() 
-        key = session['key']
+        user = session['user']
         row = cur.execute("SELECT * from Games WHERE code = ? ", (code, )).fetchone()
         alive = json.loads(row["alive"])
-        alive.remove(key)  #removes key from the alive list of the game
+        alive.remove(user)  #removes user from the alive list of the game
         alive = json.dumps(alive)
-        targets = json.dumps(edit_targets_on_kill(key, json.loads(row['targets'])))
+        targets = json.dumps(edit_targets_on_kill(user, json.loads(row['targets'])))
         cur.execute("UPDATE Games SET alive = ?, targets = ? WHERE code = ? ", (alive, targets, code))
     return redirect(url_for('game', code = code))
 
-
-@app.route('/_purge/<code>/<key>', methods = ['POST'])
-def _purge(code, key):
+### purge page for purging a player by game host ###
+@app.route('/_purge/<code>/<user>', methods = ['POST'])
+def _purge(code, user):
     if not verify_session_logged_in():
-        session['error']="please enter your key!"
+        session['error']="You cant access _purge page before logging in!"
         return redirect(url_for('index'))
 
-    if not verify_host(code) or not verify_user_in_game(key, code) or key == session['key']:
-        session['error']="something is not right!"
+    if not verify_host(code) or not verify_user_in_game(user, code) or user == session['user']:
+        session['error']="something is not right! (_purge)"
         return redirect(url_for('index'))
 
     with sqlite3.connect("database.db") as con:  
@@ -361,10 +372,10 @@ def _purge(code, key):
         cur = con.cursor()
         row = cur.execute("SELECT * from Games WHERE code = ? ", (code, )).fetchone()
         alive = json.loads(row["alive"])
-        alive.remove(key)  #removes key from the alive list of the game
+        alive.remove(user)  #removes user from the alive list of the game
         alive = json.dumps(alive)
-        purged = json.dumps(json.loads(row["purged"])+[key]) #adds user to the purged list of the game
-        targets = json.dumps(edit_targets_on_kill(key, json.loads(row['targets'])))
+        purged = json.dumps(json.loads(row["purged"])+[user]) #adds user to the purged list of the game
+        targets = json.dumps(edit_targets_on_kill(user, json.loads(row['targets'])))
         cur.execute("UPDATE Games SET alive = ?, targets = ?, purged = ? WHERE code = ? ", (alive, targets, purged, code))
 
     return redirect(url_for('game', code = code))
@@ -374,23 +385,25 @@ def _purge(code, key):
 
 ### verfier that a user is logged in on a page ###
 def verify_session_logged_in():
-    if not (session.get('loggedIn') and session.get('key')): #checks that loggedIn and key session variables exist
+    if not (session.get('loggedIn') and session.get('user') and session.get('password')): #checks that loggedIn and user session variables exist
         return False
-    with sqlite3.connect("database.db") as con:  #checks that the key is an actual user in the database
+    with sqlite3.connect("database.db") as con:  #checks that the user is an actual user in the database
         con.row_factory = sqlite3.Row
-        cur = con.cursor() 
-        if cur.execute("SELECT count(*) FROM Players WHERE key = ? ", (session['key'], )).fetchone()[0] == 0:
+        cur = con.cursor()
+        if cur.execute("SELECT count(*) FROM Players WHERE user = ? ", (session['user'], )).fetchone()[0] == 0: #checks that user exists 
+            return False
+        if cur.execute("SELECT * FROM Players WHERE user = ? ", (session['user'], )).fetchone()['password'] != session['password']: # checks that passwords match TODO: hashpass
             return False
     return session['loggedIn'] #makes sure logged in variable is set to true
 
 ### verifies that a user is an actual player in the game ###
-def verify_user_in_game(key, code):
+def verify_user_in_game(user, code):
     with sqlite3.connect("database.db") as con:  
         con.row_factory = sqlite3.Row
         cur = con.cursor() 
         if cur.execute("SELECT count(*) FROM Games WHERE code = ? ", (code, )).fetchone()[0] == 0:
             return False
-        return key in cur.execute("SELECT * FROM Games WHERE code = ? ", (code, )).fetchone()['players']
+        return user in cur.execute("SELECT * FROM Games WHERE code = ? ", (code, )).fetchone()['players']
 
 ## verifies that the session user is the host ##
 def verify_host(code):
@@ -399,32 +412,41 @@ def verify_host(code):
             cur = con.cursor() 
             if cur.execute("SELECT count(*) FROM Games WHERE code = ? ", (code, )).fetchone()[0] == 0:
                 return False
-            return session['key'] == cur.execute("SELECT * FROM Games WHERE code = ? ", (code, )).fetchone()['host']
+            return session['user'] == cur.execute("SELECT * FROM Games WHERE code = ? ", (code, )).fetchone()['host']
 
-### verifier that checks that a key is good to log in with. makes sure it's long and is in the database ###
+### verifier that checks that a user is good to log in with. makes sure it's long and is in the database ###
 ## returns an error message if there is an error. False if there is no error ##
-def check_for_login_error(key):
-    if len(key) < 5:
-        return "The key can't be less than 5 characters long"
+def check_for_login_error(user, password):
+    if len(user) < 5:
+        return "The username can't be less than 5 characters long"
+    if len(password) < 5:
+        return "The password can't be less than 5 characters long"
     with sqlite3.connect("database.db") as con:
         cur = con.cursor()
-        if cur.execute("SELECT count(*) FROM Players WHERE key= ? ", (key, )).fetchone()[0] == 0:
-            return "This key does not exist"
+        if cur.execute("SELECT count(*) FROM Players WHERE user= ? ", (user, )).fetchone()[0] == 0: #checks that username exsts
+            return "no such user exists"
+        if cur.execute("SELECT * FROM Players WHERE user = ? ", (session['user'], )).fetchone()['password'] != session['password']: # checks that passwords match TODO: hashpass
+            return "The username or password is wrong"
     return  False
         
-### verifier that checks that a key and name are good to sign up with. makes sure it's long and is in the database ###
+### verifier that checks that a username, password and name are good to sign up with. makes sure it's long and is in the database ###
 ## returns an error message if there is an error. False if there is no error ##
-def check_for_signup_error(key, keyRepeat, name):
-    if len(key) < 5:
-        return "The key can't be less than 5 characters long."
-    if key != keyRepeat:
-        return "The keys must match"
+def check_for_signup_error(user, password, passwordRepeat, name):
+    #TODO: check that the username only contains normal characters
+    if len(user) < 5:
+        return "The username can't be less than 5 characters long."
+    if len(user) > 20:
+        return "The username can't be more than 20 characters long."
+    if len(password) < 5:
+        return "The password can't be less than 5 characters long."
+    if password != passwordRepeat:
+        return "The passwords must match."
     if len(name.strip()) == 0:
         return "You must have a name!"
     with sqlite3.connect("database.db") as con:
         cur = con.cursor()
-        if cur.execute("SELECT count(*) FROM Players WHERE key= ? ", (key, )).fetchone()[0] > 0:
-            return "Oh no! Someone already took this key."
+        if cur.execute("SELECT count(*) FROM Players WHERE user= ? ", (user, )).fetchone()[0] > 0:
+            return "Oh no! Someone already took this username."
     return  False
 
 ### verifier that checks that a code is good to join with. makes sure it's an actual game and that the user is not already in the game ###
@@ -440,7 +462,7 @@ def check_for_join_error(code):
         row =  cur.execute("SELECT * FROM Games WHERE code = ? ", (code, )).fetchone()
         if row['started']:
             return "this game has already started"
-        if session['key'] in row['players']:
+        if session['user'] in row['players']:
             return "you are already in this game"
     return False
 
@@ -466,12 +488,12 @@ def check_for_start_error(code):
             return "You need at least 2 players to play!"
     return False
 
-### modifies the targets map after key is killed ###
-def edit_targets_on_kill(key, targets):
-    targets[targets[key]['assassin']]['word'], targets[key]['word'] = targets[key]['word'], targets[targets[key]['assassin']]['word'] #swaps words with the assassin
-    targets[targets[key]['assassin']]['target'] = targets[key]['target'] #changes assassin's target
-    targets[targets[key]['target']]['assassin'] = targets[key]['assassin'] #changes target's assassin
-    targets[key]['target'] = targets[key]['assassin'] #sets target to assassin
+### modifies the targets map after user is killed ###
+def edit_targets_on_kill(user, targets):
+    targets[targets[user]['assassin']]['word'], targets[user]['word'] = targets[user]['word'], targets[targets[user]['assassin']]['word'] #swaps words with the assassin
+    targets[targets[user]['assassin']]['target'] = targets[user]['target'] #changes assassin's target
+    targets[targets[user]['target']]['assassin'] = targets[user]['assassin'] #changes target's assassin
+    targets[user]['target'] = targets[user]['assassin'] #sets target to assassin
     return targets
 
 

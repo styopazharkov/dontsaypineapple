@@ -11,10 +11,11 @@ con = sqlite3.connect("database.db")
 print("Database opened successfully")
 
 ### Players table for storing information about each player ###
-## Format: int id, str key, str name, list<str> games, str pfpPath ## 
+## Format: int id, str user, str name, list<str> games, str pfpPath ## 
 con.execute("create table Players ( \
     id INTEGER PRIMARY KEY AUTOINCREMENT, \
-    key TEXT NOT NULL, \
+    user TEXT NOT NULL, \
+    password TEXT NOT NULL, \
     name TEXT NOT NULL, \
     games TEXT NOT NULL, \
     pastGames TEXT NOT NULL, \
