@@ -139,7 +139,6 @@ def _join():
             cur.execute("SELECT * from Games WHERE code = ? ", (code, ))
             players = json.dumps(json.loads(cur.fetchone()["players"])+[session['key']]) #adds user to the player list of the game
             cur.execute("UPDATE Games SET players = ? WHERE code = ? ", (players, code))
-
             cur.execute("SELECT * from Players WHERE key = ? ", (session['key'], ))
             games = json.dumps(json.loads(cur.fetchone()["games"])+[code]) #adds game to the games list of the user
             cur.execute("UPDATE Players SET games = ? WHERE key = ? ", (games, session['key']))
@@ -209,8 +208,12 @@ def game(code):
         return redirect(url_for('index'))
     
     if not verify_user_in_game(session['key'], code):
-        #(TODO) add error message
         return redirect(url_for('home'))
+
+    try:
+        error = session.pop('error')
+    except KeyError:
+        error = ""
 
     data={}
     with sqlite3.connect("database.db") as con:  
@@ -225,6 +228,7 @@ def game(code):
         data['settings'] = gameRow['settings']
         data['host'] = gameRow['host']
         data['players'] = json.loads(gameRow['players'])
+        data['numberOfPlayers'] = len(data['players'])
         data['alive'] = json.loads(gameRow['alive'])
         data['purged'] = json.loads(gameRow['purged'])
         if gameRow['started']:
@@ -233,7 +237,7 @@ def game(code):
         data['isAlive'] = session['key'] in gameRow['alive']
 
 
-    return render_template('game.html', data = data)
+    return render_template('game.html', data = data, error=error)
 
 ### _start helper route starts a game that isnt started ###
 ## only possible by host ##
@@ -245,6 +249,11 @@ def _start(code):
 
     if not verify_host(code):
         return redirect(url_for('home'))
+
+    error = check_for_start_error(code)
+    if error:
+        session['error'] = error
+        return redirect(url_for('game', code = code))
 
     with sqlite3.connect("database.db") as con:  
         con.row_factory = sqlite3.Row
@@ -317,7 +326,6 @@ def _kick(code, key):
         players = json.dumps(players) 
         cur.execute("UPDATE Games SET players = ? WHERE code = ? ", (players, code))
     return redirect(url_for('game', code = code))
-
     
 @app.route('/_killed/<code>', methods = ['POST'])
 def _killed(code):
@@ -448,6 +456,14 @@ def check_for_create_error(code, name):
         cur = con.cursor() 
         if cur.execute("SELECT count(*) FROM Games WHERE code = ? ", (code, )).fetchone()[0] > 0:
             return "a game with this code already exists"
+    return False
+
+def check_for_start_error(code):
+    with sqlite3.connect("database.db") as con:
+        con.row_factory = sqlite3.Row
+        cur = con.cursor()
+        if len(json.loads(cur.execute("SELECT * FROM Games WHERE code= ? ", (code, )).fetchone()["players"])) < 2:
+            return "You need at least 2 players to play!"
     return False
 
 ### modifies the targets map after key is killed ###

@@ -6,7 +6,9 @@
     <title>Word Assassins – {{data['key']}}</title>
 </head>
 <body>
-
+    {% if  error %}
+    <p style="color: red;">Error: {{error}}</p>
+    {% endif  %}
     <h2>{{data['title']}}</h2>
     <h6>({{data['code']}})</h6>
     <div class="settings">
@@ -41,9 +43,13 @@
     {% if not data['started'] %}
         <div class = "start">
             {% if data['admin'] %}
+                {% if data['numberOfPlayers'] > 1 %}
                 <form action="/_start/{{data['code']}}" method="post">
                     <input type="submit" value="Start Game">
                 </form>
+                {% else %}
+                    <button disabled type="button" >Need 2 players to Start Game</button>
+                {% endif %}
                 <form action="/_cancel/{{data['code']}}" method="post">
                     <input type="submit" value="Cancel Game">
                 </form>

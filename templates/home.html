@@ -8,9 +8,9 @@
 <body>
     <p>Hello, {{name}}</p>
     {% if  error %}
-    <p style="color: red;">Error: {{error}}</p>
+        <p style="color: red;">Error: {{error}}</p>
     {% endif  %}
-    <h4>Active Games:</h4>
+        <h4>Active Games:</h4>
     {% for game in games %}  
         <form action="/game/{{game}}" >
             <input type="submit" value="{{game}}">
