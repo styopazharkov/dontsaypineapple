@@ -212,17 +212,21 @@ def game(code):
         #(TODO) add error message
         return redirect(url_for('home'))
 
-    data={"code": code}
+    data={}
     with sqlite3.connect("database.db") as con:  
         con.row_factory = sqlite3.Row
         cur = con.cursor()
         gameRow = cur.execute("SELECT * FROM Games WHERE code = ? ", (code, )).fetchone()
+        data['code'] = code
+        data['key'] = session['key']
         data['title'] = gameRow['name']
         data['admin'] = (gameRow['host'] == session['key'])
         data['started'] = gameRow['started']
         data['settings'] = gameRow['settings']
         data['host'] = gameRow['host']
         data['players'] = json.loads(gameRow['players'])
+        data['alive'] = json.loads(gameRow['alive'])
+        data['purged'] = json.loads(gameRow['purged'])
         if gameRow['started']:
             data['word'] = json.loads(gameRow['targets'])[session['key']]['word']
             data['target'] = json.loads(gameRow['targets'])[session['key']]['target']

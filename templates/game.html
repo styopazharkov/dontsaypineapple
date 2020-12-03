@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Word Assassins</title>
+    <title>Word Assassins – {{data['key']}}</title>
 </head>
 <body>
 
@@ -23,7 +23,7 @@
                     <form action="/_kick/{{data['code']}}/{{player}}" method="post">
                         <input type="submit" value="kick">
                     </form>
-                {% else %}
+                {% elif player in data['alive'] %}
                     <form action="/_purge/{{data['code']}}/{{player}}" method="post">
                         <input type="submit" value="purge">
                     </form>
