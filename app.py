@@ -8,7 +8,7 @@
 ### The following code is the imported packages ###
 from flask import Flask, redirect, url_for, render_template, request, session, abort
 import sqlite3, json
-import numpy, math
+import checks, verifiers, maff
 
 
 ### The following code creates the app variable and assigns a secret key for the session dictionary ###
@@ -47,7 +47,7 @@ def _login():
     session['user'] = user
     password = request.form['password']
     hashPass = password #TODO make hash function
-    error = check_for_login_error(user, password)
+    error = checks.check_for_login_error(user, password)
     if error:
         session['error']=error
         return redirect(url_for('index'))
@@ -82,7 +82,7 @@ def _signup():
     games = json.dumps([])
     pastGames = json.dumps([])
     stats = json.dumps({"played": 0, "won": 0, "kills": 0})
-    error = check_for_signup_error(user, password, passwordRepeat, name)
+    error = checks.check_for_signup_error(user, password, passwordRepeat, name)
     if error:
         session['error']=error
         session['user']=user
@@ -104,7 +104,7 @@ def _signup():
 ## Has: (TODO) welcome, active games, past games, join new and create buttons, edit pf button, logout button ##
 @app.route('/home')
 def home():
-    if not verify_session_logged_in():
+    if not verifiers.verify_session_logged_in():
         session['error'] = "You cant access home page before logging in!"
         return redirect(url_for('index'))
 
@@ -121,7 +121,7 @@ def home():
 ### join page ###
 @app.route('/join/')
 def join():
-    if not verify_session_logged_in():
+    if not verifiers.verify_session_logged_in():
         session['error']="You cant access join page before logging in!"
         return redirect(url_for('index'))
 
@@ -134,12 +134,12 @@ def join():
 ### join helper route ###
 @app.route('/_join/', methods = ['POST'])
 def _join():
-    if not verify_session_logged_in():
+    if not verifiers.verify_session_logged_in():
         session['error']="You cant access _join page before logging in!"
         return redirect(url_for('index'))
 
     code = request.form['code']
-    error = check_for_join_error(code)
+    error = checks.check_for_join_error(code)
     if error:
         session['error'] = error
         return redirect(url_for('join'))
@@ -158,7 +158,7 @@ def _join():
 ### create page ###
 @app.route('/create/')
 def create():
-    if not verify_session_logged_in():
+    if not verifiers.verify_session_logged_in():
         session['error']="You cant access create page before logging in!"
         return redirect(url_for('index'))
     
@@ -173,7 +173,7 @@ def create():
 ## It checks that the info is good, adds the info to the database, and redirects to the game page ##
 @app.route('/_create',  methods = ['POST'])
 def _create():
-    if not verify_session_logged_in():
+    if not verifiers.verify_session_logged_in():
         session['error']="You cant access _create page before logging in!"
         return redirect(url_for('index'))
 
@@ -188,7 +188,7 @@ def _create():
     targets = json.dumps({})
     #winner is not set
 
-    error = check_for_create_error(code, name)
+    error = checks.check_for_create_error(code, name)
     if error:
         session['error'] = error
         session['code'] = code
@@ -214,11 +214,11 @@ def _create():
 ## If user is not host, has: list of players, leave game button, back button ##
 @app.route('/game/<code>')
 def game(code):
-    if not verify_session_logged_in():
+    if not verifiers.verify_session_logged_in():
         session['error']="You cant access game page before logging in!"
         return redirect(url_for('index'))
     
-    if not verify_user_in_game(session['user'], code):
+    if not verifiers.verify_user_in_game(session['user'], code):
         return redirect(url_for('home'))
 
     try:
@@ -254,14 +254,14 @@ def game(code):
 ## only possible by host ##
 @app.route('/_start/<code>', methods = ['POST'])
 def _start(code):
-    if not verify_session_logged_in():
+    if not verifiers.verify_session_logged_in():
         session['error']="You cant access _start page before logging in!"
         return redirect(url_for('index'))
 
-    if not verify_host(code):
+    if not verifiers.verify_host(code):
         return redirect(url_for('home'))
 
-    error = check_for_start_error(code)
+    error = checks.check_for_start_error(code)
     if error:
         session['error'] = error
         return redirect(url_for('game', code = code))
@@ -275,7 +275,7 @@ def _start(code):
         players = json.loads(row["players"])
         targets = {}
         n=len(players)
-        permutation = numpy.random.permutation(n)
+        permutation = maff.random_permutation(n)
         for i in range(n):
             #TODO implement words here
             targets[players[permutation[i]]] = {"word": "word"+str(i), "target": players[permutation[(i+1)%n]], "assassin": players[permutation[i-1]]}
@@ -287,11 +287,11 @@ def _start(code):
 ## only possible by host ##
 @app.route('/_cancel/<code>', methods = ['POST'])
 def _cancel(code):
-    if not verify_session_logged_in():
+    if not verifiers.verify_session_logged_in():
         session['error']="You cant access _cancel page before logging in!"
         return redirect(url_for('index'))
 
-    if not verify_host(code):
+    if not verifiers.verify_host(code):
         return redirect(url_for('home'))
     
     with sqlite3.connect("database.db") as con:  
@@ -314,11 +314,11 @@ def _cancel(code):
 @app.route('/_kick/<code>/<user>', methods = ['POST'])
 def _kick(code, user):
 
-    if not verify_session_logged_in():
+    if not verifiers.verify_session_logged_in():
         session['error']="You cant access _kick page before logging in!"
         return redirect(url_for('index'))
 
-    if not verify_host(code) or not verify_user_in_game(user, code) or user == session['user']:
+    if not verifiers.verify_host(code) or not verifiers.verify_user_in_game(user, code) or user == session['user']:
         session['error']="something is not right! (_kick page error)"
         return redirect(url_for('index'))
 
@@ -340,7 +340,7 @@ def _kick(code, user):
     
 @app.route('/_killed/<code>', methods = ['POST'])
 def _killed(code):
-    if not verify_session_logged_in():
+    if not verifiers.verify_session_logged_in():
         session['error']="You cant access _killed page before logging in!"
         return redirect(url_for('index'))
     
@@ -352,18 +352,18 @@ def _killed(code):
         alive = json.loads(row["alive"])
         alive.remove(user)  #removes user from the alive list of the game
         alive = json.dumps(alive)
-        targets = json.dumps(edit_targets_on_kill(user, json.loads(row['targets'])))
+        targets = json.dumps(maff.edit_targets_on_kill(user, json.loads(row['targets'])))
         cur.execute("UPDATE Games SET alive = ?, targets = ? WHERE code = ? ", (alive, targets, code))
     return redirect(url_for('game', code = code))
 
 ### purge page for purging a player by game host ###
 @app.route('/_purge/<code>/<user>', methods = ['POST'])
 def _purge(code, user):
-    if not verify_session_logged_in():
+    if not verifiers.verify_session_logged_in():
         session['error']="You cant access _purge page before logging in!"
         return redirect(url_for('index'))
 
-    if not verify_host(code) or not verify_user_in_game(user, code) or user == session['user']:
+    if not verifiers.verify_host(code) or not verifiers.verify_user_in_game(user, code) or user == session['user']:
         session['error']="something is not right! (_purge)"
         return redirect(url_for('index'))
 
@@ -375,126 +375,10 @@ def _purge(code, user):
         alive.remove(user)  #removes user from the alive list of the game
         alive = json.dumps(alive)
         purged = json.dumps(json.loads(row["purged"])+[user]) #adds user to the purged list of the game
-        targets = json.dumps(edit_targets_on_kill(user, json.loads(row['targets'])))
+        targets = json.dumps(maff.edit_targets_on_kill(user, json.loads(row['targets'])))
         cur.execute("UPDATE Games SET alive = ?, targets = ?, purged = ? WHERE code = ? ", (alive, targets, purged, code))
 
     return redirect(url_for('game', code = code))
-
-
-#### HELPER FUNCTIONS BELOW THIS LINE ####
-
-### verfier that a user is logged in on a page ###
-def verify_session_logged_in():
-    if not (session.get('loggedIn') and session.get('user') and session.get('password')): #checks that loggedIn and user session variables exist
-        return False
-    with sqlite3.connect("database.db") as con:  #checks that the user is an actual user in the database
-        con.row_factory = sqlite3.Row
-        cur = con.cursor()
-        if cur.execute("SELECT count(*) FROM Players WHERE user = ? ", (session['user'], )).fetchone()[0] == 0: #checks that user exists 
-            return False
-        if cur.execute("SELECT * FROM Players WHERE user = ? ", (session['user'], )).fetchone()['password'] != session['password']: # checks that passwords match TODO: hashpass
-            return False
-    return session['loggedIn'] #makes sure logged in variable is set to true
-
-### verifies that a user is an actual player in the game ###
-def verify_user_in_game(user, code):
-    with sqlite3.connect("database.db") as con:  
-        con.row_factory = sqlite3.Row
-        cur = con.cursor() 
-        if cur.execute("SELECT count(*) FROM Games WHERE code = ? ", (code, )).fetchone()[0] == 0:
-            return False
-        return user in cur.execute("SELECT * FROM Games WHERE code = ? ", (code, )).fetchone()['players']
-
-## verifies that the session user is the host ##
-def verify_host(code):
-        with sqlite3.connect("database.db") as con:  
-            con.row_factory = sqlite3.Row
-            cur = con.cursor() 
-            if cur.execute("SELECT count(*) FROM Games WHERE code = ? ", (code, )).fetchone()[0] == 0:
-                return False
-            return session['user'] == cur.execute("SELECT * FROM Games WHERE code = ? ", (code, )).fetchone()['host']
-
-### verifier that checks that a user is good to log in with. makes sure it's long and is in the database ###
-## returns an error message if there is an error. False if there is no error ##
-def check_for_login_error(user, password):
-    if len(user) < 5:
-        return "The username can't be less than 5 characters long"
-    if len(password) < 5:
-        return "The password can't be less than 5 characters long"
-    with sqlite3.connect("database.db") as con:
-        cur = con.cursor()
-        if cur.execute("SELECT count(*) FROM Players WHERE user= ? ", (user, )).fetchone()[0] == 0: #checks that username exsts
-            return "no such user exists"
-        if cur.execute("SELECT * FROM Players WHERE user = ? ", (session['user'], )).fetchone()['password'] != session['password']: # checks that passwords match TODO: hashpass
-            return "The username or password is wrong"
-    return  False
-        
-### verifier that checks that a username, password and name are good to sign up with. makes sure it's long and is in the database ###
-## returns an error message if there is an error. False if there is no error ##
-def check_for_signup_error(user, password, passwordRepeat, name):
-    #TODO: check that the username only contains normal characters
-    if len(user) < 5:
-        return "The username can't be less than 5 characters long."
-    if len(user) > 20:
-        return "The username can't be more than 20 characters long."
-    if len(password) < 5:
-        return "The password can't be less than 5 characters long."
-    if password != passwordRepeat:
-        return "The passwords must match."
-    if len(name.strip()) == 0:
-        return "You must have a name!"
-    with sqlite3.connect("database.db") as con:
-        cur = con.cursor()
-        if cur.execute("SELECT count(*) FROM Players WHERE user= ? ", (user, )).fetchone()[0] > 0:
-            return "Oh no! Someone already took this username."
-    return  False
-
-### verifier that checks that a code is good to join with. makes sure it's an actual game and that the user is not already in the game ###
-## returns an error message if there is an error. False if there is no error ##
-def check_for_join_error(code):
-    if not code:
-        return "please enter a game code"
-    with sqlite3.connect("database.db") as con:  
-        con.row_factory = sqlite3.Row
-        cur = con.cursor() 
-        if cur.execute("SELECT count(*) FROM Games WHERE code = ? ", (code, )).fetchone()[0] == 0:
-            return "no such game exists" 
-        row =  cur.execute("SELECT * FROM Games WHERE code = ? ", (code, )).fetchone()
-        if row['started']:
-            return "this game has already started"
-        if session['user'] in row['players']:
-            return "you are already in this game"
-    return False
-
-### verifier that checks that a code and name are good to c with. makes sure code is long enough, name is non empty, and that the game doesnt already exist ###
-## returns an error message if there is an error. False if there is no error ##
-def check_for_create_error(code, name):
-    if len(code)<5:
-        return "game code must be at least 5 characters long"
-    if len(name.strip())==0:
-        return "your game must have a name"
-    with sqlite3.connect("database.db") as con:  
-        con.row_factory = sqlite3.Row
-        cur = con.cursor() 
-        if cur.execute("SELECT count(*) FROM Games WHERE code = ? ", (code, )).fetchone()[0] > 0:
-            return "a game with this code already exists"
-    return False
-
-def check_for_start_error(code):
-    with sqlite3.connect("database.db") as con:
-        con.row_factory = sqlite3.Row
-        cur = con.cursor()
-        if len(json.loads(cur.execute("SELECT * FROM Games WHERE code= ? ", (code, )).fetchone()["players"])) < 2:
-            return "You need at least 2 players to play!"
-    return False
-
-### modifies the targets map after user is killed ###
-def edit_targets_on_kill(user, targets):
-    targets[targets[user]['assassin']]['word'], targets[user]['word'] = targets[user]['word'], targets[targets[user]['assassin']]['word'] #swaps words with the assassin
-    targets[targets[user]['assassin']]['target'] = targets[user]['target'] #changes assassin's target
-    targets[targets[user]['target']]['assassin'] = targets[user]['assassin'] #changes target's assassin
-    targets[user]['target'] = targets[user]['assassin'] #sets target to assassin
-    return targets
 
 
 #### DEBUG CODE BELOW THIS LINE ####
