@@ -48,6 +48,10 @@
             <form action="/_killed/{{data['code']}}" method="post">
                 <input type="submit" value="I was killed">
             </form>
+        {% else %}
+            <div class = "word">
+                <p>{{data['target']}} killed you with {{data['word']}}</p>
+            </div>
         {% endif %}
     {% endif %}
 
