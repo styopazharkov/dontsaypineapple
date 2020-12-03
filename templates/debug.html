@@ -67,7 +67,8 @@
                 <td>Name</td> 
                 <td>Host</td>
                 <td>Players</td>
-                <td>Winner</td>
+                <td>Survival Winner</td>
+                <td>Kill Winners</td>
                 </thead>  
                 {% for row in  pastRows %}  
                 <tr>  
@@ -76,7 +77,8 @@
                 <td>{{row["name"]}}</td>  
                 <td>{{row["host"]}}</td>  
                 <td>{{row["players"]}}</td>  
-                <td>{{row["winner"]}}</td>  
+                <td>{{row["suvivalWinner"]}}</td> 
+                <td>{{row["killWinners"]}}</td>
                 </tr>  
                 {% endfor %}   
                 </table> 

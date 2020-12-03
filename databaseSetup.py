@@ -39,13 +39,14 @@ con.execute("create table Games ( \
     targets TEXT NOT NULL)") 
 print("Games table created successfully") 
 
-con.execute("create table pastGames ( \
+con.execute("create table PastGames ( \
     id INTEGER PRIMARY KEY AUTOINCREMENT, \
     code TEXT NOT NULL, \
     name TEXT NOT NULL,\
     host TEXT NOT NULL, \
     players TEXT NOT NULL, \
-    winner TEXT)") 
-print("pastGames table created successfully")
+    survivalWinner TEXT NOT NULL, \
+    killWinners TEXT NOT NULL)") 
+print("PastGames table created successfully")
 
 con.close()  

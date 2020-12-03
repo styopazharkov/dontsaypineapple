@@ -75,3 +75,14 @@ def check_for_start_error(code):
         if len(json.loads(cur.execute("SELECT * FROM Games WHERE code= ? ", (code, )).fetchone()["players"])) < 2:
             return "You need at least 2 players to play!"
     return False
+
+
+### verifies that a user is an actual player in the game ###
+def check_if_game_complete(code):
+    with sqlite3.connect("database.db") as con:  
+        cur = con.cursor() 
+        if cur.execute("SELECT count(*) FROM Games WHERE code = ? ", (code, )).fetchone()[0] > 0:
+            return "active"
+        if cur.execute("SELECT count(*) FROM PastGames WHERE code = ? ", (code, )).fetchone()[0] > 0:
+            return "past"
+    return False

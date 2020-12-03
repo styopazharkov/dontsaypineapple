@@ -11,4 +11,4 @@ def edit_targets_on_kill(user, targets):
 #returns a random permutation of the numbers 0 through n-1
 def random_permutation(n):
     return numpy.random.permutation(n)
-    #TODO: implement this function
+    #TODO: implement this function without using numpy

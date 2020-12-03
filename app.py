@@ -18,7 +18,6 @@ app.secret_key = "this is an arbitrary string"
 
 #### PAGE ROUTING BELOW THIS LINE ####
 
-
 ### index page route. ###
 ## The main page of the website. Has: personal user input box, create new user button ##
 @app.route('/')
@@ -35,7 +34,6 @@ def index():
         user = ""
     
     return render_template('index.html', error = error, user = user)
-
 
 ### _login helper route ###
 ## This helper page is accessed when a personal user is entered from the index page. ##
@@ -56,7 +54,6 @@ def _login():
         session['password'] = password
         return redirect(url_for('home'))
             
-
 ### signup page route ###
 ## Page for creating a new user. ##
 ## Has: user repeatuser and name input boxes, pfp input (TODO), back button (TODO), signup button ## 
@@ -67,7 +64,6 @@ def signup():
     except KeyError:
         error, user, name = "", "", ""
     return render_template('signup.html', error = error, user = user, name = name)
-
 
 ### _signup helper route ###
 ## This helper page is accessed when info is entered from the signup page. ##
@@ -81,7 +77,7 @@ def _signup():
     name = request.form["name"] 
     games = json.dumps([])
     pastGames = json.dumps([])
-    stats = json.dumps({"played": 0, "won": 0, "kills": 0})
+    stats = json.dumps({"played": 0, "survivalWins": 0, "killWins": 0, "kills": 0})
     error = checks.check_for_signup_error(user, password, passwordRepeat, name)
     if error:
         session['error']=error
@@ -97,8 +93,6 @@ def _signup():
         session['user'] = user
         session['password'] = password
         return redirect(url_for('home'))
-   
-
 ### home page route ###
 ## Home page of a specific user ##
 ## Has: (TODO) welcome, active games, past games, join new and create buttons, edit pf button, logout button ##
@@ -207,7 +201,6 @@ def _create():
             cur.execute("UPDATE Players SET games = ? WHERE user = ? ", (games, session['user']))
         return redirect(url_for('game', code = code))
 
-
 ### game page route ###
 ## Page for viewing a specific game. Accessible from home page ##
 ## If user is the host, has: list of players, start button, kick button, back button ##
@@ -218,9 +211,22 @@ def game(code):
         session['error']="You cant access game page before logging in!"
         return redirect(url_for('index'))
     
-    if not verifiers.verify_user_in_game(session['user'], code):
+    completeness = checks.check_if_game_complete(code)
+    if completeness == "active":
+        return activeGame(code)
+    elif completeness == "past":
+        return pastGame(code)
+    else:
         return redirect(url_for('home'))
 
+def pastGame(code):
+    data={}
+    return render_template('pastGame.html', data = data)
+
+def activeGame(code):
+    if not verifiers.verify_user_in_game(session['user'], code):
+        return redirect(url_for('home'))
+    
     try:
         error = session.pop('error')
     except KeyError:
@@ -247,9 +253,7 @@ def game(code):
             data['target'] = json.loads(gameRow['targets'])[session['user']]['target']
         data['isAlive'] = session['user'] in gameRow['alive']
 
-
     return render_template('game.html', data = data, error=error)
-
 ### _start helper route starts a game that isnt started ###
 ## only possible by host ##
 @app.route('/_start/<code>', methods = ['POST'])
@@ -381,7 +385,7 @@ def _purge(code, user):
     return redirect(url_for('game', code = code))
 
 
-#### DEBUG CODE BELOW THIS LINE ####
+#### DEBUG ROUTING BELOW THIS LINE ####
 
 ### debugging page with database tables ###
 @app.route('/debug/')
