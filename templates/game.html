@@ -18,8 +18,10 @@
         <h4>Players:</h4>   
         {% for player in data['players'] %}
             <p>{{player}}</p>
-            {% if data['admin'] %}
-                <button type="submit"> kick  </button>
+            {% if data['admin'] and not data['started'] and player != data['host'] %}
+                <form action="/_kick/{{data['code']}}/{{player}}" method="post">
+                    <input type="submit" value="kick">
+                </form>
             {% endif %}
         {% endfor %}
     </div>

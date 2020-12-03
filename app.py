@@ -8,7 +8,7 @@
 ### The following code is the imported packages ###
 from flask import Flask, redirect, url_for, render_template, request, session, abort
 import sqlite3, json
-import numpy
+import numpy, math
 
 
 ### The following code creates the app variable and assigns a secret key for the session dictionary ###
@@ -208,7 +208,7 @@ def game(code):
         session['error']="please enter your key!"
         return redirect(url_for('index'))
     
-    if not verify_user_in_game(code):
+    if not verify_user_in_game(session['key'], code):
         #(TODO) add error message
         return redirect(url_for('home'))
 
@@ -221,6 +221,7 @@ def game(code):
         data['admin'] = (gameRow['host'] == session['key'])
         data['started'] = gameRow['started']
         data['settings'] = gameRow['settings']
+        data['host'] = gameRow['host']
         data['players'] = json.loads(gameRow['players'])
         if gameRow['started']:
             data['word'] = json.loads(gameRow['targets'])[session['key']][0]
@@ -282,12 +283,44 @@ def _cancel(code):
         cur.execute("DELETE FROM Games WHERE code = ? ", (code, )) #deletes the game from the games database
     return redirect(url_for('home'))
 
+
+### _kick helper route removes a player from a game that hasn't started ###
+## only possible by admin ##
+@app.route('/_kick/<code>/<key>', methods = ['POST'])
+def _kick(code, key):
+
+    if not verify_session_logged_in():
+        session['error']="please enter your key!"
+        return redirect(url_for('index'))
+
+    if not verify_host(code) or not verify_user_in_game(key, code) or key == session['key']:
+        session['error']="something is not right!"
+        return redirect(url_for('index'))
+
+    with sqlite3.connect("database.db") as con:  
+        con.row_factory = sqlite3.Row
+        cur = con.cursor() 
+        cur.execute("SELECT * from Players WHERE key = ? ", (key, ))
+        games = json.loads(cur.fetchone()["games"])
+        games.remove(code) #removes game from the games list of the user
+        games = json.dumps(games) 
+        cur.execute("UPDATE Players SET games = ? WHERE key = ? ", (games, key))
+
+        cur.execute("SELECT * from Games WHERE code = ? ", (code, ))
+        players = json.loads(cur.fetchone()["players"])
+        players.remove(key)  #removes key from the player list of the game
+        players = json.dumps(players) 
+        cur.execute("UPDATE Games SET players = ? WHERE code = ? ", (players, code))
+    return redirect(url_for('game', code = code))
+
+    
 @app.route('/_killed/<code>', methods = ['POST'])
 def _killed(code):
     return redirect(url_for('game', code = code))
 
-@app.route('/_kick/<code>/<key>', methods = ['POST'])
-def _kick(code, key):
+
+@app.route('/_purge/<code>/<key>', methods = ['POST'])
+def _purge(code, key):
     return redirect(url_for('game', code = code))
 
 
@@ -305,14 +338,15 @@ def verify_session_logged_in():
     return session['loggedIn'] #makes sure logged in variable is set to true
 
 ### verifies that a user is an actual player in the game ###
-def verify_user_in_game(code):
+def verify_user_in_game(key, code):
     with sqlite3.connect("database.db") as con:  
         con.row_factory = sqlite3.Row
         cur = con.cursor() 
         if cur.execute("SELECT count(*) FROM Games WHERE code = ? ", (code, )).fetchone()[0] == 0:
             return False
-        return session['key'] in cur.execute("SELECT * FROM Games WHERE code = ? ", (code, )).fetchone()['players']
+        return key in cur.execute("SELECT * FROM Games WHERE code = ? ", (code, )).fetchone()['players']
 
+## verifies that the session user is the host ##
 def verify_host(code):
         with sqlite3.connect("database.db") as con:  
             con.row_factory = sqlite3.Row
