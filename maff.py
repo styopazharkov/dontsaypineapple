@@ -1,4 +1,4 @@
-import math, numpy
+import numpy, random
 
 ### modifies the targets map after user is killed ###
 def edit_targets_on_kill(user, targets):
@@ -22,5 +22,20 @@ def create_killWinners(players, killCount):
 
 ### returns a random permutation of the numbers 0 through n-1 ###
 def random_permutation(n):
-    return numpy.random.permutation(n)
-    #TODO: implement this function without using numpy
+    ordered = []
+    for i in range(0, n):
+        ordered.append(i)
+    shuffled = []
+    while len(ordered) > 0:
+        shuffled.append(ordered.pop(random.randint(0, len(ordered) - 1)))
+    return shuffled
+    
+
+### Same as random_permutation, but simpler ###
+def random_permutation_two(n):
+    ordered = []
+    for i in range(0, n):
+        ordered.append(i)
+    random.shuffle(ordered)
+    return ordered
+ 
