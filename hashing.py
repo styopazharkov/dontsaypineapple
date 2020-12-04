@@ -1,3 +1,4 @@
+#### This file contains the hashing helper functions ####
 import hashlib, binascii, os
  
 ### Hash a password for storing. ###

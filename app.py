@@ -46,8 +46,6 @@ def _login():
     session['user'] = user
     password = request.form['password']
     hashPass = hashing.hashpass(password)
-    print(password)
-    print(hashPass)
     error = checks.check_for_login_error(user, password)
     if error:
         session['error']=error
@@ -59,7 +57,7 @@ def _login():
             
 ### signup page route ###
 ## Page for creating a new user. ##
-## Has: user repeatuser and name input boxes, pfp input (TODO), back button (TODO), signup button ## 
+## Has: user repeatuser and name input boxes, back button (TODO), signup button ## 
 @app.route('/signup/')
 def signup():
     try:
@@ -174,9 +172,11 @@ def _create():
         session['error']="You cant access _create page before logging in!"
         return redirect(url_for('index'))
 
-    code = request.form["code"]
-    name = request.form["name"]
-    settings = json.dumps({'difficulty': 'debug'})
+    code = request.form['code']
+    name = request.form['name']
+    settings = {}
+    settings['difficulty'] = request.form['difficulty']
+    settings = json.dumps(settings)
     host = session['user']
     started = 0
     players = json.dumps([session['user']])
@@ -187,7 +187,7 @@ def _create():
     killLog = json.dumps([])
     #winner is not set
 
-    error = checks.check_for_create_error(code, name)
+    error = checks.check_for_create_error(code, name, settings)
     if error:
         session['error'] = error
         session['code'] = code

@@ -1,3 +1,4 @@
+#### This file contains verifier helper functions. They all return a boolean value ####
 from flask import  session
 import sqlite3, json
 import hashing

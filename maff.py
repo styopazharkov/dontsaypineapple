@@ -1,4 +1,5 @@
-import random
+#### This file contains helper functions that are computational and do not require many external packages ####
+import random, os
 
 ### modifies the targets map after user is killed ###
 def edit_targets_on_kill(user, targets):
@@ -41,8 +42,8 @@ def random_permutation_two(n):
  
 ### returns a random word out of the word bank (according to the settings) ###
 def get_word(settings):
-    if settings['difficulty'] == "debug":
-        return "foo"+str(random.randint(10000,100000))
-    else:
-        return "This shouldn't run"
-    #TODO: implement this function
+    basedir = os.path.abspath(os.path.dirname(__file__))
+    fname = os.path.join(basedir, 'static/words/'+settings['difficulty']+'.txt')
+    with open(fname, "r") as file:
+        lines = file.read().splitlines()
+    return random.choice(lines)

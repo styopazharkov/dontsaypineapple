@@ -12,7 +12,9 @@
     <form action="/_create" method="POST">
         <p><input type = "text" name = "name" placeholder="Enter a game name" value="{{name}}"/></p>
         <p><input type = "text" name = "code" placeholder="Enter a game code" value="{{code}}"/></p>
-        <p><input type = "submit" value = "Create" /></p>
+        <input type="radio" id="debug" name="difficulty" value="debug">
+        <label for="debug">Debug</label>
+        <input type = "submit" value = "Create" />
     </form>
 </body>
 </html>

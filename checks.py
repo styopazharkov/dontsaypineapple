@@ -1,3 +1,4 @@
+#### This file contains checking helper functions. They return either a message or False ####
 from flask import  session
 import sqlite3, json
 import hashing
@@ -57,7 +58,8 @@ def check_for_join_error(code):
 
 ### verifier that checks that a code and name are good to c with. makes sure code is long enough, name is non empty, and that the game doesnt already exist ###
 ## returns an error message if there is an error. False if there is no error ##
-def check_for_create_error(code, name):
+def check_for_create_error(code, name, settings):
+    #TODO: check for valid settings
     if len(code)<5:
         return "game code must be at least 5 characters long"
     if len(name.strip())==0:
