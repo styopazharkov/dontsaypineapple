@@ -176,7 +176,7 @@ def _create():
 
     code = request.form["code"]
     name = request.form["name"]
-    settings = json.dumps({})
+    settings = json.dumps({'difficulty': 'debug'})
     host = session['user']
     started = 0
     players = json.dumps([session['user']])
@@ -295,12 +295,13 @@ def _start(code):
         started = 1
         alive = row['players']
         players = json.loads(row["players"])
+        settings = json.loads(row['settings'])
         targets = {}
         n=len(players)
         permutation = maff.random_permutation(n)
         for i in range(n):
             #TODO implement words here
-            targets[players[permutation[i]]] = {"word": "word"+str(i), "target": players[permutation[(i+1)%n]], "assassin": players[permutation[i-1]]}
+            targets[players[permutation[i]]] = {"word": maff.get_word(settings), "target": players[permutation[(i+1)%n]], "assassin": players[permutation[i-1]]}
         targets = json.dumps(targets)
         killCount={}
         for player in players:
@@ -422,6 +423,7 @@ def _purge(code, user):
         else:
             players = json.loads(row['players'])
             survivalWinner = alive[0]
+            killCount = json.loads(row['killCount'])
             killWinners = maff.create_killWinners(players, killCount)
             distribute_kills_and_wins(cur, players, killCount, survivalWinner, killWinners)
             players, killWinners, killLog = json.dumps(players), json.dumps(killWinners), json.dumps(killLog)

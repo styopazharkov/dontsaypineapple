@@ -39,3 +39,10 @@ def random_permutation_two(n):
     random.shuffle(ordered)
     return ordered
  
+### returns a random word out of the word bank (according to the settings) ###
+def get_word(settings):
+    if settings['difficulty'] == "debug":
+        return "foo"+str(random.randint(10000,100000))
+    else:
+        return "This shouldn't run"
+    #TODO: implement this function
