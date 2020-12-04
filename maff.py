@@ -1,4 +1,4 @@
-import numpy, random
+import random
 
 ### modifies the targets map after user is killed ###
 def edit_targets_on_kill(user, targets):
