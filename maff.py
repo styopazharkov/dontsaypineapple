@@ -8,7 +8,7 @@ def edit_targets_on_kill(user, targets):
     targets[user]['target'] = targets[user]['assassin'] #sets target to assassin
     return targets
 
-### generates the killWinners list for a game that is just completed ###
+### generates the killWinners list for a game that has just completed ###
 def create_killWinners(players, killCount):
     killWinners = []
     _max_kill_count = 0

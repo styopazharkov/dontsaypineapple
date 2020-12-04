@@ -9,6 +9,7 @@
 from flask import Flask, redirect, url_for, render_template, request, session, abort
 import sqlite3, json
 import checks, verifiers, maff
+import hashing
 
 
 ### The following code creates the app variable and assigns a secret key for the session dictionary ###
@@ -44,7 +45,9 @@ def _login():
     user = request.form['user']
     session['user'] = user
     password = request.form['password']
-    hashPass = password #TODO make hash function
+    hashPass = hashing.hashpass(password)
+    print(password)
+    print(hashPass)
     error = checks.check_for_login_error(user, password)
     if error:
         session['error']=error
@@ -72,7 +75,7 @@ def signup():
 def _signup():
     user = request.form["user"]
     password = request.form["password"]
-    hashPass = password ##TODO this needs to be hashed
+    hashPass = hashing.hashpass(password) ##TODO this needs to be hashed
     passwordRepeat = request.form["passwordRepeat"]
     name = request.form["name"] 
     games = json.dumps([])
@@ -385,6 +388,7 @@ def _killed(code):
             players = json.loads(row['players'])
             survivalWinner = alive[0]
             killWinners = maff.create_killWinners(players, killCount)
+            distribute_kills_and_wins(cur, players, killCount, survivalWinner, killWinners)
             players, killWinners, killLog = json.dumps(players), json.dumps(killWinners), json.dumps(killLog)
             cur.execute("INSERT into PastGames (code, name, settings, host, players, survivalWinner, killWinners, killLog) values (?, ?, ?, ?, ?, ?, ?, ?)",  (code, row['name'], row['settings'], row['host'], players, survivalWinner, killWinners, killLog))   #adds to pastgames
             con.commit()
@@ -419,11 +423,23 @@ def _purge(code, user):
             players = json.loads(row['players'])
             survivalWinner = alive[0]
             killWinners = maff.create_killWinners(players, killCount)
+            distribute_kills_and_wins(cur, players, killCount, survivalWinner, killWinners)
             players, killWinners, killLog = json.dumps(players), json.dumps(killWinners), json.dumps(killLog)
             cur.execute("INSERT into PastGames (code, name, settings, host, players, survivalWinner, killWinners, killLog) values (?, ?, ?, ?, ?, ?, ?, ?)",  (code, row['name'], row['settings'], row['host'], players, survivalWinner, killWinners, killLog))   #adds to pastgames
             con.commit()
             cur.execute("DELETE FROM Games WHERE code = ? ", (code, )) #deletes from games
     return redirect(url_for('game', code = code))
+
+def distribute_kills_and_wins(cur, players, killCount, survivalWinner, killWinners):
+    for player in players:
+        stats = json.loads(cur.execute("SELECT * from Players WHERE user = ? ", (player, )).fetchone()["stats"])
+        stats["played"] += 1
+        stats["kills"] += killCount[player]
+        stats["survivalWins"] += int(player == survivalWinner)
+        stats["killWins"] += (int(player in killWinners)/len(killWinners))
+        stats=json.dumps(stats)
+        cur.execute("UPDATE Players SET stats = ? WHERE user = ? ", (stats, player))
+
 
 
 #### DEBUG ROUTING BELOW THIS LINE ####

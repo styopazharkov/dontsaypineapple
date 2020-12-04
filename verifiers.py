@@ -1,5 +1,6 @@
 from flask import  session
 import sqlite3, json
+import hashing
 
 ### verfier that a user is logged in on a page ###
 def verify_session_logged_in():
@@ -10,7 +11,7 @@ def verify_session_logged_in():
         cur = con.cursor()
         if cur.execute("SELECT count(*) FROM Players WHERE user = ? ", (session['user'], )).fetchone()[0] == 0: #checks that user exists 
             return False
-        if cur.execute("SELECT * FROM Players WHERE user = ? ", (session['user'], )).fetchone()['password'] != session['password']: # checks that passwords match TODO: hashpass
+        if not hashing.verify(session['password'], cur.execute("SELECT * FROM Players WHERE user = ? ", (session['user'], )).fetchone()['password']) : # checks that passwords match TODO: hashpass
             return False
     return session['loggedIn'] #makes sure logged in variable is set to true
 
