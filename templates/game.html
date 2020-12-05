@@ -68,7 +68,7 @@
             </form>
         {% else %}
             <div class = "word">
-                {% if data['uesr'] in data['purged'] %}
+                {% if data['user'] in data['purged'] %}
                     <p>you were purged for {{data['target']}} by host.</p>
                 {% else %}
                     <p>{{data['target']}} killed you with {{data['word']}}</p>
