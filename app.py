@@ -115,7 +115,7 @@ def home():
                 data['activeGames'].append(get_active_button_info(game))
             else:
                 data['pastGames'].append(get_past_button_info(game))
-        data['stats'] = row['stats']
+        data['stats'] = json.loads(row['stats'])
     return render_template('home.html', data=data)
 
 def get_active_button_info(game):

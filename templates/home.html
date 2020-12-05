@@ -19,6 +19,11 @@
     <div class="status">
     </div>
 
+    <div class="stats">
+        <h4>Stats:</h4>
+        <p>You have {{data['stats']['kills']}} kills, {{data['stats']['killWins']}} kill wins, and {{data['stats']['survivalWins']}} survival wins over {{data['stats']['played']}} games.</p>
+    </div>
+
     <div class="active">
         <h4>Active Games:</h4>
         {% for game in data['activeGames'] %}
