@@ -3,18 +3,18 @@ from flask import  session
 import sqlite3, json
 import hashing
 
-### verifier that checks that a user is good to log in with. makes sure it's long and is in the database ###
+### verifier that checks that a username and password is good to log in with. Makes sure they're non-empty and are in the database ###
 ## returns an error message if there is an error. False if there is no error ##
 def check_for_login_error(user, password):
-    if len(user) < 5:
-        return "The username can't be less than 5 characters long"
-    if len(password) < 5:
-        return "The password can't be less than 5 characters long"
+    if len(user) == 0:
+        return "You must have a username"
+    if len(password) == 0:
+        return "You must have a password."
     with sqlite3.connect("database.db") as con:
         con.row_factory = sqlite3.Row
         cur = con.cursor()
         if cur.execute("SELECT count(*) FROM Players WHERE user= ? ", (user, )).fetchone()[0] == 0: #checks that username exsts
-            return "no such user exists"
+            return "No such user exists"
         if not hashing.verify(password, cur.execute("SELECT * FROM Players WHERE user = ? ", (session['user'], )).fetchone()['password']): # checks that passwords match
             return "The username or password is wrong"
     return  False

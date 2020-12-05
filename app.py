@@ -191,23 +191,14 @@ def _create():
         session['error']="You cant access _create page before logging in!"
         return redirect(url_for('index'))
 
-    try:
-        code = request.form['code']
-    except KeyError:
-        code = ""
-    try:
-        name = request.form['name']
-    except KeyError:
-        name = ""
     settings = {}
-    try:
+    try: #tries to get info
+        code = request.form['code']
+        name = request.form['name']
         settings['difficulty'] = request.form['difficulty']
-    except KeyError:
-        settings['difficulty'] = ""
-    try:
         settings['passon'] = request.form['passon']
-    except KeyError:
-        settings['passon'] = ""
+    except KeyError: #this only runs is someone messes with the html
+        code, name, settings['difficulty'], settings['passon'] = "", "", "", ""
 
     error = checks.check_for_create_error(code, name, settings)
     if error:
@@ -338,6 +329,7 @@ def _start(code):
             killCount[player] = 0
         killCount = json.dumps(killCount)
         cur.execute("UPDATE Games SET started = ?,  alive = ?, targets = ?, killCount = ? WHERE code = ? ", (started, alive, targets, killCount, code))
+        con.commit()
     return redirect(url_for('game', code = code))
 
 ### _cancel helper route cancels a game that isn't yet started ###
@@ -363,6 +355,7 @@ def _cancel(code):
             cur.execute("UPDATE Players SET games = ? WHERE user = ? ", (games, player))
 
         cur.execute("DELETE FROM Games WHERE code = ? ", (code, )) #deletes the game from the games database
+        con.commit()
     return redirect(url_for('home'))
 
 ### _kick helper route removes a player from a game that hasn't started ###
@@ -392,8 +385,10 @@ def _kick(code, user):
         players.remove(user)  #removes user from the player list of the game
         players = json.dumps(players) 
         cur.execute("UPDATE Games SET players = ? WHERE code = ? ", (players, code))
+        con.commit()
     return redirect(url_for('game', code = code))
     
+### route for _killed helper function. This is called when a player presses the 'I was killed button' ###
 @app.route('/_killed/<code>', methods = ['POST'])
 def _killed(code):
     if not verifiers.verify_session_logged_in():
@@ -421,9 +416,8 @@ def _killed(code):
             fetchers.distribute_kills_and_wins(cur, players, killCount, survivalWinner, killWinners)
             players, killWinners, killLog = json.dumps(players), json.dumps(killWinners), json.dumps(killLog)
             cur.execute("INSERT into PastGames (code, name, settings, host, players, survivalWinner, killWinners, killLog) values (?, ?, ?, ?, ?, ?, ?, ?)",  (code, row['name'], row['settings'], row['host'], players, survivalWinner, killWinners, killLog))   #adds to pastgames
-            con.commit()
             cur.execute("DELETE FROM Games WHERE code = ? ", (code, )) #deletes from games
-
+        con.commit()
     return redirect(url_for('game', code = code))
 
 ### purge page for purging a player by game host ###
@@ -457,8 +451,8 @@ def _purge(code, user):
             fetchers.distribute_kills_and_wins(cur, players, killCount, survivalWinner, killWinners)
             players, killWinners, killLog = json.dumps(players), json.dumps(killWinners), json.dumps(killLog)
             cur.execute("INSERT into PastGames (code, name, settings, host, players, survivalWinner, killWinners, killLog) values (?, ?, ?, ?, ?, ?, ?, ?)",  (code, row['name'], row['settings'], row['host'], players, survivalWinner, killWinners, killLog))   #adds to pastgames
-            con.commit()
             cur.execute("DELETE FROM Games WHERE code = ? ", (code, )) #deletes from games
+            con.commit()
     return redirect(url_for('game', code = code))
 
 @app.route('/rules/')
