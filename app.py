@@ -20,32 +20,34 @@ app.secret_key = "this is an arbitrary string"
 #### PAGE ROUTING BELOW THIS LINE ####
 
 ### index page route. ###
-## The main page of the website. Has: personal user input box, create new user button ##
+## The main page of the website. Has: username input box, sign up button ##
 @app.route('/')
 def index():
-    session['loggedIn'] = False
-    session['password'] = ""
-    try:
-        error = session.pop('error')
+    session['loggedIn'] = False #resets login session var
+    session['password'] = "" #resets password session var
+    try: #checks if there is an error message to show
+        error = session.pop('error') 
     except KeyError:
         error = ""
-    try:
+    try: #checks if there is a username stored in session to remember
         user = session.pop('user')
     except KeyError:
         user = ""
-    
-    return render_template('index.html', error = error, user = user)
+    return render_template('index.html', error = error, user = user) #renders html page
 
 ### _login helper route ###
-## This helper page is accessed when a personal user is entered from the index page. ##
-## It checks that the user is good and then redirects to the home page of the user ##
-## If the user is not good, the user is redirected back to the index page with an 'invalid user' message ## 
+## This helper page is accessed when a username and password are entered from the index page. ##
+## It checks that the username and password are good and then redirects to the home page of the user ##
+## If the credentials are not good, the user is redirected back to the index page with an 'invalid user' message ## 
 @app.route('/_login', methods=['POST'])
 def _login():
-    user = request.form['user']
+    try: #tries to get username and password
+        user = request.form['user']
+        password = request.form['password']
+    except KeyError: #only runs if someone messes with the html
+        user, password = "", ""
+
     session['user'] = user
-    password = request.form['password']
-    hashPass = hashing.hashpass(password)
     error = checks.check_for_login_error(user, password)
     if error:
         session['error']=error
@@ -57,10 +59,10 @@ def _login():
             
 ### signup page route ###
 ## Page for creating a new user. ##
-## Has: user repeatuser and name input boxes, back button (TODO), signup button ## 
+## Has: user password repeatpassword and name input boxes, back button, signup button ## 
 @app.route('/signup/')
 def signup():
-    try:
+    try: # checks if there is an error.
         error, user, name = session.pop('error'), session.pop('user'), session.pop('name')
     except KeyError:
         error, user, name = "", "", ""
@@ -71,14 +73,14 @@ def signup():
 ## It checks that the info is good, adds the info to the database, and redirects to the home page ##
 @app.route('/_signup', methods = ['POST'])
 def _signup():
-    user = request.form["user"]
-    password = request.form["password"]
-    hashPass = hashing.hashpass(password) ##TODO this needs to be hashed
-    passwordRepeat = request.form["passwordRepeat"]
-    name = request.form["name"] 
-    games = json.dumps([])
-    pastGames = json.dumps([])
-    stats = json.dumps({"played": 0, "survivalWins": 0, "killWins": 0, "kills": 0})
+    try: #tries to get info for form
+        user = request.form["user"]
+        password = request.form["password"]
+        passwordRepeat = request.form["passwordRepeat"]
+        name = request.form["name"] 
+    except KeyError: #only runs is someone messes with the html
+        password, passwordRepeat, user, name = "", "", "", ""
+    
     error = checks.check_for_signup_error(user, password, passwordRepeat, name)
     if error:
         session['error']=error
@@ -86,6 +88,10 @@ def _signup():
         session['name']=name
         return redirect(url_for('signup'))
     else:
+        hashPass = hashing.hashpass(password)
+        games = json.dumps([])
+        pastGames = json.dumps([])
+        stats = json.dumps({"played": 0, "survivalWins": 0, "killWins": 0, "kills": 0})
         with sqlite3.connect("database.db") as con:  
             cur = con.cursor() 
             cur.execute("INSERT into Players (user, password, name, games, pastGames, stats) values (?, ?, ?, ?, ?, ?)", (user, hashPass, name, games, pastGames, stats))   #creates new user
@@ -96,21 +102,23 @@ def _signup():
         return redirect(url_for('home'))
 ### home page route ###
 ## Home page of a specific user ##
-## Has: (TODO) welcome, active games, past games, join new and create buttons, edit pf button, logout button ##
+## Has: welcome, active games, past games, join new and create buttons, edit pf button (TODO), logout button ##
 @app.route('/home')
 def home():
-    if not verifiers.verify_session_logged_in():
+    if not verifiers.verify_session_logged_in(): #verifies that user is logged in
         session['error'] = "You cant access home page before logging in!"
         return redirect(url_for('index'))
-    data = {}
+
+    data = {} #data that will be put into html template
+    data['user'] = session['user']
     with sqlite3.connect("database.db") as con:  
         con.row_factory = sqlite3.Row  
         cur = con.cursor()  
-        data['user'] = session['user']
         row = cur.execute("SELECT * from Players WHERE user = ?", (session['user'], )) .fetchone()
         data['name'] = row["name"]
         data['activeGames'], data['pastGames'] = [], []
-        for game in json.loads(row["games"]):
+        games = json.loads(row["games"])
+        for game in games: #sorts games into active and past ones
             if checks.check_if_game_complete(game) == 'active':
                 data['activeGames'].append(fetchers.get_active_button_info(game))
             else:
@@ -139,7 +147,11 @@ def _join():
         session['error']="You cant access _join page before logging in!"
         return redirect(url_for('index'))
 
-    code = request.form['code']
+    try: #tries to get code
+        code = request.form['code']
+    except KeyError: #only runs if someone messes with html
+        code = ""
+
     error = checks.check_for_join_error(code)
     if error:
         session['error'] = error
@@ -154,6 +166,7 @@ def _join():
             cur.execute("SELECT * from Players WHERE user = ? ", (session['user'], ))
             games = json.dumps(json.loads(cur.fetchone()["games"])+[code]) #adds game to the games list of the user
             cur.execute("UPDATE Players SET games = ? WHERE user = ? ", (games, session['user']))
+            con.commit()
         return redirect(url_for('game', code = code))
 
 ### create page ###
@@ -178,20 +191,23 @@ def _create():
         session['error']="You cant access _create page before logging in!"
         return redirect(url_for('index'))
 
-    code = request.form['code']
-    name = request.form['name']
+    try:
+        code = request.form['code']
+    except KeyError:
+        code = ""
+    try:
+        name = request.form['name']
+    except KeyError:
+        name = ""
     settings = {}
-    settings['difficulty'] = request.form['difficulty']
-    settings = json.dumps(settings)
-    host = session['user']
-    started = 0
-    players = json.dumps([session['user']])
-    alive = json.dumps([])
-    purged = json.dumps([])
-    targets = json.dumps({})
-    killCount = json.dumps({})
-    killLog = json.dumps([])
-    #winner is not set
+    try:
+        settings['difficulty'] = request.form['difficulty']
+    except KeyError:
+        settings['difficulty'] = ""
+    try:
+        settings['passon'] = request.form['passon']
+    except KeyError:
+        settings['passon'] = ""
 
     error = checks.check_for_create_error(code, name, settings)
     if error:
@@ -200,16 +216,17 @@ def _create():
         session['name'] = name
         return redirect(url_for('create'))
     else:
+        host, started, players = session['user'], 0, json.dumps([session['user']]) #sets defaults
+        alive, purged, targets, killCount, killLog = json.dumps([]), json.dumps([]), json.dumps({}), json.dumps({}), json.dumps([]) #sets defaults
+        settings = json.dumps(settings)
         with sqlite3.connect("database.db") as con:  
             con.row_factory = sqlite3.Row
             cur = con.cursor() 
-
             cur.execute("INSERT into Games (code, name, settings, host, started, players, alive, purged, targets, killCount, killLog) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", (code, name, settings, host, started, players, alive, purged, targets, killCount, killLog))   #creates new user
-            con.commit()
-
             cur.execute("SELECT * from Players WHERE user = ? ", (session['user'], ))
             games = json.dumps(json.loads(cur.fetchone()["games"])+[code]) #adds game to the games list of the user
             cur.execute("UPDATE Players SET games = ? WHERE user = ? ", (games, session['user']))
+            con.commit()
         return redirect(url_for('game', code = code))
 
 ### game page route ###
@@ -230,6 +247,7 @@ def game(code):
     else:
         return redirect(url_for('home'))
 
+### helper function for game. runs if the game is active ###
 def activeGame(code):
     if not verifiers.verify_user_in_game(session['user'], code):
         return redirect(url_for('home'))
@@ -262,6 +280,7 @@ def activeGame(code):
 
     return render_template('game.html', data = data, error=error)
 
+### helper function for game. runs is the game is over ###
 def pastGame(code):
     data={}
     with sqlite3.connect("database.db") as con:  

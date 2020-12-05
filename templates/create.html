@@ -20,10 +20,24 @@
 
     <div class="container">
         <form action="/_create" method="POST">
-            <p><input type = "text" name = "name" placeholder="Enter a game name" value="{{name}}"/></p>
-            <p><input type = "text" name = "code" placeholder="Enter a game code" value="{{code}}"/></p>
+            <input type = "text" name = "name" placeholder="Enter a game name" value="{{name}}"/>
+            <br>
+            <input type = "text" name = "code" placeholder="Enter a game code" value="{{code}}"/>
+            <br>
             <input type="radio" id="debug" name="difficulty" value="debug">
             <label for="debug">Debug</label>
+            <input type="radio" id="easy" name="difficulty" value="easy">
+            <label for="easy">Easy</label>
+            <input type="radio" id="medium" name="difficulty" value="medium">
+            <label for="medium">Medium</label>
+            <input type="radio" id="hard" name="difficulty" value="hard">
+            <label for="hard">Hard</label>
+            <br>
+            <input type="radio" id="pass" name="passon" value="pass">
+            <label for="pass">On death, pass word on to assassin.</label>
+            <input type="radio" id="shuffle" name="passon" value="shuffle">
+            <label for="shuffle">give assassin new random word.</label>
+            <br>
             <input type = "submit" value = "Create" />
         </form>
     </div>
