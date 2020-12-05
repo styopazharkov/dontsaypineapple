@@ -8,7 +8,7 @@
 ### The following code is the imported packages ###
 from flask import Flask, redirect, url_for, render_template, request, session, abort
 import sqlite3, json
-import checks, verifiers, maff
+import checks, verifiers, maff, fetchers
 import hashing
 
 
@@ -112,25 +112,12 @@ def home():
         data['activeGames'], data['pastGames'] = [], []
         for game in json.loads(row["games"]):
             if checks.check_if_game_complete(game) == 'active':
-                data['activeGames'].append(get_active_button_info(game))
+                data['activeGames'].append(fetchers.get_active_button_info(game))
             else:
-                data['pastGames'].append(get_past_button_info(game))
+                data['pastGames'].append(fetchers.get_past_button_info(game))
         data['stats'] = json.loads(row['stats'])
     return render_template('home.html', data=data)
 
-def get_active_button_info(game):
-    with sqlite3.connect("database.db") as con:  
-        con.row_factory = sqlite3.Row  
-        cur = con.cursor()  
-        row = cur.execute("SELECT * from Games WHERE code = ?", (game, )) .fetchone()
-    return {'name': row['name'], 'code': game, 'numberOfPlayers': len(json.loads(row['players'])), 'numberOfAlive': len(json.loads(row['alive'])), 'started': row['started'], 'host': row['host']}
-
-def get_past_button_info(game):
-    with sqlite3.connect("database.db") as con:  
-        con.row_factory = sqlite3.Row  
-        cur = con.cursor()  
-        row = cur.execute("SELECT * from pastGames WHERE code = ?", (game, )) .fetchone()
-    return {'name': row['name'], 'code': game, 'numberOfPlayers': len(json.loads(row['players'])), 'host': row['host'], 'killWinners': row['killWinners'], 'survivalWinner': row['survivalWinner']}
 
 ### join page ###
 @app.route('/join/')
@@ -284,12 +271,16 @@ def pastGame(code):
         data['code'] = code
         data['user'] = session['user']
         data['title'] = gameRow['name']
-        data['settings'] = gameRow['settings']
+        data['settings'] = json.loads(gameRow['settings'])
         data['host'] = gameRow['host']
-        data['players'] = json.loads(gameRow['players'])
-        data['survivalWinner'] = gameRow['survivalWinner']
-        data['killWinners'] = gameRow['killWinners']
-        data['killLog'] = json.loads(gameRow['killLog'])
+        data['survivalWinner'] = {'code': gameRow['survivalWinner'], 'name': fetchers.get_name(cur, gameRow['survivalWinner'])}
+        data['killWinners'] = [{'code': winner, 'name': fetchers.get_name(cur, winner)} for winner in json.loads(gameRow['killWinners'])]
+        data['killLog'] = [{
+            'method': entry[1],
+            'victim': {'code': entry[0], 'name': fetchers.get_name(cur, entry[0])}, 
+            'assassin': {'code': entry[2], 'name': fetchers.get_name(cur, entry[2])}, 
+            'word': entry[3]
+            } for entry in json.loads(gameRow['killLog'])]
     return render_template('pastGame.html', data = data)
 
 ### _start helper route starts a game that isnt started ###
@@ -355,7 +346,6 @@ def _cancel(code):
         cur.execute("DELETE FROM Games WHERE code = ? ", (code, )) #deletes the game from the games database
     return redirect(url_for('home'))
 
-
 ### _kick helper route removes a player from a game that hasn't started ###
 ## only possible by admin ##
 @app.route('/_kick/<code>/<user>', methods = ['POST'])
@@ -409,7 +399,7 @@ def _killed(code):
             players = json.loads(row['players'])
             survivalWinner = alive[0]
             killWinners = maff.create_killWinners(players, killCount)
-            distribute_kills_and_wins(cur, players, killCount, survivalWinner, killWinners)
+            fetchers.distribute_kills_and_wins(cur, players, killCount, survivalWinner, killWinners)
             players, killWinners, killLog = json.dumps(players), json.dumps(killWinners), json.dumps(killLog)
             cur.execute("INSERT into PastGames (code, name, settings, host, players, survivalWinner, killWinners, killLog) values (?, ?, ?, ?, ?, ?, ?, ?)",  (code, row['name'], row['settings'], row['host'], players, survivalWinner, killWinners, killLog))   #adds to pastgames
             con.commit()
@@ -445,23 +435,12 @@ def _purge(code, user):
             survivalWinner = alive[0]
             killCount = json.loads(row['killCount'])
             killWinners = maff.create_killWinners(players, killCount)
-            distribute_kills_and_wins(cur, players, killCount, survivalWinner, killWinners)
+            fetchers.distribute_kills_and_wins(cur, players, killCount, survivalWinner, killWinners)
             players, killWinners, killLog = json.dumps(players), json.dumps(killWinners), json.dumps(killLog)
             cur.execute("INSERT into PastGames (code, name, settings, host, players, survivalWinner, killWinners, killLog) values (?, ?, ?, ?, ?, ?, ?, ?)",  (code, row['name'], row['settings'], row['host'], players, survivalWinner, killWinners, killLog))   #adds to pastgames
             con.commit()
             cur.execute("DELETE FROM Games WHERE code = ? ", (code, )) #deletes from games
     return redirect(url_for('game', code = code))
-
-def distribute_kills_and_wins(cur, players, killCount, survivalWinner, killWinners):
-    for player in players:
-        stats = json.loads(cur.execute("SELECT * from Players WHERE user = ? ", (player, )).fetchone()["stats"])
-        stats["played"] += 1
-        stats["kills"] += killCount[player]
-        stats["survivalWins"] += int(player == survivalWinner)
-        stats["killWins"] += (int(player in killWinners)/len(killWinners))
-        stats=json.dumps(stats)
-        cur.execute("UPDATE Players SET stats = ? WHERE user = ? ", (stats, player))
-
 
 
 #### DEBUG ROUTING BELOW THIS LINE ####

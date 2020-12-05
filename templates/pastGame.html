@@ -7,20 +7,42 @@
     <title>Word Assassins – {{data['user']}}</title>
 </head>
 <body>
-    <h2>{{data['title']}}</h2>
-    <h6>({{data['code']}})</h6>
+    <div class="back">
+        <form action="/home" >
+            <input type="submit" value="Back">
+        </form>
+    </div>
+
+    <div class="title">
+        <h2>{{data['title']}}</h2>
+    </div>
+    <div class="code">
+        <h6>({{data['code']}})</h6>
+    </div>
+
     <div class="settings">
-        <h4>Settings:</h4>
-        <p>{{data['settings']}}</p>
+        <h4>Hosted by {{data['host']}}. Settings:</h4>
+        <p>Word difficulty: {{data['settings']['difficulty']}}</p>
     </div>
+
     <div class="winners">
-        <p>Last one alive: {{data['survivalWinner']}}</p>
-        <p>Most Kills: {{data['killWinners']}}</p>
+        <h4>This game is over.</h4>
+        <p>Last one alive: {{data['survivalWinner']['name']}} ({{data['survivalWinner']['code']}})</p>
+        <p>Most kills:
+        {% for killWinner in data['killWinners'] %}
+            {{killWinner['name']}} ({{killWinner['code']}}) 
+        {% endfor %}
+        </p>
     </div>
+
     <div class = "killLog">
         <h4>Kill Log:</h4>   
         {% for entry in data['killLog'] %}
-            <p>{{entry}}</p>
+            {% if entry['method'] == "killed" %}
+                <p>{{entry['victim']['name']}} ({{entry['victim']['code']}}) was killed by {{entry['assassin']['name']}} ({{entry['assassin']['code']}}) with {{entry['word']}}.</p>
+            {% else %}
+                <p>{{entry['victim']['name']}} ({{entry['victim']['code']}}) was purged for {{entry['assassin']['name']}} ({{entry['assassin']['code']}}) by host.</p>
+            {% endif %}
         {% endfor %}
     </div>
 
