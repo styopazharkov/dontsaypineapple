@@ -442,6 +442,9 @@ def _purge(code, user):
             cur.execute("DELETE FROM Games WHERE code = ? ", (code, )) #deletes from games
     return redirect(url_for('game', code = code))
 
+@app.route('/rules/')
+def rules():
+    return render_template('rules.html')
 
 #### DEBUG ROUTING BELOW THIS LINE ####
 

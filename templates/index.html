@@ -6,18 +6,37 @@
     <title>Word Assassins</title>
 </head>
 <body>
-    <h2>Welcome to Word assassins!</h2>
-    {% if  error %}
-        <p style="color: red;">Error: {{error}}</p>
-    {% endif  %}
-    <p>This is the index page</p>
-    <form action="/_login" method = "post">
-        <p><input type = "text" name = "user" placeholder="Enter your username" value="{{user}}"/></p>
-        <p><input type="password" name="password" placeholder="password"></p>
-        <p><input type = "submit" value = "Enter" /></p>
-    </form>
-    <form action="/signup">
-        <p><input type="submit" value = "Create new profile"></p>
-    </form>
+
+    <div class="welcome">
+        <h2>Welcome to Word assassins!</h2>
+    </div>
+
+    <div class="error">
+        {% if  error %}
+            <p style="color: red;">Error: {{error}}</p>
+        {% endif  %}
+    </div>
+
+    <div class="login">
+        <form action="/_login" method = "post">
+            <p><input type = "text" name = "user" placeholder="Enter your username" value="{{user}}"/></p>
+            <p><input type="password" name="password" placeholder="Enter your password"></p>
+            <p><input type = "submit" value = "Enter" /></p>
+        </form>
+    </div>
+
+    <div class="singup">
+        <p>Not a user yet?</p>
+        <form action="/signup">
+            <input type="submit" value = "Sign up">
+        </form>
+    </div>
+
+    <div class="rules">
+        <p>Don't know how to play?</p>
+        <form action="/rules">
+            <input type="submit" value="Rules">
+        </form>
+    </div>
 </body>
 </html>
