@@ -277,8 +277,8 @@ def pastGame(code):
         data['killWinners'] = [{'code': winner, 'name': fetchers.get_name(cur, winner)} for winner in json.loads(gameRow['killWinners'])]
         data['killLog'] = [{
             'method': entry[1],
-            'victim': {'code': entry[0], 'name': fetchers.get_name(cur, entry[0])}, 
-            'assassin': {'code': entry[2], 'name': fetchers.get_name(cur, entry[2])}, 
+            'victim': {'code': entry[2], 'name': fetchers.get_name(cur, entry[2])}, 
+            'assassin': {'code': entry[0], 'name': fetchers.get_name(cur, entry[0])}, 
             'word': entry[3]
             } for entry in json.loads(gameRow['killLog'])]
     return render_template('pastGame.html', data = data)

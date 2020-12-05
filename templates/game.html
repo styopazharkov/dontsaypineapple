@@ -68,7 +68,12 @@
             </form>
         {% else %}
             <div class = "word">
-                <p>{{data['target']}} killed you with {{data['word']}}</p>
+                {% if data['uesr'] in data['purged'] %}
+                    <p>you were purged for {{data['target']}} by host.</p>
+                {% else %}
+                    <p>{{data['target']}} killed you with {{data['word']}}</p>
+                {% endif %}
+                
             </div>
         {% endif %}
     {% endif %}
