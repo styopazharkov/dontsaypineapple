@@ -6,12 +6,23 @@
     <title>Join</title>
 </head>
 <body>
-    {% if  error %}
-        <p style="color: red;">Error: {{error}}</p>
-    {% endif  %}
-    <form action="/_join/" method = "post">
-        <p><input type = "text" name = "code" placeholder="Enter the game code" /></p>
-        <p><input type = "submit" value = "Join" /></p>
-    </form>
+    <div class="back">
+        <form action="/home" >
+            <input type="submit" value="Back">
+        </form>
+    </div>
+
+    <div class="error">
+        {% if  error %}
+            <p style="color: red;">Error: {{error}}</p>
+        {% endif  %}
+    </div>
+
+    <div class="container">
+        <form action="/_join/" method = "post">
+            <p><input type = "text" name = "code" placeholder="Enter the game code" /></p>
+            <p><input type = "submit" value = "Join" /></p>
+        </form>
+    </div>
 </body>
 </html>

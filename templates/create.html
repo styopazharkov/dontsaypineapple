@@ -6,15 +6,26 @@
     <title>Create</title>
 </head>
 <body>
-    {% if  error %}
-        <p style="color: red;">Error: {{error}}</p>
-    {% endif  %}
-    <form action="/_create" method="POST">
-        <p><input type = "text" name = "name" placeholder="Enter a game name" value="{{name}}"/></p>
-        <p><input type = "text" name = "code" placeholder="Enter a game code" value="{{code}}"/></p>
-        <input type="radio" id="debug" name="difficulty" value="debug">
-        <label for="debug">Debug</label>
-        <input type = "submit" value = "Create" />
-    </form>
+    <div class="back">
+        <form action="/home" >
+            <input type="submit" value="Back">
+        </form>
+    </div>
+
+    <div class="error">
+        {% if  error %}
+            <p style="color: red;">Error: {{error}}</p>
+        {% endif  %}
+    </div>
+
+    <div class="container">
+        <form action="/_create" method="POST">
+            <p><input type = "text" name = "name" placeholder="Enter a game name" value="{{name}}"/></p>
+            <p><input type = "text" name = "code" placeholder="Enter a game code" value="{{code}}"/></p>
+            <input type="radio" id="debug" name="difficulty" value="debug">
+            <label for="debug">Debug</label>
+            <input type = "submit" value = "Create" />
+        </form>
+    </div>
 </body>
 </html>
