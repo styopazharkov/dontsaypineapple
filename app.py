@@ -102,16 +102,35 @@ def home():
     if not verifiers.verify_session_logged_in():
         session['error'] = "You cant access home page before logging in!"
         return redirect(url_for('index'))
-
+    data = {}
     with sqlite3.connect("database.db") as con:  
         con.row_factory = sqlite3.Row  
         cur = con.cursor()  
+        data['user'] = session['user']
+        row = cur.execute("SELECT * from Players WHERE user = ?", (session['user'], )) .fetchone()
+        data['name'] = row["name"]
+        data['activeGames'], data['pastGames'] = [], []
+        for game in json.loads(row["games"]):
+            if checks.check_if_game_complete(game) == 'active':
+                data['activeGames'].append(get_active_button_info(game))
+            else:
+                data['pastGames'].append(get_past_button_info(game))
+        data['stats'] = row['stats']
+    return render_template('home.html', data=data)
 
-        cur.execute("SELECT * from Players WHERE user = ?", (session['user'], )) 
-        name = cur.fetchone()["name"]
-        cur.execute("SELECT * from Players WHERE user = ?", (session['user'], )) 
-        games = json.loads(cur.fetchone()["games"])
-    return render_template('home.html', name=name, user=session['user'], games = games)
+def get_active_button_info(game):
+    with sqlite3.connect("database.db") as con:  
+        con.row_factory = sqlite3.Row  
+        cur = con.cursor()  
+        row = cur.execute("SELECT * from Games WHERE code = ?", (game, )) .fetchone()
+    return {'name': row['name'], 'code': game, 'numberOfPlayers': len(json.loads(row['players'])), 'numberOfAlive': len(json.loads(row['alive'])), 'started': row['started'], 'host': row['host']}
+
+def get_past_button_info(game):
+    with sqlite3.connect("database.db") as con:  
+        con.row_factory = sqlite3.Row  
+        cur = con.cursor()  
+        row = cur.execute("SELECT * from pastGames WHERE code = ?", (game, )) .fetchone()
+    return {'name': row['name'], 'code': game, 'numberOfPlayers': len(json.loads(row['players'])), 'host': row['host'], 'killWinners': row['killWinners'], 'survivalWinner': row['survivalWinner']}
 
 ### join page ###
 @app.route('/join/')
@@ -224,23 +243,6 @@ def game(code):
     else:
         return redirect(url_for('home'))
 
-def pastGame(code):
-    data={}
-    with sqlite3.connect("database.db") as con:  
-        con.row_factory = sqlite3.Row
-        cur = con.cursor()
-        gameRow = cur.execute("SELECT * FROM PastGames WHERE code = ? ", (code, )).fetchone()
-        data['code'] = code
-        data['user'] = session['user']
-        data['title'] = gameRow['name']
-        data['settings'] = gameRow['settings']
-        data['host'] = gameRow['host']
-        data['players'] = json.loads(gameRow['players'])
-        data['survivalWinner'] = gameRow['survivalWinner']
-        data['killWinners'] = gameRow['killWinners']
-        data['killLog'] = json.loads(gameRow['killLog'])
-    return render_template('pastGame.html', data = data)
-
 def activeGame(code):
     if not verifiers.verify_user_in_game(session['user'], code):
         return redirect(url_for('home'))
@@ -272,6 +274,24 @@ def activeGame(code):
         data['isAlive'] = session['user'] in gameRow['alive']
 
     return render_template('game.html', data = data, error=error)
+
+def pastGame(code):
+    data={}
+    with sqlite3.connect("database.db") as con:  
+        con.row_factory = sqlite3.Row
+        cur = con.cursor()
+        gameRow = cur.execute("SELECT * FROM PastGames WHERE code = ? ", (code, )).fetchone()
+        data['code'] = code
+        data['user'] = session['user']
+        data['title'] = gameRow['name']
+        data['settings'] = gameRow['settings']
+        data['host'] = gameRow['host']
+        data['players'] = json.loads(gameRow['players'])
+        data['survivalWinner'] = gameRow['survivalWinner']
+        data['killWinners'] = gameRow['killWinners']
+        data['killLog'] = json.loads(gameRow['killLog'])
+    return render_template('pastGame.html', data = data)
+
 ### _start helper route starts a game that isnt started ###
 ## only possible by host ##
 @app.route('/_start/<code>', methods = ['POST'])

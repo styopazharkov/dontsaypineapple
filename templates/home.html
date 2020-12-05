@@ -6,25 +6,52 @@
     <title>Word Assassins - Home</title>
 </head>
 <body>
-    <p>Hello, {{name}} ({{user}})</p>
-    {% if  error %}
-        <p style="color: red;">Error: {{error}}</p>
-    {% endif  %}
-        <h4>Active Games:</h4>
-    {% for game in games %}  
-        <form action="/game/{{game}}" >
-            <input type="submit" value="{{game}}">
+    <div class="logout">
+        <form action="/" >
+            <input type="submit" value="Log Out">
         </form>
-    {% endfor %} 
-    <br>
-    <form action="/join" >
-        <input type="submit" value="Join">
-    </form>
-    <form action="/create" >
-        <input type="submit" value="Create new game">
-    </form>
-    <form action="/" >
-        <input type="submit" value="Log Out">
-    </form>
+    </div>
+
+    <div class="welcome">
+        <p>Hello, {{data['name']}} ({{data['user']}})</p>
+    </div>
+
+    <div class="status">
+    </div>
+
+    <div class="active">
+        <h4>Active Games:</h4>
+        {% for game in data['activeGames'] %}
+            <div class="game">
+                <form action="/game/{{game['code']}}" >
+                    <input type="submit" value="{{game}}">
+                </form>
+            </div>
+        {% endfor %} 
+    </div>
+
+    <div class="past">
+        <h4>Past Games:</h4>
+        {% for game in data['pastGames'] %}
+            <div class="game">
+                <form action="/game/{{game['code']}}" >
+                    <input type="submit" value="{{game}}">
+                </form>
+            </div>
+        {% endfor %} 
+    </div>
+
+    <div class="footbar">
+        <div class="join">
+            <form action="/join" >
+                <input type="submit" value="Join">
+            </form>
+        </div>
+        <div class="create">
+            <form action="/create" >
+                <input type="submit" value="Create new game">
+            </form>
+        </div>
+    </div>
 </body>
 </html>

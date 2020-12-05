@@ -26,17 +26,6 @@ def random_permutation(n):
     ordered = []
     for i in range(0, n):
         ordered.append(i)
-    shuffled = []
-    while len(ordered) > 0:
-        shuffled.append(ordered.pop(random.randint(0, len(ordered) - 1)))
-    return shuffled
-    
-
-### Same as random_permutation, but simpler ###
-def random_permutation_two(n):
-    ordered = []
-    for i in range(0, n):
-        ordered.append(i)
     random.shuffle(ordered)
     return ordered
  
