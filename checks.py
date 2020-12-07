@@ -28,13 +28,13 @@ def check_for_signup_error(user, password, passwordRepeat, name):
         return "The username can't be less than 5 characters long."
     if len(user) > 20:
         return "The username can't be more than 20 characters long."
-    if re.search("[\w]", user):
+    if re.search("[\s]", user):
         return "The username can't contain spaces or other whitespace characters"
     if len(password) < 5:
         return "The password can't be less than 5 characters long."
     if len(password) > 100:
         return "The password can't be more than 100 characters long."
-    if re.search("[\w.]", password):
+    if re.search("[\s]", password):
         return "The password can't contain spaces or other whitespace characters"
     if password != passwordRepeat:
         return "The passwords must match."
