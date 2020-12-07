@@ -2,6 +2,7 @@
 from flask import  session
 import sqlite3, json
 import hashing
+import re
 
 ### verifier that checks that a username and password is good to log in with. Makes sure they're non-empty and are in the database ###
 ## returns an error message if there is an error. False if there is no error ##
@@ -27,8 +28,14 @@ def check_for_signup_error(user, password, passwordRepeat, name):
         return "The username can't be less than 5 characters long."
     if len(user) > 20:
         return "The username can't be more than 20 characters long."
+    if re.search("[\w]", user):
+        return "The username can't contain spaces or other whitespace characters"
     if len(password) < 5:
         return "The password can't be less than 5 characters long."
+    if len(password) > 100:
+        return "The password can't be more than 100 characters long."
+    if re.search("[\w.]", password):
+        return "The password can't contain spaces or other whitespace characters"
     if password != passwordRepeat:
         return "The passwords must match."
     if len(name.strip()) == 0:
