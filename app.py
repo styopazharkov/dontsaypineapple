@@ -402,7 +402,8 @@ def _killed(code):
         row = cur.execute("SELECT * from Games WHERE code = ? ", (code, )).fetchone()
         alive = json.loads(row["alive"])
         alive.remove(user)  #removes user from the alive list of the game
-        targets = maff.edit_targets_on_kill(user, json.loads(row['targets']))
+        settings = json.loads(row['settings'])
+        targets = maff.edit_targets_on_kill(user, json.loads(row['targets']), settings)
         killCount = json.loads(row['killCount'])
         killCount[targets[user]['assassin']] += 1 #adds to assassin's kill count
         killLog = json.loads(row['killLog'])+[(targets[user]['assassin'], "killed", user, targets[user]['word'])] #adds to kill log
@@ -436,9 +437,10 @@ def _purge(code, user):
         cur = con.cursor()
         row = cur.execute("SELECT * from Games WHERE code = ? ", (code, )).fetchone()
         alive = json.loads(row["alive"])
+        settings = json.loads(row['settings'])
         alive.remove(user)  #removes user from the alive list of the game
         purged = json.dumps(json.loads(row["purged"])+[user]) #adds user to the purged list of the game
-        targets = maff.edit_targets_on_kill(user, json.loads(row['targets']))
+        targets = maff.edit_targets_on_kill(user, json.loads(row['targets']), settings)
         killLog = json.loads(row['killLog'])+[(targets[user]['assassin'], "purged", user, targets[user]['word'])] #adds to kill log
         if len(alive) > 1:
             alive, targets,  killLog = json.dumps(alive), json.dumps(targets), json.dumps(killLog) #json encripts everything
