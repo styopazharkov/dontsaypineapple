@@ -1,5 +1,5 @@
-# WordAssassins
-2020 Word Assassins Website Repository
+# DontSayPineapple
+2020 Don't Say Pineapple Website Repository
 -Styopa 
 
 Contributors:
