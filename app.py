@@ -42,7 +42,7 @@ def index():
 @app.route('/_login', methods=['POST'])
 def _login():
     try: #tries to get username and password
-        user = request.form['user']
+        user = request.form['user'].lower()
         password = request.form['password']
     except KeyError: #only runs if someone messes with the html
         user, password = "", ""
@@ -74,7 +74,7 @@ def signup():
 @app.route('/_signup', methods = ['POST'])
 def _signup():
     try: #tries to get info for form
-        user = request.form["user"]
+        user = request.form["user"].lower()
         password = request.form["password"]
         passwordRepeat = request.form["passwordRepeat"]
         name = request.form["name"] 
@@ -175,7 +175,7 @@ def _join():
         return redirect(url_for('index'))
 
     try: #tries to get code
-        code = request.form['code']
+        code = request.form['code'].lower()
     except KeyError: #only runs if someone messes with html
         code = ""
 
@@ -220,7 +220,7 @@ def _create():
 
     settings = {}
     try: #tries to get info
-        code = request.form['code']
+        code = request.form['code'].lower()
         name = request.form['name']
         settings['difficulty'] = request.form['difficulty']
         settings['passon'] = request.form['passon']
