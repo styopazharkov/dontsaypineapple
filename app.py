@@ -1,8 +1,8 @@
-#####################################
-#####################################
-#### 2020 WORD ASSASSINS WEBSITE ####
-#####################################
-#####################################
+#######################################
+#######################################
+#### 2020 DONT SAY PINEAPPLE WEBSITE ####
+#######################################
+#######################################
 
 
 ### The following code is the imported packages ###
@@ -14,7 +14,7 @@ import hashing
 
 ### The following code creates the app variable and assigns a secret key for the session dictionary ###
 app = Flask(__name__)
-app.secret_key = "this is an arbitrary string"
+app.secret_key = "An arbitrary string for Don't Sat Pineapple"
 
 
 #### PAGE ROUTING BELOW THIS LINE ####
@@ -92,7 +92,7 @@ def _signup():
         games = json.dumps([])
         pastGames = json.dumps([])
         stats = json.dumps({"played": 0, "survivalWins": 0, "killWins": 0, "kills": 0})
-        with sqlite3.connect("database.db") as con:  
+        with sqlite3.connect("database.db") as con:
             cur = con.cursor() 
             cur.execute("INSERT into Players (user, password, name, games, pastGames, stats) values (?, ?, ?, ?, ?, ?)", (user, hashPass, name, games, pastGames, stats))   #creates new user
             con.commit()
@@ -402,7 +402,8 @@ def _killed(code):
         row = cur.execute("SELECT * from Games WHERE code = ? ", (code, )).fetchone()
         alive = json.loads(row["alive"])
         alive.remove(user)  #removes user from the alive list of the game
-        targets = maff.edit_targets_on_kill(user, json.loads(row['targets']))
+        settings = json.loads(row['settings'])
+        targets = maff.edit_targets_on_kill(user, json.loads(row['targets']), settings)
         killCount = json.loads(row['killCount'])
         killCount[targets[user]['assassin']] += 1 #adds to assassin's kill count
         killLog = json.loads(row['killLog'])+[(targets[user]['assassin'], "killed", user, targets[user]['word'])] #adds to kill log
@@ -427,6 +428,7 @@ def _purge(code, user):
         session['error']="You cant access _purge page before logging in!"
         return redirect(url_for('index'))
 
+    #TODO: check if page is updated with database. Catches if host tries purging without refreshing page
     if not verifiers.verify_host(code) or not verifiers.verify_user_in_game(user, code) or user == session['user']:
         session['error']="something is not right! (_purge)"
         return redirect(url_for('index'))
@@ -436,9 +438,10 @@ def _purge(code, user):
         cur = con.cursor()
         row = cur.execute("SELECT * from Games WHERE code = ? ", (code, )).fetchone()
         alive = json.loads(row["alive"])
+        settings = json.loads(row['settings'])
         alive.remove(user)  #removes user from the alive list of the game
         purged = json.dumps(json.loads(row["purged"])+[user]) #adds user to the purged list of the game
-        targets = maff.edit_targets_on_kill(user, json.loads(row['targets']))
+        targets = maff.edit_targets_on_kill(user, json.loads(row['targets']), settings)
         killLog = json.loads(row['killLog'])+[(targets[user]['assassin'], "purged", user, targets[user]['word'])] #adds to kill log
         if len(alive) > 1:
             alive, targets,  killLog = json.dumps(alive), json.dumps(targets), json.dumps(killLog) #json encripts everything
