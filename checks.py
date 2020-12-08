@@ -78,6 +78,8 @@ def check_for_create_error(code, name, settings):
         cur = con.cursor() 
         if cur.execute("SELECT count(*) FROM Games WHERE code = ? ", (code, )).fetchone()[0] > 0:
             return "a game with this code already exists"
+        if cur.execute("SELECT count(*) FROM PastGames WHERE code = ? ", (code, )).fetchone()[0] > 0:
+            return "a game with this code already exists"
     return False
 
 def check_for_start_error(code):

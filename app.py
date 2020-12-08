@@ -14,7 +14,7 @@ import hashing
 
 ### The following code creates the app variable and assigns a secret key for the session dictionary ###
 app = Flask(__name__)
-app.secret_key = "this is an arbitrary string"
+app.secret_key = "An arbitrary string for Don't Sat Pineapple"
 
 
 #### PAGE ROUTING BELOW THIS LINE ####
@@ -92,7 +92,7 @@ def _signup():
         games = json.dumps([])
         pastGames = json.dumps([])
         stats = json.dumps({"played": 0, "survivalWins": 0, "killWins": 0, "kills": 0})
-        with sqlite3.connect("database.db") as con:  
+        with sqlite3.connect("database.db") as con:
             cur = con.cursor() 
             cur.execute("INSERT into Players (user, password, name, games, pastGames, stats) values (?, ?, ?, ?, ?, ?)", (user, hashPass, name, games, pastGames, stats))   #creates new user
             con.commit()
@@ -370,8 +370,6 @@ def _kick(code, user):
     if not verifiers.verify_host(code) or not verifiers.verify_user_in_game(user, code) or user == session['user']:
         session['error']="something is not right! (_kick page error)"
         return redirect(url_for('index'))
-
-    
 
     with sqlite3.connect("database.db") as con:  
         con.row_factory = sqlite3.Row
