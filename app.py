@@ -42,7 +42,7 @@ def index():
 @app.route('/_login', methods=['POST'])
 def _login():
     try: #tries to get username and password
-        user = request.form['user']
+        user = request.form['user'].lower()
         password = request.form['password']
     except KeyError: #only runs if someone messes with the html
         user, password = "", ""
@@ -74,7 +74,7 @@ def signup():
 @app.route('/_signup', methods = ['POST'])
 def _signup():
     try: #tries to get info for form
-        user = request.form["user"]
+        user = request.form["user"].lower()
         password = request.form["password"]
         passwordRepeat = request.form["passwordRepeat"]
         name = request.form["name"] 
