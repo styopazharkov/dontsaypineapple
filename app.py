@@ -153,7 +153,7 @@ def _join():
         return redirect(url_for('index'))
 
     try: #tries to get code
-        code = request.form['code']
+        code = request.form['code'].lower()
     except KeyError: #only runs if someone messes with html
         code = ""
 
@@ -198,7 +198,7 @@ def _create():
 
     settings = {}
     try: #tries to get info
-        code = request.form['code']
+        code = request.form['code'].lower()
         name = request.form['name']
         settings['difficulty'] = request.form['difficulty']
         settings['passon'] = request.form['passon']
