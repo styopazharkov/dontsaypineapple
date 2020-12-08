@@ -371,6 +371,8 @@ def _kick(code, user):
         session['error']="something is not right! (_kick page error)"
         return redirect(url_for('index'))
 
+    
+
     with sqlite3.connect("database.db") as con:  
         con.row_factory = sqlite3.Row
         cur = con.cursor() 

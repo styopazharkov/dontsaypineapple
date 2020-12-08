@@ -6,11 +6,23 @@
     <title>Don't Say Pineapple – {{data['user']}}</title>
 </head>
 <body>
-    {% if  error %}
-    <p style="color: red;">Error: {{error}}</p>
-    {% endif  %}
-    <h2>{{data['title']}}</h2>
-    <h6>({{data['code']}})</h6>
+    <div class="back">
+        <form action="/home" >
+            <input type="submit" value="Back">
+        </form>
+    </div>
+
+    <div class="error">
+        {% if  error %}
+        <p style="color: red;">Error: {{error}}</p>
+        {% endif  %}
+    </div>
+
+    <div class="title">
+        <h2>{{data['title']}}</h2>
+        <h6>({{data['code']}})</h6>
+    </div>
+    
     <div class="settings">
         <h4>Settings:</h4>
         <p>{{data['settings']}}</p>
