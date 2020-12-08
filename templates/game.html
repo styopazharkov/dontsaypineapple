@@ -24,8 +24,27 @@
     </div>
 
     <div class="settings">
-        <h4>Settings:</h4>
-        <p>{{data['settings']}}</p>
+        {% if data['admin'] %}
+            <form action="/_change_settings" method="POST">
+                <input type="radio" id="debug" name="difficulty" value="debug" {% if data['settings']['difficulty'] == debug %} checked="checked" {% endif %}>
+                <label for="debug">Debug</label>
+                <input type="radio" id="easy" name="difficulty" value="easy" {% if data['settings']['difficulty'] == easy %} checked="checked" {% endif %}>
+                <label for="easy">Easy</label>
+                <input type="radio" id="medium" name="difficulty" value="medium" {% if data['settings']['difficulty'] == medium %} checked="checked" {% endif %}>
+                <label for="medium">Medium</label>
+                <input type="radio" id="hard" name="difficulty" value="hard" {% if data['settings']['difficulty'] == hard %} checked="checked" {% endif %}>
+                <label for="hard">Hard</label>
+                <br>
+                <input type="radio" id="pass" name="passon" value="pass" {% if data['settings']['passon'] == pass %} checked="checked" {% endif %}>
+                <label for="pass">On death, pass word on to assassin.</label>
+                <input type="radio" id="shuffle" name="passon" value="shuffle" {% if data['settings']['passon'] == shuffle %} checked="checked" {% endif %}>
+                <label for="shuffle">give assassin new random word.</label>
+                <br>
+                <input type = "submit" hidden>
+            </form>
+        {% else %}
+            <p>{{data['settings']}}</p>
+        {% endif %}
     </div>
 
     <div class = "players">
