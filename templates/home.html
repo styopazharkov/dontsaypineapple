@@ -17,9 +17,17 @@
         <p style="color: red;">Error: {{error}}</p>
         {% endif  %}
     </div>
-    
+
     <div class="welcome">
-        <p>Hello, {{data['name']}} ({{data['user']}})</p>
+        
+        <p>Hello,
+        <form action="/_rename" method="POST">
+            <input type="text" name="name" value="{{data['name']}}">
+            <input type="text" name="status" placeholder="What are you feeling? Enter a status." value="{{data['status']}}">
+            <input type="submit" hidden>
+        </form> 
+        ({{data['user']}})
+        </p>
     </div>
 
     <div class="status">

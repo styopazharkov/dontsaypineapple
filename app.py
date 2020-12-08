@@ -121,6 +121,7 @@ def home():
         cur = con.cursor()  
         row = cur.execute("SELECT * from Players WHERE user = ?", (session['user'], )) .fetchone()
         data['name'] = row["name"]
+        data['status'] = row["status"]
         data['activeGames'], data['pastGames'] = [], []
         games = json.loads(row["games"])
         for game in games: #sorts games into active and past ones
@@ -130,6 +131,27 @@ def home():
                 data['pastGames'].append(fetchers.get_past_button_info(game))
         data['stats'] = json.loads(row['stats'])
     return render_template('home.html', data=data, error = error)
+
+### helper route for renaming and setting the status ###
+@app.route('/_rename', methods = ['POST'])
+def _rename():
+    try: #tries to get info from form
+        name = request.form["name"]
+        status = request.form["status"]
+    except KeyError: #only runs is someone messes with the html
+        name, status = "", ""
+    
+    error = checks.check_for_rename_error(name, status)
+    if error:
+        session['error'] = error
+        return redirect(url_for('home'))
+
+    with sqlite3.connect("database.db") as con:  
+            con.row_factory = sqlite3.Row
+            cur = con.cursor() 
+            cur.execute("UPDATE Players SET name = ?, status = ? WHERE user = ? ", (name, status, session['user']))
+            con.commit()
+    return redirect(url_for('home'))
 
 
 ### join page ###
@@ -452,7 +474,6 @@ def _purge(code, user):
     if not verifiers.verify_session_logged_in():
         session['error']="You cant access _purge page before logging in!"
         return redirect(url_for('index'))
-
     #TODO: check if page is updated with database. Catches if host tries purging without refreshing page
     if not verifiers.verify_host(code) or user == session['user']:
         session['error']="something is not right! (_purge)"

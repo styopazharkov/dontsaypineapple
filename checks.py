@@ -48,6 +48,11 @@ def check_for_signup_error(user, password, passwordRepeat, name):
             return "Oh no! Someone already took this username."
     return  False
 
+def check_for_rename_error(name, status):
+    #TODO: more checks here
+    if len(name.strip()) == 0:
+        return "You must have a name!"
+
 ### verifier that checks that a code is good to join with. makes sure it's an actual game and that the user is not already in the game ###
 ## returns an error message if there is an error. False if there is no error ##
 def check_for_join_error(code):
