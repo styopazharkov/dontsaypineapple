@@ -13,6 +13,12 @@
         </form>
     </div>
 
+    <div class="error">
+        {% if  error %}
+        <p style="color: red;">Error: {{error}}</p>
+        {% endif  %}
+    </div>
+
     <div class="title">
         <h2>{{data['title']}}</h2>
     </div>

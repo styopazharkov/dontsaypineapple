@@ -27,9 +27,12 @@ def verify_user_in_game(user, code):
 
 ## verifies that the session user is the host ##
 def verify_host(code):
-        with sqlite3.connect("database.db") as con:  
-            con.row_factory = sqlite3.Row
-            cur = con.cursor() 
-            if cur.execute("SELECT count(*) FROM Games WHERE code = ? ", (code, )).fetchone()[0] == 0:
-                return False
-            return session['user'] == cur.execute("SELECT * FROM Games WHERE code = ? ", (code, )).fetchone()['host']
+    user = session['user']
+    with sqlite3.connect("database.db") as con:  
+        con.row_factory = sqlite3.Row
+        cur = con.cursor() 
+        if cur.execute("SELECT count(*) FROM Games WHERE code = ? ", (code, )).fetchone()[0] > 0:
+            return user == cur.execute("SELECT * FROM Games WHERE code = ? ", (code, )).fetchone()['host']
+        if cur.execute("SELECT count(*) FROM PastGames WHERE code = ? ", (code, )).fetchone()[0] > 0:
+            return user == cur.execute("SELECT * FROM PastGames WHERE code = ? ", (code, )).fetchone()['host']
+        return False

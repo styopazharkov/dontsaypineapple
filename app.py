@@ -14,7 +14,7 @@ import hashing
 
 ### The following code creates the app variable and assigns a secret key for the session dictionary ###
 app = Flask(__name__)
-app.secret_key = "An arbitrary string for Don't Sat Pineapple"
+app.secret_key = "An arbitrary key for Don't Say Pineapple"
 
 
 #### PAGE ROUTING BELOW THIS LINE ####
@@ -109,6 +109,11 @@ def home():
         session['error'] = "You cant access home page before logging in!"
         return redirect(url_for('index'))
 
+    try:
+        error = session.pop('error')
+    except KeyError:
+        error = ""
+    
     data = {} #data that will be put into html template
     data['user'] = session['user']
     with sqlite3.connect("database.db") as con:  
@@ -124,7 +129,7 @@ def home():
             else:
                 data['pastGames'].append(fetchers.get_past_button_info(game))
         data['stats'] = json.loads(row['stats'])
-    return render_template('home.html', data=data)
+    return render_template('home.html', data=data, error = error)
 
 
 ### join page ###
@@ -273,6 +278,10 @@ def activeGame(code):
 
 ### helper function for game. runs is the game is over ###
 def pastGame(code):
+    try:
+        error = session.pop('error')
+    except KeyError:
+        error = ""
     data={}
     with sqlite3.connect("database.db") as con:  
         con.row_factory = sqlite3.Row
@@ -291,7 +300,7 @@ def pastGame(code):
             'assassin': {'code': entry[0], 'name': fetchers.get_name(cur, entry[0])}, 
             'word': entry[3]
             } for entry in json.loads(gameRow['killLog'])]
-    return render_template('pastGame.html', data = data)
+    return render_template('pastGame.html', data = data, error=error)
 
 ### _start helper route starts a game that isnt started ###
 ## only possible by host ##
@@ -342,6 +351,11 @@ def _cancel(code):
 
     if not verifiers.verify_host(code):
         return redirect(url_for('home'))
+
+    error = checks.check_for_cancel_error(code)
+    if error:
+        session['error'] = error
+        return redirect(url_for('home'))
     
     with sqlite3.connect("database.db") as con:  
         con.row_factory = sqlite3.Row
@@ -367,9 +381,14 @@ def _kick(code, user):
         session['error']="You cant access _kick page before logging in!"
         return redirect(url_for('index'))
 
-    if not verifiers.verify_host(code) or not verifiers.verify_user_in_game(user, code) or user == session['user']:
-        session['error']="something is not right! (_kick page error)"
-        return redirect(url_for('index'))
+    if not verifiers.verify_host(code) or user == session['user']:
+        session['error']="Something is not right! (_kick page)"
+        return redirect(url_for('game', code = code))
+
+    error = checks.check_for_kick_error(code, user)
+    if error:
+        session['error'] = error
+        return redirect(url_for('game', code = code))
 
     with sqlite3.connect("database.db") as con:  
         con.row_factory = sqlite3.Row
@@ -394,11 +413,17 @@ def _killed(code):
     if not verifiers.verify_session_logged_in():
         session['error']="You cant access _killed page before logging in!"
         return redirect(url_for('index'))
-    
+
+    user = session['user']
+
+    error = checks.check_for_killed_error(code, user)
+    if error:
+        session['error'] = error
+        return redirect(url_for('game', code = code))
+
     with sqlite3.connect("database.db") as con:  
         con.row_factory = sqlite3.Row
         cur = con.cursor() 
-        user = session['user']
         row = cur.execute("SELECT * from Games WHERE code = ? ", (code, )).fetchone()
         alive = json.loads(row["alive"])
         alive.remove(user)  #removes user from the alive list of the game
@@ -429,10 +454,15 @@ def _purge(code, user):
         return redirect(url_for('index'))
 
     #TODO: check if page is updated with database. Catches if host tries purging without refreshing page
-    if not verifiers.verify_host(code) or not verifiers.verify_user_in_game(user, code) or user == session['user']:
+    if not verifiers.verify_host(code) or user == session['user']:
         session['error']="something is not right! (_purge)"
-        return redirect(url_for('index'))
+        return redirect(url_for('game', code = code))
 
+    error = checks.check_for_purge_error(code, user)
+    if error:
+        session['error'] = error
+        return redirect(url_for('game', code = code))
+    
     with sqlite3.connect("database.db") as con:  
         con.row_factory = sqlite3.Row
         cur = con.cursor()

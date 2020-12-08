@@ -12,6 +12,12 @@
         </form>
     </div>
 
+    <div class="error">
+        {% if  error %}
+        <p style="color: red;">Error: {{error}}</p>
+        {% endif  %}
+    </div>
+    
     <div class="welcome">
         <p>Hello, {{data['name']}} ({{data['user']}})</p>
     </div>
