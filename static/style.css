@@ -3,6 +3,6 @@
 <head>
 <style>
 body {
-    background-color: kightblue;
-    background-image: "static\Images\backgrounds\Background 1.png"
+    background-color: lightblue;
+    background-image: url(Background 1.png");
 }
