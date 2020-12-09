@@ -24,7 +24,7 @@
     </div>
 
     <div class="settings">
-        {% if data['admin'] %}
+        {% if data['admin'] and not data['sarted'] %}
             <form action="/_change_settings" method="POST">
                 <input type="radio" id="debug" name="difficulty" value="debug" {% if data['settings']['difficulty'] == debug %} checked="checked" {% endif %}>
                 <label for="debug">Debug</label>
