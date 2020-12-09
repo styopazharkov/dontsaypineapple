@@ -285,7 +285,7 @@ def activeGame(code):
         data['title'] = gameRow['name']
         data['admin'] = (gameRow['host'] == session['user'])
         data['started'] = gameRow['started']
-        data['settings'] = gameRow['settings']
+        data['settings'] = json.loads(gameRow['settings'])
         data['host'] = gameRow['host']
         data['players'] = json.loads(gameRow['players'])
         data['numberOfPlayers'] = len(data['players'])
@@ -362,6 +362,35 @@ def _start(code):
         cur.execute("UPDATE Games SET started = ?,  alive = ?, targets = ?, killCount = ? WHERE code = ? ", (started, alive, targets, killCount, code))
         con.commit()
     return redirect(url_for('game', code = code))
+
+@app.route('/_change_settings/<code>', methods = ['POST'])
+def  _change_settings(code):
+    if not verifiers.verify_session_logged_in():
+        session['error']="You cant access _change_settings page before logging in!"
+        return redirect(url_for('index'))
+
+    if not verifiers.verify_host(code):
+        return redirect(url_for('home'))
+
+    settings = {}
+    try: #tries to get info
+        settings['difficulty'] = request.form['difficulty']
+        settings['passon'] = request.form['passon']
+    except KeyError: #this only runs is someone messes with the html
+        settings['difficulty'], settings['passon'] = "", ""
+    
+    error = checks.check_for_settings_error(settings)
+    if error:
+        session['error'] = error
+        return redirect(url_for('game', code = code))
+
+    with sqlite3.connect("database.db") as con:  
+        con.row_factory = sqlite3.Row
+        cur = con.cursor() 
+        cur.execute("UPDATE Games SET settings = ? WHERE code = ? ", (json.dumps(settings), code))
+    return redirect(url_for('game', code = code))
+
+    
 
 ### _cancel helper route cancels a game that isn't yet started ###
 ## only possible by host ##

@@ -53,6 +53,16 @@ def check_for_rename_error(name, status):
     if len(name.strip()) == 0:
         return "You must have a name!"
 
+def check_for_settings_error(settings):
+    try:
+        if settings['difficulty'] not in ['debug', 'easy', 'medium', 'hard']:
+            return "settings difficulty error"
+        if settings['passon'] not in ['pass', 'shuffle']:
+            return "settings passon error"
+        return False
+    except KeyError:
+        return False
+
 ### verifier that checks that a code is good to join with. makes sure it's an actual game and that the user is not already in the game ###
 ## returns an error message if there is an error. False if there is no error ##
 def check_for_join_error(code):
