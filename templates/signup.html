@@ -9,27 +9,24 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/signup.css') }}">
 </head>
 <body>
+    <button class="back button" onclick="window.location.href='{{ url_for( 'index')}}';">Back</button>
 
-    <div class="back">
-        <form action="/" >
-            <input type="submit" value="Back">
-        </form>
-    </div>
-
-    <div class="error">
-        {% if  error %}
-            <p style="color: red;">Error: {{error}}</p>
-        {% endif  %}
-    </div>
-
-    <div class="container">
-        <form action="/_signup" method="POST">
-            <p><input type = "text" name = "user" placeholder="Enter your username" value="{{user}}"/></p>
-            <p><input type = "password" name = "password" placeholder="password" /></p>
-            <p><input type="password" name = "passwordRepeat" placeholder="confirm your password"></p>
-            <p><input type = "text" name = "name" placeholder="Enter your name" value="{{name}}"/></p>
-            <p><input type = "submit" value = "Sign Up" /></p>
-        </form>
+    <div class="grid">
+        <div class="error">
+            {% if  error %}
+                <p>Error: {{error}}</p>
+            {% endif  %}
+        </div>
+    
+        <div class="signup">
+            <form action="/_signup" method="POST">
+                <p><input type = "text" name = "user" placeholder="Enter your username" value="{{user}}"/></p>
+                <p><input type = "password" name = "password" placeholder="password" /></p>
+                <p><input type="password" name = "passwordRepeat" placeholder="confirm your password"></p>
+                <p><input type = "text" name = "name" placeholder="Enter your name" value="{{name}}"/></p>
+                <p><input type = "submit" value = "Sign Up" /></p>
+            </form>
+        </div>
     </div>
 </body>
 </html>
