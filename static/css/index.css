@@ -6,3 +6,30 @@
     background-size: contain;
 }
 
+.grid {
+    display: grid;
+    grid-template-rows: 100px 20px 200px 100px 100px;
+}
+
+form {
+    height: 100%;
+}
+
+.grid2 {
+    height: 100%;
+    display: grid;
+    grid-template-rows: 33% 33% 33%;
+}
+
+input {
+    margin: 10px;
+    width: 300px;
+    justify-self: center;
+}
+
+.loginButton {
+    width: 100px;
+}
+
+.grid2 *{
+}

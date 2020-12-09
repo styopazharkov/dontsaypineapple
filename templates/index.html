@@ -9,36 +9,39 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
 </head>
 <body>
-
-    <div class="welcome">
-    </div>
-
-    <div class="error">
-        {% if  error %}
-            <p style="color: red;">Error: {{error}}</p>
-        {% endif  %}
-    </div>
-
-    <div class="login">
-        <form action="/_login" method = "post">
-            <p><input type = "text" name = "user" placeholder="Enter your username" value="{{user}}"/></p>
-            <p><input type="password" name="password" placeholder="Enter your password"></p>
-            <p><input type = "submit" value = "Enter" /></p>
-        </form>
-    </div>
-
-    <div class="singup">
-        <p>Not a user yet?</p>
-        <form action="/signup">
-            <input type="submit" value = "Sign up">
-        </form>
-    </div>
-
-    <div class="rules">
-        <p>Don't know how to play?</p>
-        <form action="/rules">
-            <input type="submit" value="Rules">
-        </form>
+    <div class="grid">
+        <div class="welcome">
+        </div>
+    
+        <div class="error">
+            {% if  error %}
+                <p style="color: red;">Error: {{error}}</p>
+            {% endif  %}
+        </div>
+    
+        <div class="login">
+            <form action="/_login" method = "post">
+                <div class="grid2">
+                <input type = "text" name = "user" placeholder="Enter your username" value="{{user}}"/>
+                <input type="password" name="password" placeholder="Enter your password">
+                <input type = "submit" class="loginButton" value = "Log In" />
+                </div>
+            </form>
+        </div>
+    
+        <div class="singup">
+            <p>Not a user yet?</p>
+            <form action="/signup">
+                <input type="submit" value = "Sign up">
+            </form>
+        </div>
+    
+        <div class="rules">
+            <p>Don't know how to play?</p>
+            <form action="/rules">
+                <input type="submit" class="button" value="Rules">
+            </form>
+        </div>
     </div>
 </body>
 </html>
