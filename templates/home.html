@@ -21,7 +21,6 @@
     </div>
 
     <div class="welcome">
-        
         <p>Hello,
         <form action="/_rename" method="POST">
             <input type="text" name="name" value="{{data['name']}}">
@@ -44,10 +43,14 @@
     <div class="active">
         <h4>Active Games:</h4>
         {% for game in data['activeGames'] %}
-            <div class="game">
-                <form action="/game/{{game['code']}}" >
-                    <input type="submit" value="{{game}}">
-                </form>
+            <div class="gameButton" style="background-color: aquamarine;" onclick="window.location.href='{{ url_for( 'game', code= game['code']) }}';">
+                <h4>{{game['name']}} ({{game['code']}}) by {{game['host']}}</h4>
+                {% if game['started'] %}
+                <p>{{game['numberOfPlayers']}} players, {{game['numberOfAlive']}} alive</p>
+                {% else %}
+                <p>{{game['numberOfPlayers']}} players, not started</p>
+                {% endif %}
+                
             </div>
         {% endfor %} 
     </div>
