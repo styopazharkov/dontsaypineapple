@@ -97,6 +97,16 @@ def check_for_create_error(code, name, settings):
             return "A game with this code already exists"
     return False
 
+def check_for_cancel_error(code):
+    with sqlite3.connect("database.db") as con:
+        con.row_factory = sqlite3.Row
+        cur = con.cursor()
+        if cur.execute("SELECT count(*) FROM Games WHERE code = ? ", (code, )).fetchone()[0] == 0:
+            return "This game has already ended or does not exist"
+        if cur.execute("SELECT * FROM Games WHERE code= ? ", (code, )).fetchone()["started"]:
+            return "This game has already started"
+    return False
+
 def check_for_start_error(code):
     with sqlite3.connect("database.db") as con:
         con.row_factory = sqlite3.Row
