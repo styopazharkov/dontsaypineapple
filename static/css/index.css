@@ -1,5 +1,8 @@
-body {
-    background-image: url(/static/images/backgrounds/background1tile.png);
-    background-size: 10%;
+.welcome {
+    height: 100px;
+    background-image: url(../img/welcome.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
 }
 
