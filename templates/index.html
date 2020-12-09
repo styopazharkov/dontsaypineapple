@@ -15,7 +15,7 @@
     
         <div class="error">
             {% if  error %}
-                <p style="color: red;">Error: {{error}}</p>
+                <p>Error: {{error}}</p>
             {% endif  %}
         </div>
     
@@ -24,23 +24,19 @@
                 <div class="grid2">
                 <input type = "text" name = "user" placeholder="Enter your username" value="{{user}}"/>
                 <input type="password" name="password" placeholder="Enter your password">
-                <input type = "submit" class="loginButton" value = "Log In" />
+                <input type = "submit" class="loginButton button" value = "Log In" />
                 </div>
             </form>
         </div>
     
-        <div class="singup">
+        <div class="signup">
             <p>Not a user yet?</p>
-            <form action="/signup">
-                <input type="submit" value = "Sign up">
-            </form>
+            <button class="button" onclick="window.location.href='{{ url_for( 'signup')}}';">Create Account</button>
         </div>
     
         <div class="rules">
             <p>Don't know how to play?</p>
-            <form action="/rules">
-                <input type="submit" class="button" value="Rules">
-            </form>
+            <button class="button" onclick="window.location.href='{{ url_for( 'rules')}}';">Read the Rules</button>
         </div>
     </div>
 </body>

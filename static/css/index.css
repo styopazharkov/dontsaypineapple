@@ -15,13 +15,18 @@ form {
     height: 100%;
 }
 
-.grid2 {
+.grid2{
     height: 100%;
     display: grid;
     grid-template-rows: 33% 33% 33%;
 }
 
-input {
+.error{
+    justify-self: center;
+}
+
+input{
+    text-align: center;
     margin: 10px;
     width: 300px;
     justify-self: center;
@@ -31,5 +36,21 @@ input {
     width: 100px;
 }
 
-.grid2 *{
+.signup, .rules{
+    height: 100%;
+    display: grid;
+    grid-template-rows: 40% 60%;
+}
+
+.signup p , .rules p{
+    font-size: large;
+    margin-top: 20px;
+    justify-self: center;
+} 
+.signup button, .rules button{
+    font-size: large;
+    margin: 10px;
+    height: 30px;
+    width: 150px;
+    justify-self: center;
 }

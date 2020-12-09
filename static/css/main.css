@@ -2,11 +2,30 @@
     margin: 0;
     padding: 0;
     font-family: 'Times New Roman', Times, serif;
-    font-size: large;
+    font-size: x-large;
 }
 
 body {
     background-image: url(/static/img/backgrounds/pastelLight.jpg);
     /* background-color: #fab2a0;  */
     background-size: 30%;
+}
+
+.error p {
+    color: red;
+    font-size: smaller;
+}
+
+.textbox {
+    border: 1px solid black;
+    border-radius: 5px;
+}
+
+.button {
+    border: 1px solid darkgrey;
+    border-radius: 5px;
+}
+
+.button:hover {
+    background-color: blanchedalmond;
 }
