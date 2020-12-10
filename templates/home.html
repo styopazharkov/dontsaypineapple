@@ -9,11 +9,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
 </head>
 <body>
-    <div class="logout">
-        <form action="/" >
-            <input type="submit" value="Log Out">
-        </form>
-    </div>
+    <button class="back button" onclick="window.location.href='{{ url_for( 'index')}}';">Log Out</button>
 
     <div class="error">
         {% if  error %}
@@ -66,17 +62,10 @@
         {% endfor %} 
     </div>
 
+    
     <div class="footbar">
-        <div class="join">
-            <form action="/join" >
-                <input type="submit" value="Join">
-            </form>
-        </div>
-        <div class="create">
-            <form action="/create" >
-                <input type="submit" value="Create new game">
-            </form>
-        </div>
+        <button class="join button" onclick="window.location.href='{{ url_for( 'join')}}';">Join a Game</button>
+        <button class="create button" onclick="window.location.href='{{ url_for( 'create')}}';">Create a Game</button>
     </div>
 </body>
 </html>
