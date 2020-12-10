@@ -24,5 +24,13 @@
 
 .grid2 {
     display: grid;
-    grid-template-columns: 50% 50%;
+    grid-template-columns: 100%;
+    margin: 10px;
+}
+
+@media screen and (min-width:700px)  {
+    .grid2 {
+        display: grid;
+        grid-template-columns: 50% 50%;
+    }
 }

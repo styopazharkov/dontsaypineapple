@@ -41,7 +41,7 @@
         <div class="active">
             <h4>Active Games:</h4>
             {% for game in data['activeGames'] %}
-                <div class="gameButton" style="background-color: aquamarine;" onclick="window.location.href='{{ url_for( 'game', code= game['code']) }}';">
+                <div class="button"  onclick="window.location.href='{{ url_for( 'game', code= game['code']) }}';">
                     <h4>{{game['name']}} ({{game['code']}}) by {{game['host']}}</h4>
                     {% if game['started'] %}
                     <p>{{game['numberOfPlayers']}} players, {{game['numberOfAlive']}} alive</p>
