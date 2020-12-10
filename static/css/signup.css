@@ -21,6 +21,9 @@
 .error p{
     font-size: large;
 }
+.error {
+    justify-self: center;
+}
 
 input{
     text-align: center;

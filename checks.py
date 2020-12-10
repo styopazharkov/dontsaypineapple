@@ -17,7 +17,7 @@ def check_for_login_error(user, password):
         if cur.execute("SELECT count(*) FROM Players WHERE user= ? ", (user, )).fetchone()[0] == 0: #checks that username exsts
             return "No such user exists"
         if not hashing.verify(password, cur.execute("SELECT * FROM Players WHERE user = ? ", (session['user'], )).fetchone()['password']): # checks that passwords match
-            return "The username or password is wrong"
+            return "username or password is wrong"
     return  False
         
 ### verifier that checks that a username, password and name are good to sign up with. makes sure it's long and is in the database ###
@@ -25,19 +25,19 @@ def check_for_login_error(user, password):
 def check_for_signup_error(user, password, passwordRepeat, name):
     #TODO: check that the username only contains normal characters
     if len(user) < 5:
-        return "Your username can't be less than 5 characters long."
+        return "username must be at least 5 letters"
     if len(user) > 20:
-        return "Your username can't be more than 20 characters long."
+        return "username can't be more than 20 letters"
     if re.search("[\s]", user):
-        return "Your username can't contain spaces or other whitespace characters"
+        return "username can't contain and whitespace"
     if len(password) < 5:
-        return "Your password can't be less than 5 characters long."
+        return "password must be at least 5 characters"
     if len(password) > 100:
-        return "Your password can't be more than 100 characters long."
+        return "username can't be more than 100 letters"
     if re.search("[\s]", password):
-        return "Your password can't contain spaces or other whitespace characters"
+        return "password can't contain any whitespaces"
     if password == user:
-        return "Your username and password must be different!"
+        return "username and password must be different!"
     if password != passwordRepeat:
         return "The passwords must match."
     if len(name.strip()) == 0:
@@ -85,7 +85,7 @@ def check_for_join_error(code):
 def check_for_create_error(code, name, settings):
     #TODO: check for valid settings
     if len(code)<5:
-        return "game code must be at least 5 characters long"
+        return "code must be at least 5 letters"
     if len(name.strip())==0:
         return "your game must have a name"
     with sqlite3.connect("database.db") as con:  
@@ -102,7 +102,7 @@ def check_for_cancel_error(code):
         con.row_factory = sqlite3.Row
         cur = con.cursor()
         if cur.execute("SELECT count(*) FROM Games WHERE code = ? ", (code, )).fetchone()[0] == 0:
-            return "This game has already ended or does not exist"
+            return "game has already ended or does not exist"
         if cur.execute("SELECT * FROM Games WHERE code= ? ", (code, )).fetchone()["started"]:
             return "This game has already started"
     return False
