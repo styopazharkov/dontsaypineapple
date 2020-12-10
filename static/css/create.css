@@ -33,15 +33,8 @@
 }
 
 #difficulty {
-    float: left;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-}
-
-#difficuly label {
-    justify-self: center;
-    margin:4px;
-    overflow:auto;
 }
 
 #difficulty label span {
@@ -55,7 +48,6 @@
 }
 
 #difficulty label input {
-    visibility: hidden;
     display: none;
 }
 
