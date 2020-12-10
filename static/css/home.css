@@ -35,7 +35,8 @@
 }
 
 .status input {
-    font-size: large;
+    font-style: italic;
+    font-size: x-large;
     border: none;
     background: none;
     width: 100%;
