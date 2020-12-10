@@ -67,3 +67,34 @@
     color:#F7F7F7;
 }
 
+.question {
+    background-image: url(../img/question.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    margin-left: 5px;
+    position: relative;
+    display: inline-block;
+}
+
+
+.tooltiptext {
+    visibility: hidden;
+    width: 150px;
+    background-color: black;
+    font-size: large;
+    color: #fff;
+    text-align: center;
+    padding: 5px;
+    border-radius: 6px;
+
+    position: absolute;
+    z-index: 1;
+
+    top: -5px;
+    right: 105%;
+}
+
+.question:hover .tooltiptext {
+    visibility: visible;
+  }
