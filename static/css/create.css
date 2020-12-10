@@ -34,10 +34,20 @@
 
 #difficulty {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 30px;
 }
 
-#difficulty label span {
+#passon {
+    display: grid;
+    grid-template-columns: 1fr 1fr 30px;
+}
+
+#theme {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+
+#difficulty label span, #passon label span , #theme label span {
     width: 100%;
     background-color:#EFEFEF;
     border-radius:4px;
@@ -47,11 +57,12 @@
     padding:13px 0px;
 }
 
-#difficulty label input {
+#difficulty label input, #passon label input, #theme label input  {
     display: none;
 }
 
-#difficulty input:checked + span {
+#difficulty input:checked + span, #passon input:checked + span, #theme input:checked + span{
     background-color:#404040;
     color:#F7F7F7;
 }
+
