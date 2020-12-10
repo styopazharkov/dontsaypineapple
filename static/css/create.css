@@ -1,0 +1,64 @@
+.grid {
+    position: absolute;
+    top: 47%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: grid;
+    grid-template-rows: 30px 1fr;
+    height: 400px;
+}
+
+.create {
+    display: grid;
+    grid-template-rows: 15px 1fr 1fr 1fr 1fr 1fr;
+}
+
+
+.info {
+    justify-self: center;
+}
+
+.error p{
+    font-size: large;
+}
+.error {
+    justify-self: center;
+}
+
+.textbox, .radio{
+    text-align: center;
+    margin: 10px;
+    width: 300px;
+    justify-self: center;
+}
+
+#difficulty {
+    float: left;
+}
+
+#difficuly label {
+    margin:4px;
+    background-color:#EFEFEF;
+    border-radius:4px;
+    border:1px solid #D0D0D0;
+    overflow:auto;
+
+}
+
+#difficulty label span {
+    width:100px;
+    float: left;
+    text-align:center;
+    padding:13px 0px;
+    display:block;
+}
+
+#difficulty label input {
+    visibility: hidden;
+    display: none;
+}
+
+#difficulty input:checked + span {
+    background-color:#404040;
+    color:#F7F7F7;
+}
