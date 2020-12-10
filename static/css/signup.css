@@ -4,15 +4,21 @@
     left: 50%;
     transform: translate(-50%, -50%);
     display: grid;
-    grid-template-rows: 30px 1fr;
+    grid-template-rows: 20px 1fr;
+    height: 400px;
 }
 
 .signup {
     display: grid;
-    grid-template-rows: 20% 20% 20% 20% 20%;
+    grid-template-rows: 15% 17% 17% 17% 17% 17%;
 }
 
-input {
+
+.info {
+    justify-self: center;
+}
+
+input, .signup p {
     text-align: center;
     margin: 10px;
     width: 300px;

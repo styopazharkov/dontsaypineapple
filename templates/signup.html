@@ -12,13 +12,14 @@
     <button class="back button" onclick="window.location.href='{{ url_for( 'index')}}';">Back</button>
 
     <div class="grid">
-        <div class="error">
-            {% if  error %}
-                <p>Error: {{error}}</p>
-            {% endif  %}
-        </div>
-    
+
+        <p class="info">Please Enter Your Info</p>
         <form class="signup" action="/_signup" method="POST">
+            <div class="error">
+                {% if  error %}
+                    <p>{{error}}</p>
+                {% endif  %}
+            </div>
             <input class="textbox" type = "text" name = "user" placeholder="Enter your username" value="{{user}}"/>
             <input class="textbox" type = "password" name = "password" placeholder="password" />
             <input class="textbox" type="password" name = "passwordRepeat" placeholder="confirm your password">
