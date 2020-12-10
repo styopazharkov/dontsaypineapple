@@ -55,6 +55,7 @@
 }
 
 .hello input {
+    width: 100%;
     font-size: xx-large;
     border: none;
     background: none;

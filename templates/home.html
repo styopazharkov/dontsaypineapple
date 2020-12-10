@@ -12,7 +12,6 @@
     <button class="back button" onclick="window.location.href='{{ url_for( 'index')}}';">Log Out</button>
 
 
-
     <div class="grid1">
         <div class="error">
             {% if  error %}
@@ -38,7 +37,6 @@
             <p>You have {{data['stats']['kills']}} kills, {{data['stats']['killWins']}} kill wins, and {{data['stats']['survivalWins']}} survival wins over {{data['stats']['played']}} games.</p>
         </div>
     </div>
-
 
     <div class="grid2">
         <div class="active">
@@ -68,11 +66,10 @@
     </div>
 
 
-    <div class="footpad"></div>
     
     <div class="footbar">
         <button class="join button" onclick="window.location.href='{{ url_for( 'join')}}';">Join a Game</button>
         <button class="create button" onclick="window.location.href='{{ url_for( 'create')}}';">Create a Game</button>
-    </div>
+    </div> 
 </body>
 </html>
