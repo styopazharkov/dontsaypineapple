@@ -11,24 +11,27 @@
 <body>
     <button class="back button" onclick="window.location.href='{{ url_for( 'index')}}';">Log Out</button>
 
-    <div class="error">
-        {% if  error %}
-        <p style="color: red;">Error: {{error}}</p>
-        {% endif  %}
-    </div>
+
 
     <div class="grid1">
-        <div class="welcome">
-            <form action="/_rename" method="POST">
-                <div class="hello">
-                    Hello, <input type="text" name="name" value="{{data['name']}}">  ({{data['user']}})
-                    <p>press enter to save</p>
-                </div>
-                <input type="text" name="status" placeholder="What are you feeling? Enter a status." value="{{data['status']}}">
-                
-                <input type="submit" hidden>
-            </form> 
+        <div class="error">
+            {% if  error %}
+            <p style="color: red;">Error: {{error}}</p>
+            {% endif  %}
         </div>
+        <form  class="welcome" action="/_rename" method="POST">
+            <div class="hello">
+                Hello, <input type="text" name="name" value="{{data['name']}}">  ({{data['user']}})
+                <span class="tooltiptext">press enter to save</span>
+            </div>
+            <div class="status">
+                <input type="text" name="status" placeholder="What are you feeling? Enter a status." value="{{data['status']}}">
+                <span class="tooltiptext">press enter to save</span>
+            </div>
+            
+            
+            <input type="submit" hidden>
+        </form> 
 
         <div class="stats">
             <h4>Stats:</h4>

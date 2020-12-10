@@ -18,7 +18,7 @@
 
 .grid1{
     display: grid;
-    grid-template-rows: 60% 40%;
+    grid-template-rows: 25px 1fr 1fr;
     height: 300px;
     width: 80%;
     align-self: center;
@@ -38,3 +38,48 @@
         grid-template-columns: 50% 50%;
     }
 }
+
+
+.hello, .status{
+    justify-self: center;
+    font-size: xx-large;
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+
+.status input {
+    font-size: large;
+    border: none;
+    background: none;
+    width: 100%;
+}
+
+.hello input {
+    font-size: xx-large;
+    border: none;
+    background: none;
+}
+
+.tooltiptext {
+    visibility: hidden;
+    width: 150px;
+    background-color: black;
+    font-size: large;
+    color: #fff;
+    text-align: center;
+    padding: 5px;
+    border-radius: 6px;
+
+    position: absolute;
+    z-index: 1;
+
+    width: 200px;
+    bottom: 100%;
+    left: 50%;
+    margin-left: -60px; 
+}
+
+input:focus + .tooltiptext {
+    visibility: visible;
+  }
