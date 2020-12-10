@@ -18,15 +18,13 @@
             {% endif  %}
         </div>
     
-        <div class="signup">
-            <form action="/_signup" method="POST">
-                <p><input type = "text" name = "user" placeholder="Enter your username" value="{{user}}"/></p>
-                <p><input type = "password" name = "password" placeholder="password" /></p>
-                <p><input type="password" name = "passwordRepeat" placeholder="confirm your password"></p>
-                <p><input type = "text" name = "name" placeholder="Enter your name" value="{{name}}"/></p>
-                <p><input type = "submit" value = "Sign Up" /></p>
-            </form>
-        </div>
+        <form class="signup" action="/_signup" method="POST">
+            <input class="textbox" type = "text" name = "user" placeholder="Enter your username" value="{{user}}"/>
+            <input class="textbox" type = "password" name = "password" placeholder="password" />
+            <input class="textbox" type="password" name = "passwordRepeat" placeholder="confirm your password">
+            <input class="textbox" type = "text" name = "name" placeholder="Enter your name" value="{{name}}"/>
+            <input class="textbox" type = "submit" class = "button" value = "Sign Up" /></p>
+        </form>
     </div>
 </body>
 </html>
