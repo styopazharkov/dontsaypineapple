@@ -20,6 +20,10 @@
     display: grid;
     grid-template-rows: 60% 40%;
     height: 300px;
+    width: 80%;
+    align-self: center;
+    margin: auto;
+    margin-top: 50px;
 }
 
 .grid2 {

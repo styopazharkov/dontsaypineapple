@@ -19,15 +19,15 @@
 
     <div class="grid1">
         <div class="welcome">
-            <p>Hello,
             <form action="/_rename" method="POST">
-                <input type="text" name="name" value="{{data['name']}}">
+                <div class="hello">
+                    Hello, <input type="text" name="name" value="{{data['name']}}">  ({{data['user']}})
+                    <p>press enter to save</p>
+                </div>
                 <input type="text" name="status" placeholder="What are you feeling? Enter a status." value="{{data['status']}}">
-                <p>press enter to save</p>
+                
                 <input type="submit" hidden>
             </form> 
-            ({{data['user']}})
-            </p>
         </div>
 
         <div class="stats">
