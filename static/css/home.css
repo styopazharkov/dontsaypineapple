@@ -1,3 +1,28 @@
 .back {
     width: 120px;
 }
+
+.footbar {
+    width: 100%;
+    height: 60px;
+    position: fixed;
+    bottom: 0;
+    display: grid;
+    grid-template-columns: 50% 50%;
+}
+
+.join, .create {
+    width: 100%;
+    border-radius: 0;
+}
+
+.grid1{
+    display: grid;
+    grid-template-rows: 60% 40%;
+    height: 300px;
+}
+
+.grid2 {
+    display: grid;
+    grid-template-columns: 50% 50%;
+}
