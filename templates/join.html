@@ -9,22 +9,18 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/join.css') }}">
 </head>
 <body>
-    <div class="back">
-        <form action="/home" >
-            <input type="submit" value="Back">
-        </form>
-    </div>
-
-    <div class="error">
-        {% if  error %}
-            <p style="color: red;">Error: {{error}}</p>
-        {% endif  %}
-    </div>
-
-    <div class="container">
-        <form action="/_join/" method = "post">
-            <p><input type = "text" name = "code" placeholder="Enter the game code" /></p>
-            <p><input type = "submit" value = "Join" /></p>
+    <button class="back button" onclick="window.location.href='{{ url_for( 'home')}}';">Back</button>
+    
+    <div class="grid">
+        <p class="info">Join an Existing Game</p>
+        <form class="join" action="/_join/" method="POST">
+            <div class="error">
+                {% if  error %}
+                    <p>{{error}}</p>
+                {% endif  %}
+            </div>
+            <input class="textbox" type = "text" name = "code" placeholder="Enter the game code" />
+            <input class="button" type = "submit" value = "Join" />
         </form>
     </div>
 </body>

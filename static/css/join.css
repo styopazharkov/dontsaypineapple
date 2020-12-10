@@ -1,0 +1,32 @@
+.grid {
+    position: absolute;
+    top: 47%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: grid;
+    grid-template-rows: 30px 1fr;
+    height: 170px;
+}
+
+.join {
+    display: grid;
+    grid-template-rows: 15px 1fr 1fr;
+}
+
+.info {
+    justify-self: center;
+}
+
+.error p{
+    font-size: large;
+}
+.error {
+    justify-self: center;
+}
+
+input{
+    text-align: center;
+    margin: 10px;
+    width: 300px;
+    justify-self: center;
+}
