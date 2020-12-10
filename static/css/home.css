@@ -26,19 +26,6 @@
     margin-top: 50px;
 }
 
-.grid2 {
-    display: grid;
-    grid-template-columns: 100%;
-}
-
-@media screen and (min-width:700px)  {
-    .grid2 {
-        display: grid;
-        grid-template-columns: 50% 50%;
-    }
-}
-
-
 .hello, .status{
     justify-self: center;
     font-size: xx-large;
@@ -83,6 +70,25 @@
 input:focus + .tooltiptext {
     visibility: visible;
   }
+
+
+.grid2 {
+    display: grid;
+    grid-template-columns: 100%;
+}
+
+@media screen and (min-width:700px)  {
+    .grid2 {
+        display: grid;
+        grid-template-columns: 50% 50%;
+    }
+
+    .hello input {
+        width: 60%;
+    }
+}
+
+
 
 .footpad {
     height: 85px;
