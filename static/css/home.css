@@ -29,7 +29,6 @@
 .grid2 {
     display: grid;
     grid-template-columns: 100%;
-    margin: 10px;
 }
 
 @media screen and (min-width:700px)  {
@@ -83,3 +82,7 @@
 input:focus + .tooltiptext {
     visibility: visible;
   }
+
+.footpad {
+    height: 85px;
+}
