@@ -69,27 +69,26 @@
         <!-- TODO make this block -->
         {% if data['started'] %}
             <div class="secret">
-            {% if data['user'] in data['alive'] %}
-                <div class="cover">
-                    <p>Press to see word</p>
-                </div>
-                <div class = "word">
-                    <p>Your word is: {{data['word']}}</p>
-                    <p>Your target is: {{data['target']}}</p>
-                </div>
-            {% else %}
-                <div class="cover">
-                    You are dead. Press to see killer word
-                </div>
-                <div class = "deathMessage">
-                    {% if data['user'] in data['purged'] %}
-                        you were purged for {{data['target']}} by host.
-                    {% else %}
-                        {{data['target']}} killed you with '{{data['word']}}'.
-                    {% endif %}
-                </div>
+                {% if data['user'] in data['alive'] %}
+                    <div class="cover">
+                        Press to see your misson.
+                    </div>
+                    <div class = "word">
+                        Kill {{data['target']}} with '{{data['word']}}'!
+                    </div>
+                {% else %}
+                    <div class="cover">
+                        You are dead. Press to see info.
+                    </div>
+                    <div class = "deathMessage">
+                        {% if data['user'] in data['purged'] %}
+                            you were purged for {{data['target']}} by host.
+                        {% else %}
+                            {{data['target']}} killed you with '{{data['word']}}'.
+                        {% endif %}
+                    </div>
+                {% endif %}
             </div>
-            {% endif %}
         {% endif %}
 
         <div class = "players">

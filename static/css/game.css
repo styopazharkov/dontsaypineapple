@@ -123,6 +123,15 @@
     border-radius: 6px;
 }
 
+.word, .deathMessage{
+    height:  45px;
+    width: 100%;
+    background-color: rgb(255, 110, 110);
+    border-radius: 16px;
+    padding-top: 15px;
+    text-align: center;
+}
+
 .secret:active:hover  .cover{
     width: 0;
     transition-duration: 0.5s;
