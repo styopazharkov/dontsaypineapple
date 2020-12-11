@@ -167,4 +167,8 @@
     .waiting {
         padding-top: 10px;
         font-size: xx-large;
-    }
+}
+
+.footpad {
+    height: 80px;
+}
