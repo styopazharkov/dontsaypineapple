@@ -25,23 +25,27 @@ def check_for_login_error(user, password):
 def check_for_signup_error(user, password, passwordRepeat, name):
     #TODO: check that the username only contains normal characters
     if len(user) < 5:
-        return "username must be at least 5 letters"
+        return "username must be at least 5 letters!"
     if len(user) > 20:
-        return "username can't be more than 20 letters"
+        return "username can't be more than 20 letters!"
     if re.search("[\s]", user):
-        return "username can't contain and whitespace"
+        return "username can't contain and whitespace!"
     if len(password) < 5:
-        return "password must be at least 5 characters"
+        return "password must be at least 5 characters!"
     if len(password) > 100:
-        return "username can't be more than 100 letters"
+        return "password can't be more than 100 characters!"
     if re.search("[\s]", password):
-        return "password can't contain any whitespaces"
+        return "password can't contain whitespaces!"
     if password == user:
         return "username and password must be different!"
     if password != passwordRepeat:
         return "The passwords must match."
-    if len(name.strip()) == 0:
+    if len(name) == 0:
         return "You must have a name!"
+    if len(name) < 2:
+        return "Name must be at least 2 characters!"
+    if len(user) > 20:
+        return "Name can't be more than 20 characters!"
     with sqlite3.connect("database.db") as con:
         cur = con.cursor()
         if cur.execute("SELECT count(*) FROM Players WHERE user= ? ", (user, )).fetchone()[0] > 0:
@@ -52,6 +56,10 @@ def check_for_rename_error(name, status):
     #TODO: more checks here
     if len(name.strip()) == 0:
         return "You must have a name!"
+    if len(name) == 0:
+        return "You must have a name!"
+    if len(name) < 2:
+        return "Name must be at least 2 characters!"
 
 def check_for_settings_error(settings):
     try:

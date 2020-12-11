@@ -77,7 +77,7 @@ def _signup():
         user = request.form["user"].lower()
         password = request.form["password"]
         passwordRepeat = request.form["passwordRepeat"]
-        name = request.form["name"] 
+        name = request.form["name"].strip()
     except KeyError: #only runs is someone messes with the html
         password, passwordRepeat, user, name = "", "", "", ""
     
