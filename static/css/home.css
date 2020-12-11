@@ -94,3 +94,7 @@ input:focus + .tooltiptext {
 .footpad {
     height: 85px;
 }
+
+.nametext {
+    color: red;
+}

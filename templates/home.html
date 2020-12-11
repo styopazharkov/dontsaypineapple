@@ -42,8 +42,8 @@
         <div class="active">
             <h4>Active Games:</h4>
             {% for game in data['activeGames'] %}
-                <div class="button"  onclick="window.location.href='{{ url_for( 'game', code= game['code']) }}';">
-                    <h4>{{game['name']}} ({{game['code']}}) by {{game['host']}}</h4>
+                <div class="active button"  onclick="window.location.href='{{ url_for( 'game', code= game['code']) }}';">
+                    <h4 class="nametext">{{game['name']}} ({{game['code']}}) by {{game['host']}}</h4>
                     {% if game['started'] %}
                     <p>{{game['numberOfPlayers']}} players, {{game['numberOfAlive']}} alive</p>
                     {% else %}
@@ -56,7 +56,7 @@
         <div class="past">
             <h4>Past Games:</h4>
             {% for game in data['pastGames'] %}
-                <div class="game">
+                <div class="past button">
                     <form action="/game/{{game['code']}}" >
                         <input type="submit" value="{{game}}">
                     </form>
