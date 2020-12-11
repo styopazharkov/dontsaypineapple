@@ -96,5 +96,6 @@ input:focus + .tooltiptext {
 }
 
 .nametext {
-    color: red;
+    color: black;
+    position: center;
 }
