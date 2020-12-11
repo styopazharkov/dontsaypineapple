@@ -11,6 +11,9 @@
 <body>
     <button class="back button" onclick="window.location.href='{{ url_for( 'home')}}';">Back</button>
 
+    <div class="grid">
+
+    </div>
     <div class="error">
         {% if  error %}
         <p style="color: red;">Error: {{error}}</p>
@@ -71,17 +74,17 @@
     </div>
 
     {% if not data['started'] %}
-        <div class = "start">
+        <div class = "footbar">
             {% if data['admin'] %}
                 {% if data['numberOfPlayers'] > 1 %}
-                <form action="/_start/{{data['code']}}" method="post">
-                    <input type="submit" value="Start Game">
-                </form>
+                    <form action="/_start/{{data['code']}}" method="post">
+                        <input class="start button" type="submit" value="Start Game">
+                    </form>
                 {% else %}
-                    <button disabled type="button" >Need 2 players to Start Game</button>
+                    <button disabled class="start button" type="button" >Need 2 players to Start Game</button>
                 {% endif %}
                 <form action="/_cancel/{{data['code']}}" method="post">
-                    <input type="submit" value="Cancel Game">
+                    <input class="cancel button" type="submit" value="Cancel Game">
                 </form>
             {% else %}
                 <p>Waiting for host to start game</p>
