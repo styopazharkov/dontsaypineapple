@@ -73,14 +73,14 @@
                     <div class="cover">
                         Press to see your misson.
                     </div>
-                    <div class = "word">
+                    <div class = "word" unselectable="on">
                         Kill {{data['target']}} with '{{data['word']}}'!
                     </div>
                 {% else %}
                     <div class="cover">
                         You are dead. Press to see info.
                     </div>
-                    <div class = "deathMessage">
+                    <div class = "deathMessage" unselectable="on">
                         {% if data['user'] in data['purged'] %}
                             you were purged for {{data['target']}} by host.
                         {% else %}
