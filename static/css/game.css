@@ -20,19 +20,27 @@
     justify-self: center;
 }
 
+.adminSettings{
+    display: grid;
+    grid-template-rows: auto auto auto auto;
+}
+
 #difficulty {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 30px;
+    margin: 10px;
 }
 
 #passon {
     display: grid;
     grid-template-columns: 1fr 1fr 30px;
+    margin: 10px;
 }
 
 #theme {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
+    margin: 10px;
 }
 
 #difficulty label span, #passon label span , #theme label span {
