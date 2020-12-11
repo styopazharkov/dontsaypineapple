@@ -97,7 +97,7 @@ input:focus + .tooltiptext {
 }
 
 .buttonpad {
-    height: 0.5%;
+    height: 5px;
 }
 
 .nametext {
