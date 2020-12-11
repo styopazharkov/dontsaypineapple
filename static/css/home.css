@@ -8,7 +8,8 @@
     position: fixed;
     bottom: 0;
     display: grid;
-    grid-template-columns: 50% 50%;
+    grid-template-columns: 49% 49%;
+    grid-column-gap: 2%
 }
 
 .join, .create {
@@ -81,7 +82,7 @@ input:focus + .tooltiptext {
 @media screen and (min-width:700px)  {
     .grid2 {
         display: grid;
-        grid-template-columns: 50% 50%;
+        grid-template-columns: 49% 49%;
         grid-column-gap: 2%
     }
 
