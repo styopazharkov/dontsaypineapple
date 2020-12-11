@@ -26,7 +26,7 @@
             {% endif  %}
         </div>
 
-        <div class="settings">
+        <div class="info">
             {% if data['admin'] and not data['sarted'] %}
                 <form action="/_change_settings/{{data['code']}}" method="POST">
                     <input type="radio" id="debug" name="difficulty" value="debug" {% if data['settings']['difficulty'] == "debug" %} checked="checked" {% endif %}>
@@ -48,12 +48,14 @@
             {% else %}
                 <p>{{data['settings']}}</p>
             {% endif %}
+
+            <div class = "word">
+                <p>Your word is: {{data['word']}}</p>
+                <p>Your target is: {{data['target']}}</p>
+            </div>
         </div>
 
-        <div class = "word">
-            <p>Your word is: {{data['word']}}</p>
-            <p>Your target is: {{data['target']}}</p>
-        </div>
+
 
         <div class = "players">
             <h4>Players:</h4>   
