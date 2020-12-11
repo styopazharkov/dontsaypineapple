@@ -139,7 +139,7 @@
 
 .secret:active:hover  .cover{
     width: 0;
-    transition-duration: 0.5s;
+    transition-duration: 0.3s;
     font-size: 0;
 }
 
