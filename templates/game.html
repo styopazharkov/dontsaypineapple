@@ -27,7 +27,7 @@
         </div>
 
         <div class="info">
-            {% if data['admin'] and not data['sarted'] %}
+            {% if data['admin'] and not data['started'] %}
             <div class="adminSettings">
                 <form action="/_change_settings/{{data['code']}}" method="POST">
                     <div class="radio" id="theme">
@@ -36,8 +36,7 @@
                         <label><input type="radio" id="hard" name="difficulty" value="hard" {% if data['settings']['difficulty'] == "hard" %} checked="checked" {% endif %}><span>Hard</span></label>
                         <div class="question">
                             <span class="tooltiptext">
-                                This determines how words are passed on after a kill. If 'Pass On' is selected, the killer gets the victims word. 
-                                If 'Shuffle' is selected, the killer get a new word.
+                                This is the word difficulty. The harder the words, the harder it is to kill your target.
                             </span>
                         </div>
                     </div>
