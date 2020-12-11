@@ -97,5 +97,5 @@ input:focus + .tooltiptext {
 
 .nametext {
     color: black;
-    position: center;
+    justify-self: center;
 }
