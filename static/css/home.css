@@ -104,8 +104,3 @@ input:focus + .tooltiptext {
     color: black;
     justify-self: center;
 }
-
-.active {
-    padding-top: 10px;
-
-}
