@@ -25,14 +25,18 @@
     background-color: lightgreen;
 }
 
+.killedForm {
+    grid-column: 1 / 3;
+}
+
 .killed {
-    grid-row: 1 / 3;
+    background-color: red;
     width: 100%;
     height: 100%;
 }
 
 .waiting {
-    background-color: red;
+    background-color: rgb(255, 100, 100);
     font-size: x-large;
     width: 100%;
     height: 100%;

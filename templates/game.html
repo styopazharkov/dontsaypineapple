@@ -12,66 +12,80 @@
     <button class="back button" onclick="window.location.href='{{ url_for( 'home')}}';">Back</button>
 
     <div class="grid">
+        <div class="title">
+            {{data['title']}}
+        </div>    
 
-    </div>
-    <div class="error">
-        {% if  error %}
-        <p style="color: red;">Error: {{error}}</p>
-        {% endif  %}
-    </div>
+        <div class="code">
+            ({{data['code']}})
+        </div>
 
-    <div class="title">
-        <h2>{{data['title']}}</h2>
-        <h6>({{data['code']}})</h6>
-    </div>
+        <div class="error">
+            {% if  error %}
+            <p>Error: {{error}}</p>
+            {% endif  %}
+        </div>
 
-    <div class="settings">
-        {% if data['admin'] and not data['sarted'] %}
-            <form action="/_change_settings/{{data['code']}}" method="POST">
-                <input type="radio" id="debug" name="difficulty" value="debug" {% if data['settings']['difficulty'] == "debug" %} checked="checked" {% endif %}>
-                <label for="debug">Debug</label>
-                <input type="radio" id="easy" name="difficulty" value="easy" {% if data['settings']['difficulty'] == "easy" %} checked="checked" {% endif %}>
-                <label for="easy">Easy</label>
-                <input type="radio" id="medium" name="difficulty" value="medium" {% if data['settings']['difficulty'] == "medium" %} checked="checked" {% endif %}>
-                <label for="medium">Medium</label>
-                <input type="radio" id="hard" name="difficulty" value="hard" {% if data['settings']['difficulty'] == "hard" %} checked="checked" {% endif %}>
-                <label for="hard">Hard</label>
-                <br>
-                <input type="radio" id="pass" name="passon" value="pass" {% if data['settings']['passon'] == "pass" %} checked="checked" {% endif %}>
-                <label for="pass">On death, pass word on to assassin.</label>
-                <input type="radio" id="shuffle" name="passon" value="shuffle" {% if data['settings']['passon'] == "shuffle" %} checked="checked" {% endif %}>
-                <label for="shuffle">give assassin new random word.</label>
-                <br>
-                <input type = "submit" value="change">
-            </form>
-        {% else %}
-            <p>{{data['settings']}}</p>
-        {% endif %}
-    </div>
-
-    <div class = "players">
-        <h4>Players:</h4>   
-        {% for player in data['players'] %}
-            <p  
-            {% if player in data['purged'] %}
-                style="color:indianred"
-            {% elif player not in data['alive'] %}
-                style="color: grey"
+        <div class="settings">
+            {% if data['admin'] and not data['sarted'] %}
+                <form action="/_change_settings/{{data['code']}}" method="POST">
+                    <input type="radio" id="debug" name="difficulty" value="debug" {% if data['settings']['difficulty'] == "debug" %} checked="checked" {% endif %}>
+                    <label for="debug">Debug</label>
+                    <input type="radio" id="easy" name="difficulty" value="easy" {% if data['settings']['difficulty'] == "easy" %} checked="checked" {% endif %}>
+                    <label for="easy">Easy</label>
+                    <input type="radio" id="medium" name="difficulty" value="medium" {% if data['settings']['difficulty'] == "medium" %} checked="checked" {% endif %}>
+                    <label for="medium">Medium</label>
+                    <input type="radio" id="hard" name="difficulty" value="hard" {% if data['settings']['difficulty'] == "hard" %} checked="checked" {% endif %}>
+                    <label for="hard">Hard</label>
+                    <br>
+                    <input type="radio" id="pass" name="passon" value="pass" {% if data['settings']['passon'] == "pass" %} checked="checked" {% endif %}>
+                    <label for="pass">On death, pass word on to assassin.</label>
+                    <input type="radio" id="shuffle" name="passon" value="shuffle" {% if data['settings']['passon'] == "shuffle" %} checked="checked" {% endif %}>
+                    <label for="shuffle">give assassin new random word.</label>
+                    <br>
+                    <input type = "submit" value="change">
+                </form>
+            {% else %}
+                <p>{{data['settings']}}</p>
             {% endif %}
-            >{{player}}</p>
-            {% if data['admin'] and player != data['host'] %}
-                {% if not data['started'] %}
-                    <form action="/_kick/{{data['code']}}/{{player}}" method="post">
-                        <input type="submit" value="kick">
-                    </form>
-                {% elif player in data['alive'] %}
-                    <form action="/_purge/{{data['code']}}/{{player}}" method="post">
-                        <input type="submit" value="purge">
-                    </form>
+        </div>
+
+        <div class = "word">
+            <p>Your word is: {{data['word']}}</p>
+            <p>Your target is: {{data['target']}}</p>
+        </div>
+
+        <div class = "players">
+            <h4>Players:</h4>   
+            {% for player in data['players'] %}
+                <p  
+                {% if player in data['purged'] %}
+                    style="color:indianred"
+                {% elif player not in data['alive'] %}
+                    style="color: grey"
                 {% endif %}
-            {% endif %}
-        {% endfor %}
+                >{{player}}</p>
+                {% if data['admin'] and player != data['host'] %}
+                    {% if not data['started'] %}
+                        <form action="/_kick/{{data['code']}}/{{player}}" method="post">
+                            <input type="submit" value="kick">
+                        </form>
+                    {% elif player in data['alive'] %}
+                        <form action="/_purge/{{data['code']}}/{{player}}" method="post">
+                            <input type="submit" value="purge">
+                        </form>
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+        </div>
     </div>
+
+
+    
+
+    
+
+
 
    
     {% if not data['started'] %}
@@ -94,24 +108,21 @@
             {% endif %}
         </div>
     {% else %}
-        {% if data['isAlive'] %}
-            <div class = "word">
-                <p>Your word is: {{data['word']}}</p>
-                <p>Your target is: {{data['target']}}</p>
-            </div>
-            <form action="/_killed/{{data['code']}}" method="post">
-                <input class="killed button" type="submit" value="I was Killed">
-            </form>
-        {% else %}
-            <div class = "message">
-                {% if data['user'] in data['purged'] %}
-                    <p>you were purged for {{data['target']}} by host.</p>
-                {% else %}
-                    <p>{{data['target']}} killed you with {{data['word']}}</p>
-                {% endif %}
-                
-            </div>
-        {% endif %}
+        <div class="footbar">
+            {% if data['isAlive'] %}
+                <form class="killedForm" action="/_killed/{{data['code']}}" method="post">
+                    <input class="killed button" type="submit" value="I was Killed">
+                </form>
+            {% else %}
+                <div class = "waiting">
+                    {% if data['user'] in data['purged'] %}
+                        you were purged for {{data['target']}} by host.
+                    {% else %}
+                        {{data['target']}} killed you with '{{data['word']}}'.
+                    {% endif %}
+                </div>
+            {% endif %}
+        </div>
     {% endif %}
     
 
