@@ -28,29 +28,48 @@
 
         <div class="info">
             {% if data['admin'] and not data['sarted'] %}
+            <div class="adminSettings">
                 <form action="/_change_settings/{{data['code']}}" method="POST">
-                    <input type="radio" id="debug" name="difficulty" value="debug" {% if data['settings']['difficulty'] == "debug" %} checked="checked" {% endif %}>
-                    <label for="debug">Debug</label>
-                    <input type="radio" id="easy" name="difficulty" value="easy" {% if data['settings']['difficulty'] == "easy" %} checked="checked" {% endif %}>
-                    <label for="easy">Easy</label>
-                    <input type="radio" id="medium" name="difficulty" value="medium" {% if data['settings']['difficulty'] == "medium" %} checked="checked" {% endif %}>
-                    <label for="medium">Medium</label>
-                    <input type="radio" id="hard" name="difficulty" value="hard" {% if data['settings']['difficulty'] == "hard" %} checked="checked" {% endif %}>
-                    <label for="hard">Hard</label>
-                    <br>
-                    <input type="radio" id="pass" name="passon" value="pass" {% if data['settings']['passon'] == "pass" %} checked="checked" {% endif %}>
-                    <label for="pass">On death, pass word on to assassin.</label>
-                    <input type="radio" id="shuffle" name="passon" value="shuffle" {% if data['settings']['passon'] == "shuffle" %} checked="checked" {% endif %}>
-                    <label for="shuffle">give assassin new random word.</label>
-                    <br>
+                    <div class="radio" id="theme">
+                        <label><input type="radio" id="easy" name="difficulty" value="easy" {% if data['settings']['difficulty'] == "easy" %} checked="checked" {% endif %}><span>Easy</span></label>
+                        <label><input type="radio" id="medium" name="difficulty" value="medium" {% if data['settings']['difficulty'] == "medium" %} checked="checked" {% endif %}><span>Normal</span></label>
+                        <label><input type="radio" id="hard" name="difficulty" value="hard" {% if data['settings']['difficulty'] == "hard" %} checked="checked" {% endif %}><span>Hard</span></label>
+                        <div class="question">
+                            <span class="tooltiptext">
+                                This determines how words are passed on after a kill. If 'Pass On' is selected, the killer gets the victims word. 
+                                If 'Shuffle' is selected, the killer get a new word.
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="radio" id="theme">
+                        <label><input type="radio" id="pass" name="passon" value="pass" {% if data['settings']['passon'] == "pass" %} checked="checked" {% endif %}><span>Pass On</span></label>
+                        <label><input type="radio" id="shuffle" name="passon" value="shuffle" {% if data['settings']['passon'] == "shuffle" %} checked="checked" {% endif %}><span>Shuffle</span></label>
+                        <div class="question">
+                            <span class="tooltiptext">
+                                This determines how words are passed on after a kill. If 'Pass On' is selected, the killer gets the victims word. 
+                                If 'Shuffle' is selected, the killer get a new word.
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="radio" id="theme">
+                        <label><input type="radio" id="t1" name="theme" value="t1" {% if data['settings']['theme'] == "t1" %} checked="checked" {% endif %}><span>A</span></label>
+                        <label><input type="radio" id="t2" name="theme" value="t2" {% if data['settings']['theme'] == "t2" %} checked="checked" {% endif %}><span>B</span></label>
+                        <label><input type="radio" id="t3" name="theme" value="t3" {% if data['settings']['theme'] == "t3" %} checked="checked" {% endif %}><span>C</span></label>
+                        <label><input type="radio" id="t4" name="theme" value="t4" {% if data['settings']['theme'] == "t4" %} checked="checked" {% endif %}><span>D</span></label>
+                    </div>
+
                     <input type = "submit" value="change">
                 </form>
+            </div>
+                
             {% else %}
                 <p>{{data['settings']}}</p>
             {% endif %}
 
             <!-- TODO make this block -->
-            <div class = "waiting">
+            <div>
                 {% if data['user'] in data['purged'] %}
                     you were purged for {{data['target']}} by host.
                 {% else %}
