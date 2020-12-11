@@ -30,8 +30,8 @@ body {
 
 .back {
     position: fixed;
-    right: 0;
-    top: 0;
+    right: 10%;
+    top: 10%;
     width: 70px;
     height: 35px;
     border-radius: 0;
