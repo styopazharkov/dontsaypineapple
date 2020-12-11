@@ -96,6 +96,10 @@ input:focus + .tooltiptext {
     height: 80px;
 }
 
+.buttonpad {
+    height: 0.5%;
+}
+
 .nametext {
     color: black;
     justify-self: center;
