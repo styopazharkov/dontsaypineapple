@@ -1,0 +1,14 @@
+.footbar {
+    width: 100%;
+    height: 60px;
+    position: fixed;
+    bottom: 0;
+    display: grid;
+    grid-template-columns: 50% 50%;
+}
+
+.cancel, .start, .killed {
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+}

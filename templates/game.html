@@ -73,23 +73,22 @@
         {% endfor %}
     </div>
 
+    <div class = "footbar">
     {% if not data['started'] %}
-        <div class = "footbar">
-            {% if data['admin'] %}
-                {% if data['numberOfPlayers'] > 1 %}
-                    <form action="/_start/{{data['code']}}" method="post">
-                        <input class="start button" type="submit" value="Start Game">
-                    </form>
-                {% else %}
-                    <button disabled class="start button" type="button" >Need 2 players to Start Game</button>
-                {% endif %}
-                <form action="/_cancel/{{data['code']}}" method="post">
-                    <input class="cancel button" type="submit" value="Cancel Game">
+        {% if data['admin'] %}
+            {% if data['numberOfPlayers'] > 1 %}
+                <form action="/_start/{{data['code']}}" method="post">
+                    <input class="start button" type="submit" value="Start Game">
                 </form>
             {% else %}
-                <p>Waiting for host to start game</p>
+                <button disabled class="start" type="button" >Need 2 players to Start Game</button>
             {% endif %}
-        </div>
+            <form action="/_cancel/{{data['code']}}" method="post">
+                <input class="cancel button" type="submit" value="Cancel Game">
+            </form>
+        {% else %}
+            <p>Waiting for host to start game</p>
+        {% endif %}
     {% else %}
         {% if data['isAlive'] %}
             <div class = "word">
@@ -97,7 +96,7 @@
                 <p>Your target is: {{data['target']}}</p>
             </div>
             <form action="/_killed/{{data['code']}}" method="post">
-                <input type="submit" value="I was killed">
+                <input class="killed button" type="submit" value="I was killed">
             </form>
         {% else %}
             <div class = "word">
@@ -110,7 +109,7 @@
             </div>
         {% endif %}
     {% endif %}
-
+    </div>
 
 </body>
 </html>
