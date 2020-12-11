@@ -21,15 +21,29 @@
 }
 
 .adminSettings{
+    margin-top: 20px;
     display: grid;
     grid-template-rows: auto auto auto;
 }
 
+.normSettings {
+    margin-top: 20px;
+    display: grid;
+    grid-template-rows: auto auto;
+    text-align: center;
+}
+
 @media screen and (min-width:800px)  {
     .adminSettings {
-        display: grid;
         grid-template-rows: auto;
         grid-template-columns: auto auto auto;
+    }
+}
+
+@media screen and (min-width:580px)  {
+    .normSettings {
+        grid-template-rows: auto;
+        grid-template-columns: auto auto;
     }
 }
 

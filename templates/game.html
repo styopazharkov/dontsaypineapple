@@ -57,10 +57,12 @@
                         <label><input type="radio" id="t3" name="theme" value="t3" {% if data['settings']['theme'] == "t3" %} checked="checked" {% endif %} onchange="this.form.submit()"><span>C</span></label>
                         <label><input type="radio" id="t4" name="theme" value="t4" {% if data['settings']['theme'] == "t4" %} checked="checked" {% endif %} onchange="this.form.submit()"><span>D</span></label>
                     </div>
-
                 </form>
             {% else %}
-                <p>{{data['settings']}}</p>
+                <div class="normSettings">
+                    <div>Word Difficulty: {{data['settings']['difficulty']}}</div>
+                    <div>Word Pass-on: {{data['settings']['passon']}}</div>
+                </div>
             {% endif %}
 
             <!-- TODO make this block -->
