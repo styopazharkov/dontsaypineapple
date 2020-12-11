@@ -23,9 +23,10 @@ body {
 
 .button {
     background-color: lightgrey;
-    border: 5px solid black;
+    border: 2px solid black;
     transition-duration: 0.4s;
     border-radius: 2px;
+    text-align: center;
 }
 
 .back {
