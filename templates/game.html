@@ -9,11 +9,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/game.css') }}">
 </head>
 <body>
-    <div class="back">
-        <form action="/home" >
-            <input type="submit" value="Back">
-        </form>
-    </div>
+    <button class="back button" onclick="window.location.href='{{ url_for( 'home')}}';">Back</button>
 
     <div class="error">
         {% if  error %}
