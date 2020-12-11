@@ -23,7 +23,8 @@ body {
 
 .button {
     background-color: lightgrey;
-    border: 1px solid darkgrey;
+    border: 1px solid rgb(246, 133, 218);
+    transition-duration: 0.4s;
     border-radius: 5px;
 }
 
@@ -38,5 +39,6 @@ body {
 }
 
 .button:hover {
-    background-color: blanchedalmond;
+    background-color: rgb(246, 133, 218);
+    color: white;
 }
