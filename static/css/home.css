@@ -102,5 +102,6 @@ input:focus + .tooltiptext {
 }
 
 .active {
-    padding: 10px, 0px;
+    padding-top: 10px;
+
 }
