@@ -8,7 +8,7 @@
 body {
     background-image: url(/static/img/backgrounds/pastelLight.jpg);
     /* background-color: #fab2a0;  */
-    background-size: 30%;
+    background-size: 80%;
 }
 
 .error p {
@@ -42,3 +42,9 @@ body {
 .button:hover {
     background-color: blanchedalmond;
 }
+
+
+@media screen and (min-width:800px)  {
+    body {
+        background-size: 40%;
+    }
