@@ -23,7 +23,7 @@ body {
 
 .button {
     background-color: lightgrey;
-    border: 2px solid gray;
+    border: 1px solid gray;
     transition-duration: 0.2s;
     border-radius: 5px;
     text-align: center;
