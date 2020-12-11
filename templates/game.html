@@ -73,22 +73,24 @@
         {% endfor %}
     </div>
 
-    <div class = "footbar">
+   
     {% if not data['started'] %}
-        {% if data['admin'] %}
-            {% if data['numberOfPlayers'] > 1 %}
-                <form action="/_start/{{data['code']}}" method="post">
-                    <input class="start button" type="submit" value="Start Game">
+        <div class = "footbar">
+            {% if data['admin'] %}
+                {% if data['numberOfPlayers'] > 1 %}
+                    <form action="/_start/{{data['code']}}" method="post">
+                        <input class="start button" type="submit" value="Start Game">
+                    </form>
+                {% else %}
+                    <button disabled class="start" type="button" >Need 2 players to Start Game</button>
+                {% endif %}
+                <form action="/_cancel/{{data['code']}}" method="post">
+                    <input class="cancel button" type="submit" value="Cancel Game">
                 </form>
             {% else %}
-                <button disabled class="start" type="button" >Need 2 players to Start Game</button>
+                <p class="waiting">Waiting for host to start game</p>
             {% endif %}
-            <form action="/_cancel/{{data['code']}}" method="post">
-                <input class="cancel button" type="submit" value="Cancel Game">
-            </form>
-        {% else %}
-            <p>Waiting for host to start game</p>
-        {% endif %}
+        </div>
     {% else %}
         {% if data['isAlive'] %}
             <div class = "word">
@@ -99,7 +101,7 @@
                 <input class="killed button" type="submit" value="I was Killed">
             </form>
         {% else %}
-            <div class = "word">
+            <div class = "message">
                 {% if data['user'] in data['purged'] %}
                     <p>you were purged for {{data['target']}} by host.</p>
                 {% else %}
@@ -109,7 +111,7 @@
             </div>
         {% endif %}
     {% endif %}
-    </div>
+    
 
 </body>
 </html>
