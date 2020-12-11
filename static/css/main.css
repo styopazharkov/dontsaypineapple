@@ -25,7 +25,7 @@ body {
     background-color: lightgrey;
     border: 5px solid black;
     transition-duration: 0.4s;
-    border-radius: 5px;
+    border-radius: 2px;
 }
 
 .back {
@@ -40,5 +40,4 @@ body {
 
 .button:hover {
     background-color: blanchedalmond;
-    color: white;
 }
