@@ -21,6 +21,10 @@
     border-radius: 0;
 }
 
+.disabledStart {
+    background-color: lightgreen;
+}
+
 .killed {
     grid-row: 1 / 3;
     width: 100%;
