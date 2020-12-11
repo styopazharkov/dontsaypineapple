@@ -49,6 +49,14 @@
                 <p>{{data['settings']}}</p>
             {% endif %}
 
+            <!-- TODO make this block -->
+            <div class = "waiting">
+                {% if data['user'] in data['purged'] %}
+                    you were purged for {{data['target']}} by host.
+                {% else %}
+                    {{data['target']}} killed you with '{{data['word']}}'.
+                {% endif %}
+            </div>
             <div class = "word">
                 <p>Your word is: {{data['word']}}</p>
                 <p>Your target is: {{data['target']}}</p>
@@ -110,21 +118,13 @@
             {% endif %}
         </div>
     {% else %}
-        <div class="footbar">
-            {% if data['isAlive'] %}
+        {% if data['isAlive'] %}
+            <div class="footbar">
                 <form class="killedForm" action="/_killed/{{data['code']}}" method="post">
                     <input class="killed button" type="submit" value="I was Killed">
                 </form>
-            {% else %}
-                <div class = "waiting">
-                    {% if data['user'] in data['purged'] %}
-                        you were purged for {{data['target']}} by host.
-                    {% else %}
-                        {{data['target']}} killed you with '{{data['word']}}'.
-                    {% endif %}
-                </div>
-            {% endif %}
-        </div>
+            </div>
+        {% endif %}
     {% endif %}
     
 
