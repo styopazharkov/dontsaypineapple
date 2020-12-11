@@ -82,13 +82,15 @@
                         <input class="start button" type="submit" value="Start Game">
                     </form>
                 {% else %}
-                    <button disabled class="start" type="button" >Need 2 players to Start Game</button>
+                    <button style="background-color: lightgreen;" disabled class="start" type="button" >Need 2 players to Start Game</button>
                 {% endif %}
                 <form action="/_cancel/{{data['code']}}" method="post">
                     <input class="cancel button" type="submit" value="Cancel Game">
                 </form>
             {% else %}
-                <p class="waiting">Waiting for host to start game</p>
+                <div class="waiting"> 
+                    Waiting for host to start game
+                </div>
             {% endif %}
         </div>
     {% else %}
