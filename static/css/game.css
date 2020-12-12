@@ -213,6 +213,7 @@
     .waiting {
         padding-top: 10px;
         font-size: xx-large;
+    }
 }
 
 .footpad {
@@ -221,7 +222,19 @@
 
 .players{
     justify-self: center;
-    width: 80%;
+    width: 100%;
+    margin-top: 10px;
     background-color: wheat;
     border-radius: 10px;
+    padding: 10px;
+}
+
+@media screen and (min-width:600px)  {
+    .players{
+        width: 480px;
+    }
+}
+
+.players h4{
+    text-align: center;
 }
