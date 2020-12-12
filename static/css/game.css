@@ -14,10 +14,12 @@ body{
 .title {
     font-size: 70px;
     justify-self: center;
+    text-align: center;
 }
 
 .code {
     justify-self: center;
+    text-align: center;
 }
 
 .error {
