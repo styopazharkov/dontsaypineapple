@@ -27,13 +27,6 @@
             <p>Error: {{error}}</p>
             {% endif  %}
         </div>
-
-        <div class="settings">
-            <div class="normSettings">
-                <div>Word Difficulty: {{data['settings']['difficulty']}}</div>
-                <div>Word Pass-on: {{data['settings']['passon']}}</div>
-            </div>
-        </div>
     </div>
     
     <div class="winners">
@@ -52,6 +45,12 @@
         </div>
     </div>
 
+    <div class="settings">
+        <div class="normSettings">
+            <div>Word Difficulty: {{data['settings']['difficulty']}}</div>
+            <div>Word Pass-on: {{data['settings']['passon']}}</div>
+        </div>
+    </div>
 
     <div class = "killLog">
         <h4>Kill Log:</h4>   
