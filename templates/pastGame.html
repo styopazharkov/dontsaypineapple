@@ -46,16 +46,18 @@
         </p>
     </div>
 
+
     <div class = "killLog">
         <h4>Kill Log:</h4>   
         {% for entry in data['killLog'] %}
-            {% if entry['method'] == "killed" %}
-                <p>{{entry['victim']['name']}} ({{entry['victim']['code']}}) was killed by {{entry['assassin']['name']}} ({{entry['assassin']['code']}}) with {{entry['word']}}.</p>
-            {% else %}
-                <p>{{entry['victim']['name']}} ({{entry['victim']['code']}}) was purged for {{entry['assassin']['name']}} ({{entry['assassin']['code']}}) by host.</p>
-            {% endif %}
+            <div class="log">
+                {% if entry['method'] == "killed" %}
+                    <p>{{entry['victim']['name']}} ({{entry['victim']['code']}}) was killed by {{entry['assassin']['name']}} ({{entry['assassin']['code']}}) with {{entry['word']}}.</p>
+                {% else %}
+                    <p>{{entry['victim']['name']}} ({{entry['victim']['code']}}) was purged for {{entry['assassin']['name']}} ({{entry['assassin']['code']}}) by host.</p>
+                {% endif %}
+            </div>
         {% endfor %}
     </div>
-
 </body>
 </html>
