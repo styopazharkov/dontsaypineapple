@@ -266,5 +266,12 @@
 .kick input, .purge input{
     height: 100%;
     width: 100%;
+    border-radius: 10px;
+    background-color: rgb(255, 110, 110);
+    border: 0;
+}
+
+.kick input:hover, .purge input:hover{
+    background-color: rgb(255, 210, 210);
 }
 
