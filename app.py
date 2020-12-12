@@ -224,8 +224,9 @@ def _create():
         name = request.form['name']
         settings['difficulty'] = request.form['difficulty']
         settings['passon'] = request.form['passon']
+        settings['theme'] = request.form['theme']
     except KeyError: #this only runs is someone messes with the html
-        code, name, settings['difficulty'], settings['passon'] = "", "", "", ""
+        code, name, settings['difficulty'], settings['passon'], settings['theme'] = "", "", "", "", ""
 
     error = checks.check_for_create_error(code, name, settings)
     if error:
@@ -376,8 +377,9 @@ def  _change_settings(code):
     try: #tries to get info
         settings['difficulty'] = request.form['difficulty']
         settings['passon'] = request.form['passon']
+        settings['theme'] = request.form['theme']
     except KeyError: #this only runs is someone messes with the html
-        settings['difficulty'], settings['passon'] = "", ""
+        settings['difficulty'], settings['passon'], settings['theme'] = "", "", ""
     
     error = checks.check_for_settings_error(settings)
     if error:
