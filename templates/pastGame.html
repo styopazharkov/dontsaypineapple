@@ -37,7 +37,9 @@
     </div>
     
     <div class="winners">
-        <h4>This game is over.</h4>
+        <div class="overMssg">
+            This game is over.
+        </div>
         <p>Last one alive: {{data['survivalWinner']['name']}} ({{data['survivalWinner']['code']}})</p>
         <p>Most kills:
         {% for killWinner in data['killWinners'] %}
