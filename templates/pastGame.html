@@ -13,24 +13,29 @@
 <body>
     <button class="back button" onclick="window.location.href='{{url_for('home')}}';">Back</button>
 
-    <div class="error">
-        {% if  error %}
-        <p style="color: red;">Error: {{error}}</p>
-        {% endif  %}
-    </div>
+    <div class="grid">
+        <div class="title">
+            {{data['title']}}
+        </div>    
 
-    <div class="title">
-        <h2>{{data['title']}}</h2>
-    </div>
-    <div class="code">
-        <h6>({{data['code']}})</h6>
-    </div>
+        <div class="code">
+            ({{data['code']}})
+        </div>
 
-    <div class="settings">
-        <h4>Hosted by {{data['host']}}.</h4>
-        <p>Word difficulty: {{data['settings']['difficulty']}}</p>
-    </div>
+        <div class="error">
+            {% if  error %}
+            <p>Error: {{error}}</p>
+            {% endif  %}
+        </div>
 
+        <div class="settings">
+            <div class="normSettings">
+                <div>Word Difficulty: {{data['settings']['difficulty']}}</div>
+                <div>Word Pass-on: {{data['settings']['passon']}}</div>
+            </div>
+        </div>
+    </div>
+    
     <div class="winners">
         <h4>This game is over.</h4>
         <p>Last one alive: {{data['survivalWinner']['name']}} ({{data['survivalWinner']['code']}})</p>
