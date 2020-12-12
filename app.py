@@ -508,7 +508,7 @@ def _purge(code, user):
         session['error']="You cant access _purge page before logging in!"
         return redirect(url_for('index'))
     #TODO: check if page is updated with database. Catches if host tries purging without refreshing page
-    if not verifiers.verify_host(code) or user == session['user']:
+    if not verifiers.verify_host(code):
         session['error']="something is not right! (_purge)"
         return redirect(url_for('game', code = code))
 
