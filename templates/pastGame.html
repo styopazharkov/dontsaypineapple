@@ -8,13 +8,10 @@
     <link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/pastGame.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/themes/'+data['settings']['theme']+'.css') }}">
 </head>
 <body>
-    <div class="back">
-        <form action="/home" >
-            <input type="submit" value="Back">
-        </form>
-    </div>
+    <button class="back button" onclick="window.location.href='{{url_for('home')}}';">Back</button>
 
     <div class="error">
         {% if  error %}
