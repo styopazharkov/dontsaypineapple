@@ -39,15 +39,33 @@
 .winners{
     display: grid;
     grid-template-rows: auto auto auto;
-    width: 80%;
+    width: fit-content;
     margin: auto;
     background-color: wheat;
     border-radius: 10px;
-    padding-top: 10px;
 }
 
-.overMssg
+.overMssg {
+    background-color:  lawngreen;
+    margin: 10px;
+    border-radius: 5px;
+    padding: 5px;
+    text-align: center;
+    font-size: xx-large;
+}
 
+.survivalWinner, .killWinners{
+    font-size: larger;
+    text-align: center;
+    display: grid;
+}
+
+.player {
+    background-color: lightgray;
+    justify-self: center;
+    border-radius: 5px;
+    margin: 5px;
+}
 
 .killLog{
     display: grid;
