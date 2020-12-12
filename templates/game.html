@@ -102,15 +102,15 @@
                     style="background-color: grey"
                 {% endif %}
                 >
-                    <p>{{player['name']}}  ({{player['user']}})</p>
-                    <p>{{player['status']}}</p>
-                    {% if data['admin'] and player[user] != data['host'] %}
-                        {% if not data['started'] %}
-                            <form action="/_kick/{{data['code']}}/{{player['user']}}" method="post">
+                    <p class="name">{{player['name']}}  ({{player['user']}})</p>
+                    <p class="status">{{player['status']}}</p>
+                    {% if data['admin'] %}
+                        {% if not data['started'] and player['user'] != data['host']%}
+                            <form class="kick" action="/_kick/{{data['code']}}/{{player['user']}}" method="post">
                                 <input type="submit" value="kick">
                             </form>
                         {% elif player['user'] in data['alive'] %}
-                            <form action="/_purge/{{data['code']}}/{{player['user']}}" method="post">
+                            <form class="purge" action="/_purge/{{data['code']}}/{{player['user']}}" method="post">
                                 <input type="submit" value="purge">
                             </form>
                         {% endif %}
