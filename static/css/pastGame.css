@@ -36,6 +36,19 @@
     }
 }
 
+.winners{
+    display: grid;
+    grid-template-rows: auto auto auto;
+    width: 80%;
+    margin: auto;
+    background-color: wheat;
+    border-radius: 10px;
+    padding-top: 10px;
+}
+
+.overMssg
+
+
 .killLog{
     display: grid;
     margin: auto;
