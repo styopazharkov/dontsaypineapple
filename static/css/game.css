@@ -218,3 +218,10 @@
 .footpad {
     height: 80px;
 }
+
+.players{
+    justify-self: center;
+    width: 80%;
+    background-color: wheat;
+    border-radius: 10px;
+}

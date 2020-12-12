@@ -5,14 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Don't Say Pineapple – {{data['user']}}</title>
     <link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/game.css') }}">
     <style>
         body{
             background-image: url({{url_for('static', filename='img/theme/'+data['settings']['theme']+'.jpg')}});
         }
     </style>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/game.css') }}">
-
 </head>
 <body>
     <button class="back button" onclick="window.location.href='{{url_for('home')}}';">Back</button>
