@@ -29,3 +29,7 @@ def distribute_kills_and_wins(cur, players, killCount, survivalWinner, killWinne
 ### gets the name of a user from username ###
 def get_name(cur, user):
     return cur.execute("SELECT * from Players WHERE user = ?", (user, )).fetchone()['name']
+
+### gets the status of a user from username ###
+def get_status(cur, user):
+    return cur.execute("SELECT * from Players WHERE user = ?", (user, )).fetchone()['status']

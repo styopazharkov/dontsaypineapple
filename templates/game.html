@@ -95,24 +95,27 @@
         <div class = "players">
             <h4>Players:</h4>   
             {% for player in data['players'] %}
-                <p  
-                {% if player in data['purged'] %}
-                    style="color:indianred"
-                {% elif player not in data['alive'] %}
-                    style="color: grey"
+                <div class="player" 
+                {% if player['user'] in data['purged'] %}
+                    style="background-color:indianred"
+                {% elif player['user'] not in data['alive'] %}
+                    style="background-color: grey"
                 {% endif %}
-                >{{player}}</p>
-                {% if data['admin'] and player != data['host'] %}
-                    {% if not data['started'] %}
-                        <form action="/_kick/{{data['code']}}/{{player}}" method="post">
-                            <input type="submit" value="kick">
-                        </form>
-                    {% elif player in data['alive'] %}
-                        <form action="/_purge/{{data['code']}}/{{player}}" method="post">
-                            <input type="submit" value="purge">
-                        </form>
+                >
+                    <p>{{player['name']}}  ({{player['user']}})</p>
+                    <p>{{player['status']}}</p>
+                    {% if data['admin'] and player[user] != data['host'] %}
+                        {% if not data['started'] %}
+                            <form action="/_kick/{{data['code']}}/{{player['user']}}" method="post">
+                                <input type="submit" value="kick">
+                            </form>
+                        {% elif player['user'] in data['alive'] %}
+                            <form action="/_purge/{{data['code']}}/{{player['user']}}" method="post">
+                                <input type="submit" value="purge">
+                            </form>
+                        {% endif %}
                     {% endif %}
-                {% endif %}
+                </div>
             {% endfor %}
         </div>
     </div>

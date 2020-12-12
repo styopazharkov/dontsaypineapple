@@ -288,7 +288,9 @@ def activeGame(code):
         data['started'] = gameRow['started']
         data['settings'] = json.loads(gameRow['settings'])
         data['host'] = gameRow['host']
-        data['players'] = json.loads(gameRow['players'])
+        data['players'] = []
+        for player in  json.loads(gameRow['players']):
+            data['players'].append({'user': player, 'name': fetchers.get_name(cur, player), 'status': fetchers.get_status(cur, player)})
         data['numberOfPlayers'] = len(data['players'])
         data['alive'] = json.loads(gameRow['alive'])
         data['purged'] = json.loads(gameRow['purged'])

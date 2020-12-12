@@ -124,7 +124,7 @@ def check_for_start_error(code):
     return False
 
 ### verifies that a cancel is valid ###
-def check_for_kick_error(code):
+def check_for_cancel_error(code):
     with sqlite3.connect("database.db") as con:
         con.row_factory = sqlite3.Row
         cur = con.cursor()
@@ -134,6 +134,7 @@ def check_for_kick_error(code):
 
 ### verifies that a kick is valid ###
 def check_for_kick_error(code, user):
+    #TODO: check that kicked player isnt host
     with sqlite3.connect("database.db") as con:
         con.row_factory = sqlite3.Row
         cur = con.cursor()
