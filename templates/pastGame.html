@@ -40,7 +40,9 @@
         <div class="overMssg">
             This game is over.
         </div>
-        <p>Last one alive: {{data['survivalWinner']['name']}} ({{data['survivalWinner']['code']}})</p>
+        <div class="suvival">
+            <p>Last one alive: {{data['survivalWinner']['name']}} ({{data['survivalWinner']['code']}})</p>
+        </div>
         <p>Most kills:
         {% for killWinner in data['killWinners'] %}
             {{killWinner['name']}} ({{killWinner['code']}}) 

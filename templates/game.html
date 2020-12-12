@@ -103,7 +103,13 @@
                 {% endif %}
                 >
                     <p class="name">{{player['name']}}  ({{player['user']}})</p>
-                    <p class="status">{{player['status']}}</p>
+                    <p class="status">
+                        {% if player['status']%}
+                            {{player['status']}}
+                        {% else %}
+                            &nbsp;
+                        {% endif %}
+                    </p>
                     {% if data['admin'] %}
                         {% if not data['started'] and player['user'] != data['host']%}
                             <form class="kick" action="/_kick/{{data['code']}}/{{player['user']}}" method="post">
