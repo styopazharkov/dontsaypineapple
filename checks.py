@@ -88,9 +88,9 @@ def check_for_join_error(code):
             return "no such game exists" 
         row =  cur.execute("SELECT * FROM Games WHERE code = ? ", (code, )).fetchone()
         if row['started']:
-            return "this game has already started"
+            return "This game has already started."
         if session['user'] in row['players']:
-            return "you are already in this game"
+            return "You are already in this game."
     return False
 
 ### verifier that checks that a code and name are good to c with. makes sure code is long enough, name is non empty, and that the game doesnt already exist ###
@@ -122,9 +122,9 @@ def check_for_cancel_error(code):
         con.row_factory = sqlite3.Row
         cur = con.cursor()
         if cur.execute("SELECT count(*) FROM Games WHERE code = ? ", (code, )).fetchone()[0] == 0:
-            return "game has already ended or does not exist"
+            return "Game has already ended or does not exist."
         if cur.execute("SELECT * FROM Games WHERE code= ? ", (code, )).fetchone()["started"]:
-            return "This game has already started"
+            return "This game has already started."
     return False
 
 def check_for_start_error(code):
@@ -157,7 +157,7 @@ def check_for_kick_error(code, user):
         if user not in json.loads(row["players"]):
             return "This user is not in the game"
         if user == row['host']:
-            return "You can't kick yourself"
+            return "You can't kick yourself. Think about the game you're leaving with no supervisor o.o"
     return False
 
 ### verifies that a kill is valid ###
