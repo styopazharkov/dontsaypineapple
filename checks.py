@@ -107,7 +107,7 @@ def check_for_create_error(code, name, settings):
     if len(name.strip())==0:
         return "Your game must have a name."
     if len(name) > 20:
-        return "The name can't be more than 20 letters."
+        return "The name can't be more than 20 letters. Try something simpler :)"
     with sqlite3.connect("database.db") as con:  
         con.row_factory = sqlite3.Row
         cur = con.cursor() 
