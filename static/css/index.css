@@ -9,7 +9,7 @@
 
 .grid {
     display: grid;
-    grid-template-rows: 120px 20px 200px 100px 100px;
+    grid-template-rows: auto auto 200px 100px 100px;
 }
 
 form {
