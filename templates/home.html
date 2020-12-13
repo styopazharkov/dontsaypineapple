@@ -20,11 +20,11 @@
         </div>
         <form  class="welcome" action="/_rename" method="POST">
             <div class="hello">
-                Hello, <input type="text" name="name" value="{{data['name']}}">  ({{data['user']}})
+                Hello, <input type="text" name="name" value="{{data['name']}}" maxlength="20" >  ({{data['user']}})
                 <span class="tooltiptext">press enter to save</span>
             </div>
             <div class="status">
-                <input type="text" name="status" placeholder="What are you feeling? Enter a status." value="{{data['status']}}">
+                <input type="text" name="status" placeholder="What are you feeling? Enter a status." value="{{data['status']}}" maxlength="40">
                 <span class="tooltiptext">press enter to save</span>
             </div>
             

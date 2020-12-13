@@ -21,8 +21,8 @@
                     <p style="color: red;">Error: {{error}}</p>
                 {% endif  %}
             </div>
-            <input class="textbox" type = "text" name = "name" placeholder="Enter a game name" value="{{name}}"/>
-            <input class="textbox" type = "text" name = "code" placeholder="Enter a game code" value="{{code}}"/>
+            <input class="textbox" type = "text" name = "name" placeholder="Enter a game name" value="{{name}}" maxlength="20"/>
+            <input class="textbox" type = "text" name = "code" placeholder="Enter a game code" value="{{code}}" maxlength="10"/>
             
             <div class="radio" id="difficulty">
                 <label><input type="radio" id="easy" name="difficulty" value="easy" checked="checked"><span>Easy</span></label>

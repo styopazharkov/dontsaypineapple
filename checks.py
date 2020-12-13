@@ -17,7 +17,7 @@ def check_for_login_error(user, password):
         if cur.execute("SELECT count(*) FROM Players WHERE user= ? ", (user, )).fetchone()[0] == 0: #checks that username exsts
             return "No such user exists"
         if not hashing.verify(password, cur.execute("SELECT * FROM Players WHERE user = ? ", (session['user'], )).fetchone()['password']): # checks that passwords match
-            return "username or password is wrong"
+            return "username or password is wrong."
     return  False
         
 ### verifier that checks that a username, password and name are good to sign up with. makes sure it's long and is in the database ###
@@ -27,13 +27,13 @@ def check_for_signup_error(user, password, passwordRepeat, name):
     if len(user) < 5:
         return "username must be at least 5 letters!"
     if len(user) > 20:
-        return "username can't be more than 20 letters!"
+        return "username can't be more than 20 letters! Sorry if you wanted 'dontsaypineapplegod01' as your username."
     if re.search("[\s]", user):
         return "username can't contain and whitespace!"
     if len(password) < 5:
         return "password must be at least 5 characters!"
     if len(password) > 100:
-        return "password can't be more than 100 characters!"
+        return "password can't be more than 100 characters! It's not THAT important that no one can play DSP for you."
     if re.search("[\s]", password):
         return "password can't contain whitespaces!"
     if password == user:
@@ -45,7 +45,7 @@ def check_for_signup_error(user, password, passwordRepeat, name):
     if len(name) < 2:
         return "Name must be at least 2 characters!"
     if len(user) > 20:
-        return "Name can't be more than 20 characters!"
+        return "Name can't be more than 20 characters! And if yours is, think of a nickname."
     with sqlite3.connect("database.db") as con:
         cur = con.cursor()
         if cur.execute("SELECT count(*) FROM Players WHERE user= ? ", (user, )).fetchone()[0] > 0:
@@ -59,9 +59,9 @@ def check_for_rename_error(name, status):
     if len(name) < 2:
         return "Name must be at least 2 characters!"
     if len(name) > 20:
-        return "Name can't be more than 20 characters!"
+        return "Name can't be more than 20 characters! And if yours is, think of a nickname."
     if len(status) > 30:
-        return "Status can't be more than 30 characters! There's no way you have that many thoughts."
+        return "Status can't be more than 40 characters! There's no way you have that many thoughts."
 
 ### checks that given settings are good ###
 def check_for_settings_error(settings):
