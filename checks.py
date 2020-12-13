@@ -103,7 +103,7 @@ def check_for_create_error(code, name, settings):
     if len(code)<5:
         return "Code must be at least 5 letters."
     if len(code)>10:
-        return "Code can't be more than 10 letters. This isnt a nuclear launch you're organizing". 
+        return "Code can't be more than 10 letters. This isnt a nuclear launch you're organizing."
     if len(name.strip())==0:
         return "Your game must have a name."
     if len(name) > 20:
