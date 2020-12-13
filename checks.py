@@ -52,15 +52,18 @@ def check_for_signup_error(user, password, passwordRepeat, name):
             return "Oh no! Someone already took this username."
     return  False
 
+
 def check_for_rename_error(name, status):
-    #TODO: more checks here
-    if len(name.strip()) == 0:
-        return "You must have a name!"
     if len(name) == 0:
         return "You must have a name!"
     if len(name) < 2:
         return "Name must be at least 2 characters!"
+    if len(name) > 20:
+        return "Name can't be more than 20 characters!"
+    if len(status) > 30:
+        return "Status can't be more than 30 characters! There's no way you have that many thoughts."
 
+### checks that given settings are good ###
 def check_for_settings_error(settings):
     try:
         if settings['difficulty'] not in ['easy', 'medium', 'hard']:
