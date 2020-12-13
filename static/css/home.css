@@ -39,10 +39,16 @@
 
 .status input {
     font-style: italic;
-    font-size: x-large;
+    font-size: large;
     border: none;
     background: none;
     width: 100%;
+}
+
+@media screen and (min-width:450px)  {
+    .status input {
+        font-size: x-large;
+    }
 }
 
 .hello input {
