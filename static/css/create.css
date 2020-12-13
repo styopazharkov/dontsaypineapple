@@ -98,3 +98,19 @@
 .question:hover .tooltiptext {
     visibility: visible;
   }
+
+.t1 {
+    background-image: url(/static/img/theme/t1.jpg);
+}
+
+.t2 {
+    background-image: url(/static/img/theme/t2.jpg);
+}
+
+.t3 {
+    background-image: url(/static/img/theme/t3.jpg);
+}
+
+.t4 {
+    background-image: url(/static/img/theme/t4.jpg);
+}
