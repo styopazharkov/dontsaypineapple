@@ -63,10 +63,12 @@ def check_for_rename_error(name, status):
 
 def check_for_settings_error(settings):
     try:
-        if settings['difficulty'] not in ['debug', 'easy', 'medium', 'hard']:
+        if settings['difficulty'] not in ['easy', 'medium', 'hard']:
             return "settings difficulty error"
         if settings['passon'] not in ['pass', 'shuffle']:
             return "settings passon error"
+        if settings['theme'] not in ['t1', 't2', 't3', 't4']:
+            return "settings theme error"
         return False
     except KeyError:
         return False
@@ -91,11 +93,18 @@ def check_for_join_error(code):
 ### verifier that checks that a code and name are good to c with. makes sure code is long enough, name is non empty, and that the game doesnt already exist ###
 ## returns an error message if there is an error. False if there is no error ##
 def check_for_create_error(code, name, settings):
+    error = check_for_settings_error(settings)
+    if error:
+        return error
     #TODO: check for valid settings
     if len(code)<5:
-        return "code must be at least 5 letters"
+        return "Code must be at least 5 letters."
+    if len(code)>10:
+        return "Code can't be more than 10 letters"
     if len(name.strip())==0:
-        return "your game must have a name"
+        return "Your game must have a name."
+    if len(name) > 20:
+        return "The name can't be more than 20 letters."
     with sqlite3.connect("database.db") as con:  
         con.row_factory = sqlite3.Row
         cur = con.cursor() 
@@ -134,7 +143,6 @@ def check_for_cancel_error(code):
 
 ### verifies that a kick is valid ###
 def check_for_kick_error(code, user):
-    #TODO: check that kicked player isnt host
     with sqlite3.connect("database.db") as con:
         con.row_factory = sqlite3.Row
         cur = con.cursor()
@@ -145,6 +153,8 @@ def check_for_kick_error(code, user):
             return "This game has already started"
         if user not in json.loads(row["players"]):
             return "This user is not in the game"
+        if user == row['host']:
+            return "You can't kick yourself"
     return False
 
 ### verifies that a kill is valid ###
