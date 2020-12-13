@@ -19,9 +19,9 @@
                     <p>{{error}}</p>
                 {% endif  %}
             </div>
-            <input class="textbox" type = "text" name = "user" placeholder="Enter your username" value="{{user}}"/>
-            <input class="textbox" type = "password" name = "password" placeholder="password" />
-            <input class="textbox" type="password" name = "passwordRepeat" placeholder="confirm your password">
+            <input class="textbox" type = "text" name = "user" placeholder="Enter your username" value="{{user}}" maxlength="20"/>
+            <input class="textbox" type = "password" name = "password" placeholder="password" maxlength="100"/>
+            <input class="textbox" type="password" name = "passwordRepeat" placeholder="confirm your password" maxlength="100">
             <input class="textbox" type = "text" name = "name" placeholder="Enter your name" value="{{name}}"/>
             <input class="button" type = "submit" value = "Sign Up" />
         </form>
