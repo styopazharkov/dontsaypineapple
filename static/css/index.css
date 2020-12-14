@@ -7,9 +7,15 @@
     background-size: contain;
 }
 
+
 .grid {
     display: grid;
-    grid-template-rows: auto auto 200px 100px 100px;
+    grid-template-rows: auto 200px 100px 100px;
+    width: fit-content;
+    padding: 20px;
+    margin: auto;
+    background-color: blanchedalmond;
+    border-radius: 10px;
 }
 
 form {
@@ -54,4 +60,11 @@ input{
     height: 30px;
     width: 150px;
     justify-self: center;
+}
+
+@media screen and (max-width:400px)  {
+    input{
+        width: 200px;
+        font-size: large;
+    }
 }

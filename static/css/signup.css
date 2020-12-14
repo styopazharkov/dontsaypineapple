@@ -6,6 +6,11 @@
     display: grid;
     grid-template-rows: 30px 1fr;
     height: 400px;
+    width: fit-content;
+    margin: auto;
+    background-color: blanchedalmond;
+    border-radius: 10px;
+    padding: 20px;
 }
 
 .signup {
@@ -16,6 +21,8 @@
 
 .info {
     justify-self: center;
+    text-align: center;
+    width: 300px;
 }
 
 .error p{
@@ -30,4 +37,16 @@ input{
     margin: 10px;
     width: 300px;
     justify-self: center;
+}
+
+@media screen and (max-width:400px)  {
+    input{
+        width: 200px;
+        font-size: large;
+    }
+    
+    .info{
+        width: 200px;
+        font-size: large;
+    }
 }
