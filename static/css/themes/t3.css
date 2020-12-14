@@ -1,1 +1,10 @@
 /* TODO: put all color settings in this file */
+body {
+    background-image: url(/static/img/theme/t3.jpg);
+}
+
+.title, .code{
+    background-color: ivory;
+    border-radius: 10px;
+    padding: 10px;
+}

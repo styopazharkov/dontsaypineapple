@@ -1,1 +1,5 @@
 /* TODO: put all color settings in this file */
+body {
+    background-image: none;
+    background-color: indigo;
+}
