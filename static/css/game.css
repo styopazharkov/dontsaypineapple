@@ -144,11 +144,13 @@
     width: 0;
     transition-duration: 0.3s;
     font-size: 0;
+    min-width: 10px;
 }
 
 .cover {
     height:  60px;
     width: 80%;
+    min-width: 250px;
     background-color: lightblue;
     position: absolute;
     z-index: 1;
@@ -255,7 +257,7 @@
     border-radius: 5px;
     display: grid;
     grid-template-rows: auto auto;
-    grid-template-columns: auto auto;
+    grid-template-columns: auto 100px;
     padding: 5px;
 }
 
@@ -271,6 +273,7 @@
     height: fit-content;
     width: 100%;
     justify-self: center;
+    margin: auto;
 }
 
 .kick input, .purge input{
@@ -278,11 +281,13 @@
     height: 100%;
     width: 100%;
     border-radius: 10px;
-    background-color: rgb(255, 110, 110);
+    background-color: rgb(255, 120, 120);
     border: 0;
+    box-shadow: 3px 3px;
 }
 
-.kick input:hover, .purge input:hover{
-    background-color: rgb(255, 210, 210);
+.kick:hover input, .purge:hover input{
+    background-color: rgb(255, 100, 100);
+    box-shadow: 1px 1px;
 }
 
