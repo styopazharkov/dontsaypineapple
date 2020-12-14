@@ -122,6 +122,17 @@
                                 <input type="submit" value="purge">
                             </form>
                         {% endif %}
+                    {% else %}
+                        {% if player['user'] == data['host'] and (player['user'] in data['alive'] or not data['started'])%}
+                            <div class="state">(host)</div>
+                        {% elif player['user'] in data['alive'] %}
+                            <div class="state">(alive)</div>
+                        {% endif %}
+                    {% endif %}
+                    {% if player['user'] in data['purged'] %}
+                        <div class="state">(purged)</div>
+                    {% elif player['user'] not in data['alive'] and data['started'] %}
+                        <div class="state">(dead)</div>
                     {% endif %}
                 </div>
             {% endfor %}
