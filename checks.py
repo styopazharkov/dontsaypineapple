@@ -60,7 +60,7 @@ def check_for_rename_error(name, status):
         return "Name must be at least 2 characters!"
     if len(name) > 20:
         return "Name can't be more than 20 characters! And if yours is, think of a nickname."
-    if len(status) > 30:
+    if len(status) > 40:
         return "Status can't be more than 40 characters! There's no way you have that many thoughts."
 
 ### checks that given settings are good ###

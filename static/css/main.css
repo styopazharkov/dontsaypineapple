@@ -22,7 +22,7 @@ body {
 }
 
 .button {
-    background-color: lightgrey;
+    background-color: lightgray;
     border: 1px solid gray;
     transition-duration: 0.2s;
     border-radius: 5px;
@@ -40,7 +40,7 @@ body {
 }
 
 .button:hover {
-    background-color: blanchedalmond;
+    background-color: whitesmoke;
 }
 
 
