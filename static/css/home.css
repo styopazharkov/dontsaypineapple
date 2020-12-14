@@ -104,7 +104,9 @@ input:focus + .tooltiptext {
     }
 }
 
-
+.game {
+    margin-top: 5px;
+}
 
 .footpad {
     height: 80px;
