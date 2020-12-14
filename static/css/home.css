@@ -128,7 +128,8 @@ input:focus + .tooltiptext {
 .game:hover {
     background-color: #ffd964;
     box-shadow: 1px 1px;
-    margin-right: 0;
+    margin-right: 2px;
+    margin-left: 1px;
 }
 
 .footpad {

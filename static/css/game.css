@@ -122,12 +122,12 @@
 .secret {
     margin-top: 10px;
     width: 100%;
-    height: 60px;
+    height: 80px;
     border-radius: 6px;
 }
 
 .word, .deathMessage{
-    height:  45px;
+    height:  60px;
     width: 100%;
     background-color: rgb(255, 110, 110);
     border-radius: 16px;
@@ -147,7 +147,7 @@
 }
 
 .cover {
-    height:  45px;
+    height:  60px;
     width: 80%;
     background-color: lightblue;
     position: absolute;
@@ -160,6 +160,16 @@
     -moz-user-select: none; /* Firefox */
     -ms-user-select: none; /* IE10+/Edge */
     user-select: none; /* Standard */
+}
+
+@media screen and (min-width:500px)  {
+    .cover, .word, .deathMessage {
+        height: 45px;
+    }
+
+    .secret{
+        height: 60px;
+    }
 }
 
 .footbar {
@@ -245,7 +255,7 @@
     border-radius: 5px;
     display: grid;
     grid-template-rows: auto auto;
-    grid-template-columns: auto 70px;
+    grid-template-columns: auto auto;
     padding: 5px;
 }
 
@@ -258,11 +268,13 @@
 .kick, .purge {
     grid-row: 1 / 3;
     grid-column: 2 / 3;
-    height: 100%;
+    height: fit-content;
     width: 100%;
+    justify-self: center;
 }
 
 .kick input, .purge input{
+    padding: 5px;
     height: 100%;
     width: 100%;
     border-radius: 10px;

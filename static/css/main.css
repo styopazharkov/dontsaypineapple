@@ -7,7 +7,6 @@
 
 body {
     background-image: url(/static/img/backgrounds/pastel.jpg);
-    /* background-color: #fab2a0;  */
     background-size: 80%;
 }
 
@@ -46,5 +45,5 @@ body {
 
 @media screen and (min-width:800px)  {
     body {
-        background-size: 40%;
+        background-size: 20%;
     }
