@@ -2,12 +2,16 @@
     background-color: #7CB35C;
 }
 
+.player {
+    background-color: #66944C;
+}
+
 .word, .deathMessage{
-    background-color: #FF7878;
+    background-color: #FF6464;
 }
 
 .cover {
-    background-color: lightgray;
+    background-color: #FF7878;
 }
 
 .cancel{
@@ -19,7 +23,7 @@
 }
 
 .cancel:hover {
-    background-color: indianred;
+    background-color: #FF6464;
 }
 
 .start:hover {
@@ -28,5 +32,25 @@
 
 .disabledStart{
     background-color: #7CB35C;
+}
+
+.killed {
+    background-color: #FF7878;
+}
+
+.killed:hover {
+    background-color: #FF6464;
+}
+
+.waiting {
+    background-color: #FF7878;
+}
+
+.kick input, .purge input{
+    background-color: #FF7878;
+}
+
+.kick:hover input, .purge:hover input{
+    background-color: #FF6464;
 }
 /* TODO: put all color settings in this file */

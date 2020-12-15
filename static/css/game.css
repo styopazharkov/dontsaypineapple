@@ -201,13 +201,11 @@
 }
 
 .killed {
-    background-color: red;
     width: 100%;
     height: 100%;
 }
 
 .waiting {
-    background-color: rgb(255, 110, 110);
     font-size: x-large;
     width: 100%;
     height: 100%;
@@ -224,14 +222,13 @@
 }
 
 .footpad {
-    height: 80px;
+    height: 100px;
 }
 
 .players{
     justify-self: center;
     width: 100%;
     margin-top: 10px;
-    background-color: lightgrey;
     border-radius: 10px;
     padding-top: 10px;
 }
@@ -247,7 +244,6 @@
 }
 
 .player{
-    background-color: lightgreen;
     margin: 10px;
     border-radius: 5px;
     display: grid;
@@ -276,13 +272,11 @@
     height: 100%;
     width: 100%;
     border-radius: 10px;
-    background-color: #FF7878
     border: 0;
     box-shadow: 3px 3px;
 }
 
 .kick:hover input, .purge:hover input{
-    background-color: rgb(255, 100, 100);
     box-shadow: 1px 1px;
 }
 
