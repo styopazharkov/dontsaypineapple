@@ -34,7 +34,7 @@ body {
 }
 
 .button {
-    background-color: lightgray;
+    background-color: #D19D58
     border: 1px solid gray;
     transition-duration: 0.2s;
     border-radius: 5px;
@@ -45,7 +45,7 @@ body {
     position: fixed;
     right: 0;
     top: 0;
-    width: 80px;
+    width: 90px;
     height: 40px;
     border-radius: 0;
     border-bottom-left-radius: 5px;
@@ -53,6 +53,6 @@ body {
 }
 
 .button:hover {
-    background-color: whitesmoke;
+    background-color: #C27815;
 }
 
