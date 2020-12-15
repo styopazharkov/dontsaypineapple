@@ -89,7 +89,7 @@ def check_for_join_error(code):
         row =  cur.execute("SELECT * FROM Games WHERE code = ? ", (code, )).fetchone()
         if row['started']:
             return "This game has already started."
-        if session['user'] in row['players']:
+        if session['user'] in json.loads(row['players']):
             return "You are already in this game."
     return False
 
