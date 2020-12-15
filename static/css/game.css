@@ -145,6 +145,9 @@
     transition-duration: 0.3s;
     font-size: 0;
     min-width: 10px;
+    border-radius: 0;
+    border-bottom-left-radius: 16px;
+    border-top-left-radius: 16px;
 }
 
 .cover {
