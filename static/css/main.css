@@ -35,10 +35,11 @@ body {
 
 .button {
     background-color: #D19D58;
-    border: 1px solid gray;
+    border: 1px solid black;
     transition-duration: 0.2s;
     border-radius: 5px;
     text-align: center;
+    outline: none;
 }
 
 .back {

@@ -95,14 +95,15 @@
         <div class = "players">
             <h4>Players:</h4>   
             {% for player in data['players'] %}
-                <div class="player" 
+                <div class="player 
                 {% if player['user'] in data['purged'] %}
-                    style="background-color: #FF7878"
+                    purged
                 {% elif player['user'] not in data['alive'] and data['started'] %}
-                    style="background-color: #FF7878"
+                    dead
                 {% elif not data['started'] %}
-                    style="background-color: #66944C;"
+                    notStarted
                 {% endif %}
+                "
                 >
                     <p class="name">{{player['name']}}  ({{player['user']}})</p>
                     <p class="status">
@@ -115,11 +116,11 @@
                     {% if data['admin'] %}
                         {% if not data['started'] and player['user'] != data['host']%}
                             <form class="kick" action="/_kick/{{data['code']}}/{{player['user']}}" method="post">
-                                <input type="submit" value="kick">
+                                <input class="button" type="submit" value="kick">
                             </form>
                         {% elif player['user'] in data['alive'] %}
                             <form class="purge" action="/_purge/{{data['code']}}/{{player['user']}}" method="post">
-                                <input type="submit" value="purge">
+                                <input class="button" type="submit" value="purge">
                             </form>
                         {% endif %}
                     {% else %}

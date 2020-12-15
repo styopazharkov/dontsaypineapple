@@ -14,6 +14,10 @@
     background-color: #D19D58;
 }
 
+.notStarted {
+    background-color: #66944C;
+}
+
 .word, .deathMessage{
     background-color: #C27815;
 }

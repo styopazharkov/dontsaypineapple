@@ -132,6 +132,7 @@
     border-radius: 16px;
     padding-top: 15px;
     text-align: center;
+    border: black solid 1px;
     -webkit-user-select: none; /* Safari */        
     -moz-user-select: none; /* Firefox */
     -ms-user-select: none; /* IE10+/Edge */
@@ -156,6 +157,7 @@
     position: absolute;
     z-index: 1;
     border-radius: 16px;
+    border: black solid 1px;
     padding-top: 15px;
     text-align: center;
     transition-duration: 0.3s;
@@ -231,6 +233,7 @@
     margin-top: 10px;
     border-radius: 10px;
     padding-top: 10px;
+    border: black solid 1px;
 }
 
 @media screen and (min-width:600px)  {
@@ -250,6 +253,7 @@
     grid-template-rows: auto auto;
     grid-template-columns: auto 100px;
     padding: 5px;
+    border: black solid 1px;
 }
 
 .status{
