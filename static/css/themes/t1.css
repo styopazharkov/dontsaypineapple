@@ -2,4 +2,31 @@
     background-color: #7CB35C;
 }
 
+.word, .deathMessage{
+    background-color: #FF7878;
+}
+
+.cover {
+    background-color: lightgray;
+}
+
+.cancel{
+    background-color: #FF7878;
+}
+
+.start{
+    background-color: #66944C;
+}
+
+.cancel:hover {
+    background-color: indianred;
+}
+
+.start:hover {
+    background-color: #557B3F;
+}
+
+.disabledStart{
+    background-color: #7CB35C;
+}
 /* TODO: put all color settings in this file */
