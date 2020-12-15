@@ -65,4 +65,22 @@
 .kick:hover input, .purge:hover input{
     background-color: #C27815;
 }
-/* TODO: put all color settings in this file */
+
+
+/* PAST GAME COLORS: */
+
+.winners{
+    background-color: #7CB35C;
+}
+
+.overMssg {
+    background-color: #C27815;
+}
+
+.killLog{
+    background-color: #7CB35C;
+}
+
+.log{
+    background-color: #D19D58;
+}
