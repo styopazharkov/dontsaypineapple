@@ -1,5 +1,7 @@
 /* TODO: put all color settings in this file */
 body {
-    background-image: none;
-    background-color: indigo;
+    background-image: url(/static/img/theme/t4.jpg);
+    background-size: 40%;
+    background-attachment: unset;
+    background-repeat: unset;
 }

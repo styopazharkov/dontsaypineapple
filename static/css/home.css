@@ -24,7 +24,7 @@
     margin: auto;
     margin-top: 80px;
     margin-bottom: 50px;
-    background-color: #ffd1cd;
+    background-color:  #7CB35C;
     border: 1px solid black;
     border-radius: 8px;
     padding: 10px;
@@ -90,7 +90,7 @@ input:focus + .tooltiptext {
 }
 
 .active, .past{
-    background-color: #ffd1cd ;
+    background-color:  #7CB35C;
     border: 1px solid black;
     border-radius: 8px;
     padding: 10px;
