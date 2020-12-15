@@ -5,9 +5,22 @@
     font-size: x-large;
 }
 
+html{
+    height: 100%;
+    
+}
+
 body {
-    background-image: url(/static/img/backgrounds/pastel.jpg);
-    background-size: 80%;
+    background-image: url(/static/img/backgrounds/oneBig.jpg);
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover; 
+    background-size: auto 100%;
+    background-position: bottom right;   
+    background-repeat: no-repeat;
+    background-color: #FFD964;
+    background-attachment: fixed;
 }
 
 .error p {
@@ -43,8 +56,3 @@ body {
     background-color: whitesmoke;
 }
 
-
-@media screen and (min-width:800px)  {
-    body {
-        background-size: 40%;
-    }
