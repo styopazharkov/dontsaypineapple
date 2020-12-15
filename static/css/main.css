@@ -24,7 +24,7 @@ body {
 }
 
 .error p {
-    color: red;
+    color: #A14712;
     font-size: smaller;
 }
 
@@ -34,7 +34,7 @@ body {
 }
 
 .button {
-    background-color: #D19D58
+    background-color: #D19D58;
     border: 1px solid gray;
     transition-duration: 0.2s;
     border-radius: 5px;
