@@ -1,109 +1,223 @@
+/* MAIN CSS */
+
 body {
-    background-image: none;
-    background-color: lightgray;
+    background-image: url(/static/img/backgrounds/oneBig.jpg);
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover; 
+    background-size: auto 100%;
+    background-position: bottom right;   
+    background-repeat: no-repeat;
+    background-color: #FFD964;
+    background-attachment: fixed;
+}
+
+.error p {
+    color: #A14712;
+}
+
+.textbox{
+    border: 1px solid gray;
+}
+
+.button {
+    background-color: #D19D58;
+    border: 1px solid black;
+}
+
+.button:hover {
+    background-color: #C27815;
 }
 
 .back {
-    background-color: lightgray;
+    border-bottom-left-radius: 5px;
 }
 
-.back:hover{
-    background-color: gray;
+.tooltiptext{
+    background-color: black;
+    color: #fff;
+    border-radius: 6px;
 }
+
+/* SIGNUP CSS */
+
+.signupGrid{
+    background-color: #7CB35C;
+    border-radius: 10px;
+}
+
+/* RULES CSS */
+
+.rulesPage{
+    background-color: #7CB35C;
+    border-radius: 10px;
+    border: black solid 1px;
+}
+
+/* INDEX CSS */
+
+.indexGrid {
+    background-color: #7CB35C;
+    border: black solid 1px;
+    border-radius: 10px;
+}
+
+/* HOME CSS */
+
+.homeGrid1{
+    background-color:  #7CB35C;
+    border: 1px solid black;
+    border-radius: 10px;
+}
+
+.active, .past{
+    background-color:  #7CB35C;
+    border: 1px solid black;
+    border-radius: 10px;
+}
+
+.game {
+    background-color: rgb(252, 224, 131);
+}
+
+.game:hover{
+    background-color: #ffd964;
+}
+
+/* CREATE CSS */
+.createGrid{
+    background-color: #7CB35C;
+    border-radius: 10px;
+}
+
+/* CREATE AND GAME CSS */
+
+#difficulty label span, #passon label span {
+    background-color:#EFEFEF;
+    border-radius:4px;
+    border:1px solid #D0D0D0;
+}
+
+#difficulty input:checked + span, #passon input:checked + span{
+    background-color:#404040;
+    color:#F7F7F7;
+}
+
+/* JOIN CSS */
+
+.joinGrid{
+    background-color: #7CB35C;
+    border-radius: 10px;
+}
+
+/* GAME CSS */
 
 .players {
-    background-color: lightgray;
+    background-color: #66944C;
+    border: black solid 1px;
+    border-radius: 10px;
 }
 
 .player {
-    background-color: lightgray;
+    background-color: #7CB35C;
+    border: black solid 1px;
+    border-radius: 10px;
 }
 
 .dead {
-    background-color: lightgray;
+    background-color: #66944C;
 }
 
 .purged {
-    background-color: lightgray;
+    background-color: #66944C;
 }
 
 .notStarted {
-    background-color: lightgray;
+    background-color: #66944C;
 }
 
 .word, .deathMessage{
-    background-color: rgb(175, 175, 175);
+    background-color: #C27815;
+    border: black solid 1px;
+    border-radius: 10px;
 }
 
 .cover {
-    background-color: lightgray;
+    background-color: #D19D58;
+    border-radius: 10px;
+    border: black solid 1px;
 }
 
+.secret:active:hover  .cover{
+    border-bottom-left-radius: 10px;
+    border-top-left-radius: 10px;
+}
 .cancel{
-    background-color: lightgray;
+    background-color: #D19D58;
 }
 
 .start{
-    background-color: lightgray;
+    background-color: #66944C;
 }
 
 .cancel:hover {
-    background-color: gray;
+    background-color: #C27815;
 }
 
 .start:hover {
-    background-color: gray;
+    background-color: #557B3F;
 }
 
 .disabledStart{
-    background-color: lightgray;
+    background-color: #7CB35C;
 }
 
 .killed {
-    background-color: lightgray;
+    background-color: #D19D58;
 }
 
 .killed:hover {
-    background-color: gray;
+    background-color: #C27815;
 }
 
 .waiting {
-    background-color: lightgray;
+    background-color: #D19D58;
 }
 
 .kick input, .purge input{
-    background-color: lightgray;
-    border: black solid 1px;
+    background-color: #D19D58;
+    border-radius: 8px;
+    border: 0;
+    box-shadow: 3px 3px;
 }
 
 .kick:hover input, .purge:hover input{
-    background-color: gray;
+    background-color: #C27815;
+    box-shadow: 1px 1px;
 }
 
 
-/* PAST GAME COLORS: */
+/* PAST GAME CSS: */
 
 .winners{
-    background-color: lightgray;
-    border: black solid 1px;
+    background-color: #7CB35C;
 }
 
 .dplayer{
-    background-color: lightgray;
-    border: black solid 1px;
+    background-color: #66944C;
 }
 
-
 .overMssg {
-    background-color: lightgray;
+    background-color: #C27815;
 }
 
 .killLog{
-    background-color: lightgray;
-    border: black solid 1px;
+    background-color: #7CB35C;
 }
 
 .log{
-    background-color: lightgray;
-    border: black solid 1px;
+    background-color: #D19D58;
 }
+
+

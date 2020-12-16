@@ -60,7 +60,7 @@ body {
 .indexGrid {
     background-color: #7CB35C;
     border: black solid 1px;
-    border-radius: 5px;
+    border-radius: 10px;
 }
 
 /* HOME CSS */
@@ -68,13 +68,13 @@ body {
 .homeGrid1{
     background-color:  #7CB35C;
     border: 1px solid black;
-    border-radius: 8px;
+    border-radius: 10px;
 }
 
 .active, .past{
     background-color:  #7CB35C;
     border: 1px solid black;
-    border-radius: 8px;
+    border-radius: 10px;
 }
 
 .game {
@@ -116,13 +116,13 @@ body {
 .players {
     background-color: #66944C;
     border: black solid 1px;
-    border-radius: 7px;
+    border-radius: 10px;
 }
 
 .player {
     background-color: #7CB35C;
     border: black solid 1px;
-    border-radius: 5px;
+    border-radius: 10px;
 }
 
 .dead {
@@ -140,18 +140,18 @@ body {
 .word, .deathMessage{
     background-color: #C27815;
     border: black solid 1px;
-    border-radius: 9px;
+    border-radius: 10px;
 }
 
 .cover {
     background-color: #D19D58;
-    border-radius: 8px;
+    border-radius: 10px;
     border: black solid 1px;
 }
 
 .secret:active:hover  .cover{
-    border-bottom-left-radius: 8px;
-    border-top-left-radius: 8px;
+    border-bottom-left-radius: 10px;
+    border-top-left-radius: 10px;
 }
 .cancel{
     background-color: #D19D58;
