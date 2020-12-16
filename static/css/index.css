@@ -8,22 +8,19 @@
 }
 
 
-.grid {
+.indexGrid {
     display: grid;
     grid-template-rows: auto 200px 100px 100px;
     width: fit-content;
     padding: 20px;
     margin: auto;
-    background-color: #7CB35C;
-    border: black solid 1px;
-    border-radius: 5px;
 }
 
 form {
     height: 100%;
 }
 
-.grid2{
+.indexGrid2{
     height: 100%;
     display: grid;
     grid-template-rows: 33% 33% 33%;

@@ -1,11 +1,11 @@
-.grid {
+.createGrid {
     position: absolute;
     top: 47%;
     left: 50%;
     transform: translate(-50%, -50%);
     display: grid;
     grid-template-rows: 30px 1fr;
-    height: 500px;
+    height: 430px;
 }
 
 .create {
@@ -17,6 +17,7 @@
 
 .info {
     justify-self: center;
+    padding-top: 15px;
 }
 
 .error p{
@@ -46,9 +47,6 @@
 
 #difficulty label span, #passon label span {
     width: 100%;
-    background-color:#EFEFEF;
-    border-radius:4px;
-    border:1px solid #D0D0D0;
     float: left;
     text-align:center;
     padding:13px 0px;
@@ -56,11 +54,6 @@
 
 #difficulty label input, #passon label input{
     display: none;
-}
-
-#difficulty input:checked + span, #passon input:checked + span{
-    background-color:#404040;
-    color:#F7F7F7;
 }
 
 .question {
@@ -77,12 +70,9 @@
 .tooltiptext {
     visibility: hidden;
     width: 150px;
-    background-color: black;
     font-size: large;
-    color: #fff;
     text-align: center;
     padding: 5px;
-    border-radius: 6px;
 
     position: absolute;
     z-index: 1;

@@ -16,7 +16,7 @@
     border-radius: 0;
 }
 
-.grid1{
+.homeGrid1{
     display: grid;
     grid-template-rows: auto auto auto;
     width: 80%;
@@ -24,9 +24,6 @@
     margin: auto;
     margin-top: 80px;
     margin-bottom: 50px;
-    background-color:  #7CB35C;
-    border: 1px solid black;
-    border-radius: 8px;
     padding: 10px;
 }
 
@@ -62,13 +59,9 @@
 .tooltiptext {
     visibility: hidden;
     width: 150px;
-    background-color: black;
     font-size: large;
-    color: #fff;
     text-align: center;
     padding: 5px;
-    border-radius: 6px;
-
     position: absolute;
     z-index: 1;
 
@@ -82,7 +75,7 @@ input:focus + .tooltiptext {
     visibility: visible;
   }
 
-.grid2 {
+.homeGrid2 {
     display: grid;
     grid-template-columns: 100%;
     width: 80%;
@@ -90,9 +83,6 @@ input:focus + .tooltiptext {
 }
 
 .active, .past{
-    background-color:  #7CB35C;
-    border: 1px solid black;
-    border-radius: 8px;
     padding: 10px;
     height: fit-content;
 }
@@ -102,7 +92,7 @@ input:focus + .tooltiptext {
 }
 
 @media screen and (min-width:700px)  {
-    .grid2 {
+    .homeGrid2 {
         display: grid;
         grid-template-columns: 49% 49%;
         grid-column-gap: 2%
@@ -121,12 +111,10 @@ input:focus + .tooltiptext {
     margin-top: 5px;
     margin-right: 3px ;
     padding: 5px;
-    background-color: rgb(252, 224, 131);
     box-shadow: 3px 3px;
 }
 
 .game:hover {
-    background-color: #ffd964;
     box-shadow: 1px 1px;
     margin-right: 2px;
     margin-left: 1px;

@@ -30,14 +30,84 @@ body {
     background-color: #C27815;
 }
 
+.back {
+    border-bottom-left-radius: 5px;
+}
+
+.tooltiptext{
+    background-color: black;
+    color: #fff;
+    border-radius: 6px;
+}
+
+/* INDEX CSS */
+
+.indexGrid {
+    background-color: #7CB35C;
+    border: black solid 1px;
+    border-radius: 5px;
+}
+
+/* HOME CSS */
+
+.homeGrid1{
+    background-color:  #7CB35C;
+    border: 1px solid black;
+    border-radius: 8px;
+}
+
+.active, .past{
+    background-color:  #7CB35C;
+    border: 1px solid black;
+    border-radius: 8px;
+}
+
+.game {
+    background-color: rgb(252, 224, 131);
+}
+
+.game:hover{
+    background-color: #ffd964;
+}
+
+/* CREATE CSS */
+.createGrid{
+    background-color: #7CB35C;
+    border-radius: 10px;
+}
+
+/* CREATE AND GAME CSS */
+
+#difficulty label span, #passon label span {
+    background-color:#EFEFEF;
+    border-radius:4px;
+    border:1px solid #D0D0D0;
+}
+
+#difficulty input:checked + span, #passon input:checked + span{
+    background-color:#404040;
+    color:#F7F7F7;
+}
+
+/* JOIN CSS */
+
+.joinGrid{
+    background-color: #7CB35C;
+    border-radius: 10px;
+}
+
 /* GAME CSS */
 
 .players {
     background-color: #66944C;
+    border: black solid 1px;
+    border-radius: 7px;
 }
 
 .player {
     background-color: #7CB35C;
+    border: black solid 1px;
+    border-radius: 5px;
 }
 
 .dead {
@@ -54,12 +124,20 @@ body {
 
 .word, .deathMessage{
     background-color: #C27815;
+    border: black solid 1px;
+    border-radius: 9px;
 }
 
 .cover {
     background-color: #D19D58;
+    border-radius: 8px;
+    border: black solid 1px;
 }
 
+.secret:active:hover  .cover{
+    border-bottom-left-radius: 8px;
+    border-top-left-radius: 8px;
+}
 .cancel{
     background-color: #D19D58;
 }
@@ -94,10 +172,14 @@ body {
 
 .kick input, .purge input{
     background-color: #D19D58;
+    border-radius: 8px;
+    border: 0;
+    box-shadow: 3px 3px;
 }
 
 .kick:hover input, .purge:hover input{
     background-color: #C27815;
+    box-shadow: 1px 1px;
 }
 
 
@@ -122,3 +204,6 @@ body {
 .log{
     background-color: #D19D58;
 }
+
+
+

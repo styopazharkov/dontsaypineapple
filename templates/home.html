@@ -13,7 +13,7 @@
     <button class="back button" onclick="window.location.href='{{ url_for( 'index')}}';">Log Out</button>
 
 
-    <div class="grid1">
+    <div class="homeGrid1">
         <div class="error">
             {% if  error %}
             <p style="color: red;">Error: {{error}}</p>
@@ -44,7 +44,7 @@
         <input class="button" type="submit" value="Toggle Game Theme">
     </form>
 
-    <div class="grid2">
+    <div class="homeGrid2">
         <div class="active">
             <h4>Active Games:</h4>
             {% for game in data['activeGames'] %}

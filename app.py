@@ -187,7 +187,7 @@ def join():
     with sqlite3.connect("database.db") as con: 
         con.row_factory = sqlite3.Row
         cur = con.cursor() 
-        theme = fetchers.get_theme(cur, session['user'])
+        theme = str(fetchers.get_theme(cur, session['user']))
     return render_template('join.html', error = error, theme = theme)
 
 ### join helper route ###
@@ -233,7 +233,7 @@ def create():
     with sqlite3.connect("database.db") as con: 
         con.row_factory = sqlite3.Row
         cur = con.cursor() 
-        theme = fetchers.get_theme(cur, session['user'])
+        theme = str(fetchers.get_theme(cur, session['user']))
     return render_template('create.html', error = error, code = code, name=name, theme = theme)
 
 ### _create helper route ###

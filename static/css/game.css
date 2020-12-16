@@ -64,9 +64,6 @@
 
 #difficulty label span, #passon label span{
     width: 100%;
-    background-color:#EFEFEF;
-    border-radius:4px;
-    border:1px solid #D0D0D0;
     float: left;
     text-align:center;
     padding:13px 0px;
@@ -74,11 +71,6 @@
 
 #difficulty label input, #passon label input{
     display: none;
-}
-
-#difficulty input:checked + span, #passon input:checked + span{
-    background-color:#404040;
-    color:#F7F7F7;
 }
 
 .question {
@@ -95,12 +87,9 @@
 .tooltiptext {
     visibility: hidden;
     width: 150px;
-    background-color: black;
     font-size: large;
-    color: #fff;
     text-align: center;
     padding: 5px;
-    border-radius: 6px;
 
     position: absolute;
     z-index: 1;
@@ -123,10 +112,8 @@
 .word, .deathMessage{
     height:  60px;
     width: 100%;
-    border-radius: 9px;
     padding-top: 15px;
     text-align: center;
-    border: black solid 1px;
     -webkit-user-select: none; /* Safari */        
     -moz-user-select: none; /* Firefox */
     -ms-user-select: none; /* IE10+/Edge */
@@ -140,8 +127,6 @@
     font-size: 0;
     min-width: 10px;
     border-radius: 0;
-    border-bottom-left-radius: 8px;
-    border-top-left-radius: 8px;
 }
 
 .cover {
@@ -150,8 +135,6 @@
     min-width: 250px;
     position: absolute;
     z-index: 1;
-    border-radius: 8px;
-    border: black solid 1px;
     padding-top: 15px;
     text-align: center;
     transition-duration: 0.3s;
@@ -225,9 +208,7 @@
     justify-self: center;
     width: 100%;
     margin-top: 10px;
-    border-radius: 7px;
     padding-top: 10px;
-    border: black solid 1px;
 }
 
 @media screen and (min-width:600px)  {
@@ -242,12 +223,10 @@
 
 .player{
     margin: 10px;
-    border-radius: 5px;
     display: grid;
     grid-template-rows: auto auto;
     grid-template-columns: auto 100px;
     padding: 5px;
-    border: black solid 1px;
 }
 
 .status{
@@ -269,13 +248,6 @@
     padding: 5px;
     height: 100%;
     width: 100%;
-    border-radius: 8px;
-    border: 0;
-    box-shadow: 3px 3px;
-}
-
-.kick:hover input, .purge:hover input{
-    box-shadow: 1px 1px;
 }
 
 .state {
