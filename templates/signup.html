@@ -7,13 +7,12 @@
     <link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/signup.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/themes/t0.css') }}">
-
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/themes/t'+theme+'.css') }}">
 </head>
 <body>
     <button class="back button" onclick="window.location.href='{{ url_for( 'index')}}';">Back</button>
 
-    <div class="grid">
+    <div class="signupGrid">
         <p class="info">Please Enter Your Info</p>
         <form class="signup" action="/_signup" method="POST">
             <div class="error">

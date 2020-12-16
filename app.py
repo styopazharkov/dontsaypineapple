@@ -30,12 +30,12 @@ def index():
         error = ""
     try: #checks if there is a username stored in session to remember
         user = session.pop('user')
-        with sqlite3.connect("database.db") as con: 
-            con.row_factory = sqlite3.Row
-            cur = con.cursor() 
-            theme = str(fetchers.get_theme(cur, user))
     except KeyError:
-        user, theme = "", "0"
+        user = ""
+    try: #checks if there is a theme stored in session to remember
+        theme = session['theme']
+    except KeyError:
+        theme = "0"
     return render_template('index.html', error = error, user = user, theme = theme) #renders html page
 
 ### _login helper route ###
@@ -58,6 +58,10 @@ def _login():
     else:
         session['loggedIn'] = True
         session['password'] = password
+        with sqlite3.connect("database.db") as con: 
+            con.row_factory = sqlite3.Row
+            cur = con.cursor() 
+            session['theme'] = str(fetchers.get_theme(cur, user))
         return redirect(url_for('home'))
             
 ### signup page route ###
@@ -69,7 +73,11 @@ def signup():
         error, user, name = session.pop('error'), session.pop('user'), session.pop('name')
     except KeyError:
         error, user, name = "", "", ""
-    return render_template('signup.html', error = error, user = user, name = name)
+    try: #checks if there is a theme stored in session to remember
+        theme = session['theme']
+    except KeyError:
+        theme = "0"
+    return render_template('signup.html', error = error, user = user, name = name, theme=theme)
 
 ### _signup helper route ###
 ## This helper page is accessed when info is entered from the signup page. ##
@@ -125,7 +133,7 @@ def home():
         row = cur.execute("SELECT * from Players WHERE user = ?", (session['user'], )) .fetchone()
         data['name'] = row["name"]
         data['status'] = row["status"]
-        data['theme'] = str(row["theme"])
+        data['theme'] = session['theme']
         data['activeGames'], data['pastGames'] = [], []
         games = json.loads(row["games"])
         for game in games: #sorts games into active and past ones
@@ -169,6 +177,7 @@ def _change_theme():
         theme = fetchers.get_theme(cur, session['user'])
         theme = (theme + 1)%4
         cur.execute("UPDATE Players SET theme = ? WHERE user = ? ", (theme, session['user']))
+        session['theme'] = str(theme)
         con.commit()
     return redirect(url_for('home'))
     
@@ -184,10 +193,7 @@ def join():
         error = session.pop('error')
     except KeyError:
         error = ""
-    with sqlite3.connect("database.db") as con: 
-        con.row_factory = sqlite3.Row
-        cur = con.cursor() 
-        theme = str(fetchers.get_theme(cur, session['user']))
+    theme = session['theme']
     return render_template('join.html', error = error, theme = theme)
 
 ### join helper route ###
@@ -230,10 +236,7 @@ def create():
         error, code, name = session.pop('error'), session.pop('code'), session.pop('name')
     except KeyError:
         error, code, name = "", "", ""
-    with sqlite3.connect("database.db") as con: 
-        con.row_factory = sqlite3.Row
-        cur = con.cursor() 
-        theme = str(fetchers.get_theme(cur, session['user']))
+    theme = session['theme']
     return render_template('create.html', error = error, code = code, name=name, theme = theme)
 
 ### _create helper route ###
@@ -315,7 +318,7 @@ def activeGame(code):
         data['settings'] = json.loads(gameRow['settings'])
         data['host'] = gameRow['host']
         data['players'] = []
-        data['theme'] = str(fetchers.get_theme(cur, session['user']))
+        data['theme'] = session['theme']
         for player in  json.loads(gameRow['players']):
             data['players'].append({'user': player, 'name': fetchers.get_name(cur, player), 'status': fetchers.get_status(cur, player)})
         data['numberOfPlayers'] = len(data['players'])
@@ -341,6 +344,7 @@ def pastGame(code):
         gameRow = cur.execute("SELECT * FROM PastGames WHERE code = ? ", (code, )).fetchone()
         data['code'] = code
         data['user'] = session['user']
+        data['theme'] = session['theme']
         data['title'] = gameRow['name']
         data['settings'] = json.loads(gameRow['settings'])
         data['host'] = gameRow['host']
@@ -352,7 +356,6 @@ def pastGame(code):
             'assassin': {'code': entry[0], 'name': fetchers.get_name(cur, entry[0])}, 
             'word': entry[3]
             } for entry in json.loads(gameRow['killLog'])]
-        data['theme'] = str(fetchers.get_theme(cur, session['user']))
     return render_template('pastGame.html', data = data, error=error)
 
 ### _start helper route starts a game that isnt started ###
@@ -571,7 +574,11 @@ def _purge(code, user):
 
 @app.route('/rules/')
 def rules():
-    return render_template('rules.html')
+    try:
+        theme = session['theme']
+    except KeyError:
+        theme = "0"
+    return render_template('rules.html', theme=theme)
 
 #### DEBUG ROUTING BELOW THIS LINE ####
 

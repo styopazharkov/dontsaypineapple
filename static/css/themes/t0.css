@@ -40,6 +40,21 @@ body {
     border-radius: 6px;
 }
 
+/* SIGNUP CSS */
+
+.signupGrid{
+    background-color: #7CB35C;
+    border-radius: 10px;
+}
+
+/* RULES CSS */
+
+.rulesPage{
+    background-color: #7CB35C;
+    border-radius: 10px;
+    border: black solid 1px;
+}
+
 /* INDEX CSS */
 
 .indexGrid {

@@ -7,16 +7,13 @@
     background-size: contain;
 }
 
-.rules{
+.rulesPage{
     width: 80%;
     margin: auto;
     margin-top: 20px;
     margin-bottom: 60px;
-    background-color: #7CB35C;
-    border-radius: 10px;
     padding: 20px;
     padding-top: 1px;
-    border: black solid 1px;
 }
 
 h2{
