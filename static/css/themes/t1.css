@@ -28,7 +28,7 @@ body {
 }
 
 .tooltiptext{
-    background-color: lightgray;
+    background-color: rgb(175, 175, 175);
     color: black;
     border-radius: 6px;
     border: black solid 1px;
@@ -88,14 +88,14 @@ body {
 /* CREATE AND GAME CSS */
 
 #difficulty label span, #passon label span {
-    background-color:#EFEFEF;
-    border-radius:4px;
-    border:1px solid #D0D0D0;
+    background-color:lightgray;
+    border-radius: 0;
+    border:1px solid black;
 }
 
 #difficulty input:checked + span, #passon input:checked + span{
-    background-color:#404040;
-    color:#F7F7F7;
+    background-color: #222222;
+    color:lightgray;
 }
 
 /* JOIN CSS */
@@ -110,13 +110,13 @@ body {
 .players {
     background-color: lightgray;
     border: black solid 1px;
-    border-radius: 10px;
+    border-radius: 5px;
 }
 
 .player {
     background-color: lightgray;
     border: black solid 1px;
-    border-radius: 10px;
+    border-radius: 5px;
 }
 
 .dead {
@@ -132,20 +132,20 @@ body {
 }
 
 .word, .deathMessage{
-    background-color: #C27815;
+    background-color: rgb(175, 175, 175);
     border: black solid 1px;
-    border-radius: 10px;
+    border-radius: 6px;
 }
 
 .cover {
-    background-color: #D19D58;
-    border-radius: 10px;
+    background-color: lightgray;
+    border-radius: 5px;
     border: black solid 1px;
 }
 
 .secret:active:hover  .cover{
-    border-bottom-left-radius: 10px;
-    border-top-left-radius: 10px;
+    border-bottom-left-radius: 5px;
+    border-top-left-radius: 5px;
 }
 .cancel{
     background-color: lightgray;
@@ -177,18 +177,18 @@ body {
 }
 
 .waiting {
-    background-color: #D19D58;
+    background-color: lightgray;
 }
 
 .kick input, .purge input{
-    background-color: #D19D58;
-    border-radius: 8px;
-    border: 0;
-    box-shadow: 3px 3px;
+    background-color: lightgray;
+    border-radius: 5px;
+    border: black solid 1px;
+    box-shadow: 2px 3px;
 }
 
 .kick:hover input, .purge:hover input{
-    background-color: #C27815;
+    background-color: gray;
     box-shadow: 1px 1px;
 }
 
@@ -196,11 +196,11 @@ body {
 /* PAST GAME CSS: */
 
 .winners{
-    background-color: #7CB35C;
+    background-color: lightgray;
 }
 
 .dplayer{
-    background-color: #66944C;
+    background-color: lightgray;
 }
 
 .overMssg {
