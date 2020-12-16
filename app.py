@@ -30,9 +30,13 @@ def index():
         error = ""
     try: #checks if there is a username stored in session to remember
         user = session.pop('user')
+        with sqlite3.connect("database.db") as con: 
+            con.row_factory = sqlite3.Row
+            cur = con.cursor() 
+            theme = str(fetchers.get_theme(cur, user))
     except KeyError:
-        user = ""
-    return render_template('index.html', error = error, user = user) #renders html page
+        user, theme = "", "0"
+    return render_template('index.html', error = error, user = user, theme = theme) #renders html page
 
 ### _login helper route ###
 ## This helper page is accessed when a username and password are entered from the index page. ##
