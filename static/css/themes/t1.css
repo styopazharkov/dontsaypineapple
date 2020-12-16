@@ -79,6 +79,10 @@ body {
     background-color: rgb(175, 175, 175);
 }
 
+.create{
+    border-left-width: 0;
+}
+
 /* CREATE CSS */
 .createGrid{
     background-color: lightgray;
