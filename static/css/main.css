@@ -23,6 +23,7 @@ html{
     border-radius: 5px;
     text-align: center;
     outline: none;
+    cursor: pointer;
 }
 
 .back {
