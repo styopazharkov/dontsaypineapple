@@ -155,6 +155,7 @@ body {
 }
 .cancel{
     background-color: #D19D58;
+    border-left: 0;
 }
 
 .start{

@@ -148,31 +148,32 @@ body {
     border-top-left-radius: 10px;
 }
 .cancel{
-    background-color: #D19D58;
+    background-color: lightgray;
+    border-left: 0;
 }
 
 .start{
-    background-color: #66944C;
+    background-color: lightgray;
 }
 
 .cancel:hover {
-    background-color: #C27815;
+    background-color: gray;
 }
 
 .start:hover {
-    background-color: #557B3F;
+    background-color: gray;
 }
 
 .disabledStart{
-    background-color: #7CB35C;
+    background-color: lightgray;
 }
 
 .killed {
-    background-color: #D19D58;
+    background-color: lightgray;
 }
 
 .killed:hover {
-    background-color: #C27815;
+    background-color: gray;
 }
 
 .waiting {
