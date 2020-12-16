@@ -84,7 +84,8 @@ body {
 /* PAST GAME COLORS: */
 
 .winners{
-    background-color: lightgray
+    background-color: lightgray;
+    border: black solid 1px;
 }
 
 .dplayer{
@@ -99,10 +100,12 @@ body {
 
 .killLog{
     background-color: lightgray;
+    border: black solid 1px;
 }
 
 .log{
     background-color: lightgray;
+    border: black solid 1px;
 }
 
 /* TODO: put all color settings in this file */
