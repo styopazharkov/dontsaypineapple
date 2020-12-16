@@ -89,11 +89,11 @@ def _signup():
     else:
         hashPass = hashing.hashpass(password)
         games = json.dumps([])
-        pastGames = json.dumps([])
+        theme = 0 #TODO: let user choose on signup
         stats = json.dumps({"played": 0, "survivalWins": 0, "killWins": 0, "kills": 0})
         with sqlite3.connect("database.db") as con:
             cur = con.cursor() 
-            cur.execute("INSERT into Players (user, password, name, games, pastGames, stats, status) values (?, ?, ?, ?, ?, ?, ?)", (user, hashPass, name, games, pastGames, stats, ""))   #creates new user
+            cur.execute("INSERT into Players (user, password, name, games, theme, stats, status) values (?, ?, ?, ?, ?, ?, ?)", (user, hashPass, name, games, theme, stats, ""))   #creates new user
             con.commit()
         session['loggedIn'] = True
         session['user'] = user
