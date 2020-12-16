@@ -26,7 +26,7 @@
 .adminSettings{
     margin-top: 20px;
     display: grid;
-    grid-template-rows: auto auto auto;
+    grid-template-rows: auto auto;
 }
 
 .normSettings {
@@ -39,7 +39,7 @@
 @media screen and (min-width:800px)  {
     .adminSettings {
         grid-template-rows: auto;
-        grid-template-columns: auto auto auto;
+        grid-template-columns: auto auto;
     }
 }
 
@@ -62,13 +62,7 @@
     margin: 10px;
 }
 
-#theme {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    margin: 10px;
-}
-
-#difficulty label span, #passon label span , #theme label span {
+#difficulty label span, #passon label span{
     width: 100%;
     background-color:#EFEFEF;
     border-radius:4px;
@@ -78,11 +72,11 @@
     padding:13px 0px;
 }
 
-#difficulty label input, #passon label input, #theme label input  {
+#difficulty label input, #passon label input{
     display: none;
 }
 
-#difficulty input:checked + span, #passon input:checked + span, #theme input:checked + span{
+#difficulty input:checked + span, #passon input:checked + span{
     background-color:#404040;
     color:#F7F7F7;
 }

@@ -7,7 +7,7 @@
     <link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/game.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/themes/'+data['settings']['theme']+'.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/themes/'+data['theme']+'.css') }}">
 </head>
 <body>
     <button class="back button" onclick="window.location.href='{{url_for('home')}}';">Back</button>
@@ -50,13 +50,6 @@
                                 If 'Shuffle' is selected, the killer gets a new word.
                             </span>
                         </div>
-                    </div>
-
-                    <div class="radio" id="theme">
-                        <label><input type="radio" id="t1" name="theme" value="t1" {% if data['settings']['theme'] == "t1" %} checked="checked" {% endif %} onchange="this.form.submit()"><span>A</span></label>
-                        <label><input type="radio" id="t2" name="theme" value="t2" {% if data['settings']['theme'] == "t2" %} checked="checked" {% endif %} onchange="this.form.submit()"><span>B</span></label>
-                        <label><input type="radio" id="t3" name="theme" value="t3" {% if data['settings']['theme'] == "t3" %} checked="checked" {% endif %} onchange="this.form.submit()"><span>C</span></label>
-                        <label><input type="radio" id="t4" name="theme" value="t4" {% if data['settings']['theme'] == "t4" %} checked="checked" {% endif %} onchange="this.form.submit()"><span>D</span></label>
                     </div>
                 </form>
             {% else %}
