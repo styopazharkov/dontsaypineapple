@@ -37,14 +37,14 @@ body {
 /* SIGNUP CSS */
 
 .signupGrid{
-    background-color: #7CB35C;
+    background-color: lightgray;
     border-radius: 10px;
 }
 
 /* RULES CSS */
 
 .rulesPage{
-    background-color: #7CB35C;
+    background-color: lightgray;
     border-radius: 10px;
     border: black solid 1px;
 }
@@ -52,7 +52,7 @@ body {
 /* INDEX CSS */
 
 .indexGrid {
-    background-color: #7CB35C;
+    background-color: lightgray;
     border: black solid 1px;
     border-radius: 10px;
 }
@@ -60,28 +60,28 @@ body {
 /* HOME CSS */
 
 .homeGrid1{
-    background-color:  #7CB35C;
+    background-color:  lightgray;
     border: 1px solid black;
     border-radius: 10px;
 }
 
 .active, .past{
-    background-color:  #7CB35C;
+    background-color:  lightgray;
     border: 1px solid black;
     border-radius: 10px;
 }
 
 .game {
-    background-color: rgb(252, 224, 131);
+    background-color: lightgray;
 }
 
 .game:hover{
-    background-color: #ffd964;
+    background-color: gray;
 }
 
 /* CREATE CSS */
 .createGrid{
-    background-color: #7CB35C;
+    background-color: lightgray;
     border-radius: 10px;
 }
 
@@ -101,7 +101,7 @@ body {
 /* JOIN CSS */
 
 .joinGrid{
-    background-color: #7CB35C;
+    background-color: lightgray;
     border-radius: 10px;
 }
 
