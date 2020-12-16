@@ -7,35 +7,18 @@
 
 html{
     height: 100%;
-    
-}
-
-body {
-    background-image: url(/static/img/backgrounds/oneBig.jpg);
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover; 
-    background-size: auto 100%;
-    background-position: bottom right;   
-    background-repeat: no-repeat;
-    background-color: #FFD964;
-    background-attachment: fixed;
 }
 
 .error p {
-    color: #A14712;
     font-size: smaller;
 }
 
 .textbox {
-    border: 1px solid gray;
     border-radius: 5px;
+    outline: none;
 }
 
 .button {
-    background-color: #D19D58;
-    border: 1px solid black;
     transition-duration: 0.2s;
     border-radius: 5px;
     text-align: center;
@@ -53,7 +36,4 @@ body {
     z-index: 2;
 }
 
-.button:hover {
-    background-color: #C27815;
-}
 
