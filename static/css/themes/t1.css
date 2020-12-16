@@ -203,15 +203,15 @@ body {
 }
 
 .overMssg {
-    background-color: #C27815;
+    background-color: lightgray;
 }
 
 .killLog{
-    background-color: #7CB35C;
+    background-color: lightgray;
 }
 
 .log{
-    background-color: #D19D58;
+    background-color: lightgray;
 }
 
 
