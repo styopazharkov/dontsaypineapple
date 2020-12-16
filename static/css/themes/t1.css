@@ -108,7 +108,7 @@ body {
 /* GAME CSS */
 
 .players {
-    background-color: #66944C;
+    background-color: lightgray;
     border: black solid 1px;
     border-radius: 10px;
 }
@@ -120,15 +120,15 @@ body {
 }
 
 .dead {
-    background-color: #66944C;
+    background-color: lightgray;
 }
 
 .purged {
-    background-color: #66944C;
+    background-color: lightgray;
 }
 
 .notStarted {
-    background-color: #66944C;
+    background-color: lightgray;
 }
 
 .word, .deathMessage{

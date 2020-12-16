@@ -100,6 +100,7 @@ def _signup():
         return redirect(url_for('signup'))
     else:
         theme = 0 #TODO: let user choose on signup
+        session['theme'] = "0"
         hashPass = hashing.hashpass(password)
         games = json.dumps([])
         stats = json.dumps({"played": 0, "survivalWins": 0, "killWins": 0, "kills": 0})
