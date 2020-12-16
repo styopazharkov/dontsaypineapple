@@ -20,7 +20,7 @@ body {
 }
 
 .button:hover {
-    background-color: gray;
+    background-color: rgb(175, 175, 175);
 }
 
 .back {
@@ -76,7 +76,7 @@ body {
 }
 
 .game:hover{
-    background-color: gray;
+    background-color: rgb(175, 175, 175);
 }
 
 /* CREATE CSS */
@@ -157,11 +157,11 @@ body {
 }
 
 .cancel:hover {
-    background-color: gray;
+    background-color: rgb(175, 175, 175);
 }
 
 .start:hover {
-    background-color: gray;
+    background-color: rgb(175, 175, 175);
 }
 
 .disabledStart{
@@ -173,7 +173,7 @@ body {
 }
 
 .killed:hover {
-    background-color: gray;
+    background-color: rgb(175, 175, 175);
 }
 
 .waiting {
@@ -184,12 +184,12 @@ body {
     background-color: lightgray;
     border-radius: 5px;
     border: black solid 1px;
-    box-shadow: 2px 3px;
+    /* box-shadow: 2px 3px; */
 }
 
 .kick:hover input, .purge:hover input{
-    background-color: gray;
-    box-shadow: 1px 1px;
+    background-color: rgb(175, 175, 175);
+    /* box-shadow: 1px 1px; */
 }
 
 

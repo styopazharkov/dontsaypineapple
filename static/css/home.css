@@ -109,15 +109,7 @@ input:focus + .tooltiptext {
 
 .game {
     margin-top: 5px;
-    margin-right: 3px ;
     padding: 5px;
-    box-shadow: 3px 3px;
-}
-
-.game:hover {
-    box-shadow: 1px 1px;
-    margin-right: 2px;
-    margin-left: 1px;
 }
 
 .footpad {
