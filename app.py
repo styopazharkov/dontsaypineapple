@@ -121,7 +121,7 @@ def home():
         row = cur.execute("SELECT * from Players WHERE user = ?", (session['user'], )) .fetchone()
         data['name'] = row["name"]
         data['status'] = row["status"]
-        data['theme'] = row["theme"]
+        data['theme'] = str(row["theme"])
         data['activeGames'], data['pastGames'] = [], []
         games = json.loads(row["games"])
         for game in games: #sorts games into active and past ones
@@ -155,7 +155,19 @@ def _rename():
 
 @app.route('/_change_theme', methods = ['POST'])
 def _change_theme():
-    pass
+    if not verifiers.verify_session_logged_in():
+        session['error']="You cant access _change_theme page before logging in!"
+        return redirect(url_for('index'))
+
+    with sqlite3.connect("database.db") as con: 
+        con.row_factory = sqlite3.Row
+        cur = con.cursor() 
+        theme = fetchers.get_theme(cur, session['user'])
+        theme = (theme + 1)%4
+        cur.execute("UPDATE Players SET theme = ? WHERE user = ? ", (theme, session['user']))
+        con.commit()
+    return redirect(url_for('home'))
+    
 
 ### join page ###
 @app.route('/join/')
@@ -168,7 +180,8 @@ def join():
         error = session.pop('error')
     except KeyError:
         error = ""
-    return render_template('join.html', error = error)
+    theme = "0" ##TODO: fix this to be actual theme
+    return render_template('join.html', error = error, theme = theme)
 
 ### join helper route ###
 @app.route('/_join/', methods = ['POST'])
@@ -210,7 +223,8 @@ def create():
         error, code, name = session.pop('error'), session.pop('code'), session.pop('name')
     except KeyError:
         error, code, name = "", "", ""
-    return render_template('create.html', error = error, code = code, name=name)
+    theme = "0" ##TODO: fix this to be actual theme
+    return render_template('create.html', error = error, code = code, name=name, theme = theme)
 
 ### _create helper route ###
 ## This helper page is accessed when info is entered from the create page. ##
@@ -291,6 +305,7 @@ def activeGame(code):
         data['settings'] = json.loads(gameRow['settings'])
         data['host'] = gameRow['host']
         data['players'] = []
+        data['theme'] = "0" #TODO: fix this
         for player in  json.loads(gameRow['players']):
             data['players'].append({'user': player, 'name': fetchers.get_name(cur, player), 'status': fetchers.get_status(cur, player)})
         data['numberOfPlayers'] = len(data['players'])
@@ -327,6 +342,7 @@ def pastGame(code):
             'assassin': {'code': entry[0], 'name': fetchers.get_name(cur, entry[0])}, 
             'word': entry[3]
             } for entry in json.loads(gameRow['killLog'])]
+        data['theme'] = "0" #TODO: fix this
     return render_template('pastGame.html', data = data, error=error)
 
 ### _start helper route starts a game that isnt started ###

@@ -33,3 +33,6 @@ def get_name(cur, user):
 ### gets the status of a user from username ###
 def get_status(cur, user):
     return cur.execute("SELECT * from Players WHERE user = ?", (user, )).fetchone()['status']
+
+def get_theme(cur, user):
+    return cur.execute("SELECT * from Players WHERE user = ?", (user, )).fetchone()['theme']

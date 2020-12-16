@@ -7,7 +7,7 @@
     <link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/join.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/themes/t'+data['theme']+'.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/themes/t'+theme+'.css') }}">
 </head>
 <body>
     <button class="back button" onclick="window.location.href='{{ url_for( 'home')}}';">Back</button>
