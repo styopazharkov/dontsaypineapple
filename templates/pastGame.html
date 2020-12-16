@@ -35,12 +35,12 @@
         </div>
         <div class="survivalWinner">
             <p>Last one alive: </p>
-            <p class="player">{{data['survivalWinner']['name']}} ({{data['survivalWinner']['code']}})</p>
+            <p class="dplayer">{{data['survivalWinner']['name']}} ({{data['survivalWinner']['code']}})</p>
         </div>
         <div class="killWinners">
             <p>Most kills: </p>
             {% for killWinner in data['killWinners'] %}
-                <p class="player">{{killWinner['name']}} ({{killWinner['code']}}) </p>
+                <p class="dplayer">{{killWinner['name']}} ({{killWinner['code']}}) </p>
             {% endfor %}
         </div>
     </div>
@@ -57,7 +57,7 @@
         {% for entry in data['killLog'] %}
             <div class="log">
                 {% if entry['method'] == "killed" %}
-                    <p>{{entry['victim']['name']}} ({{entry['victim']['code']}}) was killed by {{entry['assassin']['name']}} ({{entry['assassin']['code']}}) with a{{entry['word']}}.</p>
+                    <p>{{entry['victim']['name']}} ({{entry['victim']['code']}}) was killed by {{entry['assassin']['name']}} ({{entry['assassin']['code']}}) with a {{entry['word']}}.</p>
                 {% else %}
                     <p>{{entry['victim']['name']}} ({{entry['victim']['code']}}) was purged for {{entry['assassin']['name']}} ({{entry['assassin']['code']}}) by host.</p>
                 {% endif %}
