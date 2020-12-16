@@ -38,11 +38,24 @@
             <h4>Stats:</h4>
             <p>You have {{data['stats']['kills']}} kills, {{data['stats']['killWins']}} kill wins, and {{data['stats']['survivalWins']}} survival wins over {{data['stats']['played']}} games.</p>
         </div>
-    </div>
 
-    <form action="/_change_theme" method="POST">
-        <input class="button" type="submit" value="Toggle Game Theme">
-    </form>
+        <div class="themeChange">
+            <div class="curTheme">
+                {% if data['theme'] == "0" %}
+                Current Theme: Classic
+                {% elif data['theme'] == "1" %}
+                Current Theme: Sketchbook
+                {% elif data['theme'] == "2" %}
+                Current Theme: Idk yet
+                {% elif data['theme'] == "3" %}
+                Current Theme: Baby
+                {% endif %}
+            </div>
+            <form action="/_change_theme" method="POST">
+                <input class="button" type="submit" value="Change">
+            </form>
+        </div>
+    </div>
 
     <div class="homeGrid2">
         <div class="active">
