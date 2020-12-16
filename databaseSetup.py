@@ -18,7 +18,7 @@ con.execute("create table Players ( \
     password TEXT NOT NULL, \
     name TEXT NOT NULL, \
     games TEXT NOT NULL, \
-    pastGames TEXT NOT NULL, \
+    theme INT NOT NULL, \
     stats TEXT NOT NULL, \
     status TEXT)") 
 print("Players table created successfully")  
