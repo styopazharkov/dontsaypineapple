@@ -1,5 +1,108 @@
 body {
-    background-image: url(/static/img/theme/t2.jpg);
+    background-image: none;
+    background-color: lightgray;
+}
+
+.back {
+    background-color: lightgray;
+}
+
+.back:hover{
+    background-color: gray;
+}
+
+.players {
+    background-color: lightgray;
+}
+
+.player {
+    background-color: lightgray;
+}
+
+.dead {
+    background-color: lightgray;
+}
+
+.purged {
+    background-color: lightgray;
+}
+
+.notStarted {
+    background-color: lightgray;
+}
+
+.word, .deathMessage{
+    background-color: lightgray;
+}
+
+.cover {
+    background-color: lightgray;
+}
+
+.cancel{
+    background-color: lightgray;
+}
+
+.start{
+    background-color: lightgray;
+}
+
+.cancel:hover {
+    background-color: gray;
+}
+
+.start:hover {
+    background-color: gray;
+}
+
+.disabledStart{
+    background-color: lightgray;
+}
+
+.killed {
+    background-color: lightgray;
+}
+
+.killed:hover {
+    background-color: gray;
+}
+
+.waiting {
+    background-color: lightgray;
+}
+
+.kick input, .purge input{
+    background-color: lightgray;
+    border: black solid 1px;
+}
+
+.kick:hover input, .purge:hover input{
+    background-color: gray;
+}
+
+
+/* PAST GAME COLORS: */
+
+.winners{
+    background-color: lightgray
+}
+
+.dplayer{
+    background-color: lightgray;
+    border: black solid 1px;
+}
+
+
+.overMssg {
+    background-color: lightgray;
+}
+
+.killLog{
+    background-color: lightgray;
+}
+
+.log{
+    background-color: lightgray;
 }
 
 /* TODO: put all color settings in this file */
