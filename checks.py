@@ -70,8 +70,6 @@ def check_for_settings_error(settings):
             return "settings difficulty error"
         if settings['passon'] not in ['pass', 'shuffle']:
             return "settings passon error"
-        if settings['theme'] not in ['t1', 't2', 't3', 't4']:
-            return "settings theme error"
         return False
     except KeyError:
         return False
