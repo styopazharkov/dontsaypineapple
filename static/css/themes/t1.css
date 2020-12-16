@@ -1,17 +1,17 @@
 .players {
-    background-color: #7CB35C;
-}
-
-.player {
     background-color: #66944C;
 }
 
+.player {
+    background-color: #7CB35C;
+}
+
 .dead {
-    background-color: #D19D58;
+    background-color: #66944C;
 }
 
 .purged {
-    background-color: #D19D58;
+    background-color: #66944C;
 }
 
 .notStarted {
