@@ -180,7 +180,10 @@ def join():
         error = session.pop('error')
     except KeyError:
         error = ""
-    theme = "0" ##TODO: fix this to be actual theme
+    with sqlite3.connect("database.db") as con: 
+        con.row_factory = sqlite3.Row
+        cur = con.cursor() 
+        theme = fetchers.get_theme(cur, session['user'])
     return render_template('join.html', error = error, theme = theme)
 
 ### join helper route ###
@@ -223,7 +226,10 @@ def create():
         error, code, name = session.pop('error'), session.pop('code'), session.pop('name')
     except KeyError:
         error, code, name = "", "", ""
-    theme = "0" ##TODO: fix this to be actual theme
+    with sqlite3.connect("database.db") as con: 
+        con.row_factory = sqlite3.Row
+        cur = con.cursor() 
+        theme = fetchers.get_theme(cur, session['user'])
     return render_template('create.html', error = error, code = code, name=name, theme = theme)
 
 ### _create helper route ###
@@ -305,7 +311,7 @@ def activeGame(code):
         data['settings'] = json.loads(gameRow['settings'])
         data['host'] = gameRow['host']
         data['players'] = []
-        data['theme'] = "0" #TODO: fix this
+        data['theme'] = str(fetchers.get_theme(cur, session['user']))
         for player in  json.loads(gameRow['players']):
             data['players'].append({'user': player, 'name': fetchers.get_name(cur, player), 'status': fetchers.get_status(cur, player)})
         data['numberOfPlayers'] = len(data['players'])
@@ -342,7 +348,7 @@ def pastGame(code):
             'assassin': {'code': entry[0], 'name': fetchers.get_name(cur, entry[0])}, 
             'word': entry[3]
             } for entry in json.loads(gameRow['killLog'])]
-        data['theme'] = "0" #TODO: fix this
+        data['theme'] = str(fetchers.get_theme(cur, session['user']))
     return render_template('pastGame.html', data = data, error=error)
 
 ### _start helper route starts a game that isnt started ###
