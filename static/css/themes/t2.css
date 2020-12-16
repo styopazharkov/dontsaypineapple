@@ -32,7 +32,7 @@ body {
 }
 
 .word, .deathMessage{
-    background-color: lightgray;
+    background-color: rgb(175, 175, 175);
 }
 
 .cover {
