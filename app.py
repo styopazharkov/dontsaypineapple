@@ -87,9 +87,9 @@ def _signup():
         session['name']=name
         return redirect(url_for('signup'))
     else:
+        theme = 0 #TODO: let user choose on signup
         hashPass = hashing.hashpass(password)
         games = json.dumps([])
-        theme = 0 #TODO: let user choose on signup
         stats = json.dumps({"played": 0, "survivalWins": 0, "killWins": 0, "kills": 0})
         with sqlite3.connect("database.db") as con:
             cur = con.cursor() 
@@ -121,6 +121,7 @@ def home():
         row = cur.execute("SELECT * from Players WHERE user = ?", (session['user'], )) .fetchone()
         data['name'] = row["name"]
         data['status'] = row["status"]
+        data['theme'] = row["theme"]
         data['activeGames'], data['pastGames'] = [], []
         games = json.loads(row["games"])
         for game in games: #sorts games into active and past ones
@@ -152,6 +153,9 @@ def _rename():
             con.commit()
     return redirect(url_for('home'))
 
+@app.route('/_change_theme', methods = ['POST'])
+def _change_theme():
+    pass
 
 ### join page ###
 @app.route('/join/')
@@ -378,9 +382,8 @@ def  _change_settings(code):
     try: #tries to get info
         settings['difficulty'] = request.form['difficulty']
         settings['passon'] = request.form['passon']
-        settings['theme'] = request.form['theme']
     except KeyError: #this only runs is someone messes with the html
-        settings['difficulty'], settings['passon'], settings['theme'] = "", "", ""
+        settings['difficulty'], settings['passon'], = "", ""
     
     error = checks.check_for_settings_error(settings)
     if error:
