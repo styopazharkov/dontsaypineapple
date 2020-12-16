@@ -11,7 +11,6 @@ import sqlite3, json
 import checks, verifiers, maff, fetchers
 import hashing
 
-
 ### The following code creates the app variable and assigns a secret key for the session dictionary ###
 app = Flask(__name__)
 app.secret_key = "An arbitrary key for Don't Say Pineapple"
