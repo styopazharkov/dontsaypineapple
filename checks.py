@@ -34,7 +34,7 @@ def check_for_signup_error(user, password, passwordRepeat, name):
         return "password must be at least 5 characters!"
     if len(password) > 100:
         return "password can't be more than 100 characters! It's not THAT important that no one can play DSP for you."
-    if not re.search("[\s]", password):
+    if re.search("[\s]", password):
         return "password can't contain whitespaces!"
     if password == user:
         return "username and password must be different!"
