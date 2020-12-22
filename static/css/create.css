@@ -4,14 +4,14 @@
     left: 50%;
     transform: translate(-50%, -50%);
     display: grid;
-    grid-template-rows: 30px 1fr;
+    grid-template-rows: auto auto;
     height: 430px;
 }
 
 .create {
     height: 100%;
     display: grid;
-    grid-template-rows: 15px 1fr 1fr 1fr 1fr 1fr;
+    grid-template-rows: auto 1fr 1fr 1fr 1fr 1fr;
 }
 
 
