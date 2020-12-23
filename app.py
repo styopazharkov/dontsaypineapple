@@ -251,8 +251,8 @@ def _create():
 
     settings = {}
     try: #tries to get info
-        code = request.form['code'].lower()
-        name = request.form['name']
+        code = request.form['code'].lower().strip()
+        name = request.form['name'].strip()
         settings['difficulty'] = request.form['difficulty']
         settings['passon'] = request.form['passon']
     except KeyError: #this only runs is someone messes with the html

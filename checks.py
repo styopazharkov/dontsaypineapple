@@ -97,12 +97,13 @@ def check_for_create_error(code, name, settings):
     error = check_for_settings_error(settings)
     if error:
         return error
-    #TODO: check for valid settings
     if len(code)<5:
         return "Code must be at least 5 letters."
     if len(code)>10:
         return "Code can't be more than 10 letters. This isnt a nuclear launch you're organizing."
-    if len(name.strip())==0:
+    if not code.isalnum():
+        return "username can only contain letters and numbers!"
+    if len(name)==0:
         return "Your game must have a name."
     if len(name) > 20:
         return "The name can't be more than 20 letters. Try something simpler :)"
