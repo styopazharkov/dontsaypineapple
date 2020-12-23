@@ -17,17 +17,15 @@
     
         <div class="error">
             {% if  error %}
-                <p>Error: {{error}}</p>
+                <p>{{error}}</p>
             {% endif  %}
         </div>
     
         <div class="login">
-            <form action="/_login" method = "post">
-                <div class="indexGrid2">
+            <form class="indexGrid2" action="/_login" method = "post">
                 <input class="textbox" type = "text" name = "user" placeholder="Enter your username" value="{{user}}"/>
                 <input class="textbox" type="password" name="password" placeholder="Enter your password">
                 <input class="button" type = "submit" class="loginButton button" value = "Log In" />
-                </div>
             </form>
         </div>
     
@@ -41,5 +39,6 @@
             <button class="button" onclick="window.location.href='{{ url_for( 'rules')}}';">Read the Rules</button>
         </div>
     </div>
+    <div class="footpad"></div>
 </body>
 </html>

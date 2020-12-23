@@ -1,18 +1,19 @@
 .welcome {
     margin-top: 15px;
+    margin-bottom: 10px;
     height: 120px;
+    width: 100%;
     background-image: url(../img/welcome.png);
     background-repeat: no-repeat;
     background-position: center;
     background-size: contain;
 }
 
-
 .indexGrid {
     display: grid;
     grid-template-rows: auto 200px 100px 100px;
-    width: fit-content;
-    padding: 20px;
+    width: 86%;
+    max-width: 350px;
     margin: auto;
 }
 
@@ -61,8 +62,11 @@ input{
 }
 
 @media screen and (max-width:400px)  {
-    input{
-        width: 200px;
-        font-size: large;
+    .welcome{
+        height: 80px;
     }
+}
+
+.footpad{
+    height: 100px;
 }
