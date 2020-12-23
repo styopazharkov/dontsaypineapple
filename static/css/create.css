@@ -85,7 +85,6 @@
 .tooltiptext {
     visibility: hidden;
     width: 250px;
-    max-width: 100%;
     font-size: large;
     text-align: center;
     padding: 5px;

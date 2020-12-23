@@ -1,30 +1,40 @@
+:root {
+    --dark3: #252729;
+    --dark2: #2d3031;
+    --dark1: #313436;
+    --light1: #cccccc;
+    --error: red;
+    --border: black;
+    --gamename: rgb(30, 160, 235);
+    --selected: orange;
+}
 
 /* MAIN CSS */
 body {
     background-image: none;
-    background-color: #252729;
+    background-color: var(--dark3);
 }
 
 *{
-    color: #cccccc;
+    color: var(--light1);
 }
 
 .error p {
-    color: red;
+    color: var(--error);
 }
 
 .textbox{
-    border: 1px solid black;
-    background-color: #2d3031;
+    border: 1px solid var(--border);
+    background-color: var(--dark2);
 }
 
 .button {
-    background-color: #2d3031;
-    border: 1px solid black;
+    background-color: var(--dark2);
+    border: 1px solid var(--border);
 }
 
 .button:hover {
-    background-color: #252729;
+    background-color: var(--dark3);
 }
 
 .back {
@@ -41,114 +51,126 @@ body {
 /* INDEX CSS */
 
 .indexGrid {
-    background-color: #313436;
-    border: black solid 1px;
+    background-color: var(--dark1);
+    border: var(--border) solid 1px;
     border-radius: 5px;
 }
 
 /* SIGNUP CSS */
 
 .signupGrid{
-    background-color: #313436;
+    background-color: var(--dark1);
     border-radius: 5px;
 }
 
 /* RULES CSS */
 
 .rulesPage{
-    background-color: #313436;
+    background-color: var(--dark1);
     border-radius: 5px;
-    border: black solid 1px;
+    border: var(--border) solid 1px;
 }
 
 /* HOME CSS */
 
 .homeGrid1{
-    background-color:  #313436;
-    border: 1px solid black;
+    background-color:  var(--dark1);
+    border: 1px solid var(--border);
     border-radius: 5px;
 }
 
 .active, .past{
-    background-color:  lightgray;
-    border: 1px solid black;
+    background-color:  var(--dark1);
+    border: 1px solid var(--border);
     border-radius: 5px;
 }
 
 .game {
-    background-color: lightgray;
+    /* nothing here */
 }
 
 .game:hover{
-    background-color: rgb(175, 175, 175);
+    /* nothing here */
 }
 
 .create{
     border-left-width: 0;
 }
 
+.nametext{
+    color: var(--gamename);
+}
+
 /* CREATE CSS */
 .createGrid{
-    background-color: lightgray;
+    background-color: var(--dark1);
     border-radius: 5px;
 }
 
 /* CREATE AND GAME CSS */
 
 #difficulty label span, #passon label span {
-    background-color:lightgray;
+    background-color:var(--dark2);
     border-radius: 0;
-    border:1px solid black;
+    border:1px solid var(--border);
 }
 
 #difficulty input:checked + span, #passon input:checked + span{
-    background-color: #222222;
-    color:lightgray;
+    background-color: var(--dark3);
+    color: var(--selected);
 }
 
 /* JOIN CSS */
 
 .joinGrid{
-    background-color: lightgray;
+    background-color: var(--dark1);
     border-radius: 5px;
 }
 
 /* GAME CSS */
 
+.title, .code{
+    color: var(--gamename);
+}
+
 .players {
-    background-color: lightgray;
-    border: black solid 1px;
+    background-color: var(--dark1);
+    border: var(--border) solid 1px;
     border-radius: 5px;
 }
 
 .player {
-    background-color: lightgray;
-    border: black solid 1px;
+    background-color: var(--dark1);
+    border: var(--border) solid 1px;
     border-radius: 5px;
 }
 
 .dead {
-    background-color: lightgray;
+    background-color: var(--dark1);
 }
 
 .purged {
-    background-color: lightgray;
+    background-color: var(--dark1);
 }
 
 .notStarted {
-    background-color: lightgray;
+    background-color: var(--dark1);
+}
+
+.dead, .purged *{
+    color: red;
 }
 
 .word, .deathMessage{
-    background-color: rgb(175, 175, 175);
-    border: black solid 1px;
+    background-color: var(--dark1);
+    border: var(--border) solid 1px;
     border-radius: 6px;
 }
 
 .cover {
-    background-color: lightgray;
+    background-color: var(--dark2);
     border-radius: 5px;
-    border: black solid 1px;
+    border: var(--border) solid 1px;
 }
 
 .secret:active:hover  .cover{
@@ -156,47 +178,48 @@ body {
     border-top-left-radius: 5px;
 }
 .cancel{
-    background-color: lightgray;
     border-left: 0;
 }
 
 .start{
-    background-color: lightgray;
+     /* nothing here */
 }
 
 .cancel:hover {
-    background-color: rgb(175, 175, 175);
+     /* nothing here */
 }
 
 .start:hover {
-    background-color: rgb(175, 175, 175);
+    /* nothing here */
 }
 
 .disabledStart{
-    background-color: lightgray;
+    color: red;
+    background-color: var(--dark1);
+    border: 1px solid var(--border);
 }
 
 .killed {
-    background-color: lightgray;
+    background-color: var(--dark2);
 }
 
 .killed:hover {
-    background-color: rgb(175, 175, 175);
+    background-color: var(--dark3);
 }
 
 .waiting {
-    background-color: lightgray;
+    background-color: var(--dark1);
 }
 
 .kick input, .purge input{
-    background-color: lightgray;
+    background-color: var(--dark2);
     border-radius: 5px;
     border: black solid 1px;
     /* box-shadow: 2px 3px; */
 }
 
 .kick:hover input, .purge:hover input{
-    background-color: rgb(175, 175, 175);
+    background-color: var(--dark3);
     /* box-shadow: 1px 1px; */
 }
 
@@ -204,21 +227,22 @@ body {
 /* PAST GAME CSS: */
 
 .winners{
-    background-color: lightgray;
+    background-color: var(--dark1);
 }
 
 .dplayer{
-    background-color: lightgray;
+    background-color: var(--dark1);
 }
 
 .overMssg {
-    background-color: lightgray;
+    background-color: var(--dark1);
+    color: var(--selected);
 }
 
 .killLog{
-    background-color: lightgray;
+    background-color: var(--dark1);
 }
 
 .log{
-    background-color: lightgray;
+    background-color: var(--dark1);
 }

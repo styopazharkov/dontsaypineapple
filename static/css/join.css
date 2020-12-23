@@ -4,8 +4,7 @@
     left: 50%;
     transform: translate(-50%, -50%);
     display: grid;
-    grid-template-rows: 30px 1fr;
-    height: 170px;
+    grid-template-rows: auto auto;
 }
 
 .join {

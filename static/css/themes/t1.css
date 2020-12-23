@@ -170,6 +170,7 @@ body {
 
 .disabledStart{
     background-color: lightgray;
+    border: 1px solid black;
 }
 
 .killed {
