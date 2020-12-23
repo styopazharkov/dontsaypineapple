@@ -1,17 +1,28 @@
 .createGrid {
     position: absolute;
-    top: 47%;
+    top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     display: grid;
     grid-template-rows: auto auto;
-    height: 430px;
+    height: auto;
+    margin: auto;
+}
+
+@media screen and (max-width:400px)  {
+    .createGrid{
+        transform: none;
+        width: auto;
+        position: unset;
+        top: unset;
+        left: unset;
+    }
 }
 
 .create {
     height: 100%;
     display: grid;
-    grid-template-rows: auto 1fr 1fr 1fr 1fr 1fr;
+    grid-template-rows: auto auto auto auto auto auto;
 }
 
 
@@ -25,12 +36,16 @@
 }
 .error {
     justify-self: center;
+    margin: 10px;
+    width: 300px;
+    max-width: 100%;
 }
 
 .textbox, .radio, .submit{
     text-align: center;
     margin: 10px;
     width: 300px;
+    max-width: 100%;
     justify-self: center;
 }
 
@@ -70,6 +85,7 @@
 .tooltiptext {
     visibility: hidden;
     width: 250px;
+    max-width: 100%;
     font-size: large;
     text-align: center;
     padding: 5px;
