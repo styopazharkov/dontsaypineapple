@@ -99,3 +99,7 @@
 .question:hover .tooltiptext {
     visibility: visible;
   }
+
+.submit{
+    height: 50px;
+}
