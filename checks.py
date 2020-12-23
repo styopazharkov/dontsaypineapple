@@ -102,7 +102,7 @@ def check_for_create_error(code, name, settings):
     if len(code)>10:
         return "Code can't be more than 10 letters. This isnt a nuclear launch you're organizing."
     if not code.isalnum():
-        return "username can only contain letters and numbers!"
+        return "Code can only contain letters and numbers!"
     if len(name)==0:
         return "Your game must have a name."
     if len(name) > 20:
