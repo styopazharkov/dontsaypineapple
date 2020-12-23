@@ -1,3 +1,4 @@
+
 /* MAIN CSS */
 body {
     background-image: none;
@@ -5,7 +6,7 @@ body {
 }
 
 *{
-    color: #aaaaaa;
+    color: #cccccc;
 }
 
 .error p {
@@ -14,11 +15,11 @@ body {
 
 .textbox{
     border: 1px solid black;
-    background-color: #313436;
+    background-color: #2d3031;
 }
 
 .button {
-    background-color: #313436;
+    background-color: #2d3031;
     border: 1px solid black;
 }
 
@@ -48,14 +49,14 @@ body {
 /* SIGNUP CSS */
 
 .signupGrid{
-    background-color: lightgray;
+    background-color: #313436;
     border-radius: 5px;
 }
 
 /* RULES CSS */
 
 .rulesPage{
-    background-color: lightgray;
+    background-color: #313436;
     border-radius: 5px;
     border: black solid 1px;
 }
@@ -63,7 +64,7 @@ body {
 /* HOME CSS */
 
 .homeGrid1{
-    background-color:  lightgray;
+    background-color:  #313436;
     border: 1px solid black;
     border-radius: 5px;
 }
