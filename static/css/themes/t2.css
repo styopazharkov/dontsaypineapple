@@ -1,6 +1,6 @@
 :root {
     --dark3: #252729;
-    --dark2: #2d3031;
+    --dark2: #2d2f31;
     --dark1: #313436;
     --light1: #cccccc;
     --error: red;
@@ -231,7 +231,7 @@ body {
 }
 
 .dplayer{
-    background-color: var(--dark1);
+    background-color: var(--dark3);
 }
 
 .overMssg {
