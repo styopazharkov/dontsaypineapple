@@ -1,10 +1,223 @@
-/* TODO: put all color settings in this file */
+/* MAIN CSS */
 body {
-    background-image: url(/static/img/theme/t3.jpg);
+    background-image: none;
+    background-color: #252729;
 }
 
-.title, .code{
-    background-color: ivory;
-    border-radius: 10px;
-    padding: 10px;
+*{
+    color: white;
+}
+
+.error p {
+    color: red;
+}
+
+.textbox{
+    border: 1px solid white;
+    background-color: lightgray;
+}
+
+.button {
+    background-color: #313436;
+    border: 1px solid black;
+}
+
+.button:hover {
+    background-color: #252729;
+}
+
+.back {
+    border-bottom-left-radius: 5px;
+}
+
+.tooltiptext{
+    background-color: rgb(175, 175, 175);
+    color: black;
+    border-radius: 6px;
+    border: black solid 1px;
+}
+
+/* INDEX CSS */
+
+.indexGrid {
+    background-color: lightgray;
+    border: black solid 1px;
+    border-radius: 5px;
+}
+
+/* SIGNUP CSS */
+
+.signupGrid{
+    background-color: lightgray;
+    border-radius: 5px;
+}
+
+/* RULES CSS */
+
+.rulesPage{
+    background-color: lightgray;
+    border-radius: 5px;
+    border: black solid 1px;
+}
+
+/* HOME CSS */
+
+.homeGrid1{
+    background-color:  lightgray;
+    border: 1px solid black;
+    border-radius: 5px;
+}
+
+.active, .past{
+    background-color:  lightgray;
+    border: 1px solid black;
+    border-radius: 5px;
+}
+
+.game {
+    background-color: lightgray;
+}
+
+.game:hover{
+    background-color: rgb(175, 175, 175);
+}
+
+.create{
+    border-left-width: 0;
+}
+
+/* CREATE CSS */
+.createGrid{
+    background-color: lightgray;
+    border-radius: 5px;
+}
+
+/* CREATE AND GAME CSS */
+
+#difficulty label span, #passon label span {
+    background-color:lightgray;
+    border-radius: 0;
+    border:1px solid black;
+}
+
+#difficulty input:checked + span, #passon input:checked + span{
+    background-color: #222222;
+    color:lightgray;
+}
+
+/* JOIN CSS */
+
+.joinGrid{
+    background-color: lightgray;
+    border-radius: 5px;
+}
+
+/* GAME CSS */
+
+.players {
+    background-color: lightgray;
+    border: black solid 1px;
+    border-radius: 5px;
+}
+
+.player {
+    background-color: lightgray;
+    border: black solid 1px;
+    border-radius: 5px;
+}
+
+.dead {
+    background-color: lightgray;
+}
+
+.purged {
+    background-color: lightgray;
+}
+
+.notStarted {
+    background-color: lightgray;
+}
+
+.word, .deathMessage{
+    background-color: rgb(175, 175, 175);
+    border: black solid 1px;
+    border-radius: 6px;
+}
+
+.cover {
+    background-color: lightgray;
+    border-radius: 5px;
+    border: black solid 1px;
+}
+
+.secret:active:hover  .cover{
+    border-bottom-left-radius: 5px;
+    border-top-left-radius: 5px;
+}
+.cancel{
+    background-color: lightgray;
+    border-left: 0;
+}
+
+.start{
+    background-color: lightgray;
+}
+
+.cancel:hover {
+    background-color: rgb(175, 175, 175);
+}
+
+.start:hover {
+    background-color: rgb(175, 175, 175);
+}
+
+.disabledStart{
+    background-color: lightgray;
+}
+
+.killed {
+    background-color: lightgray;
+}
+
+.killed:hover {
+    background-color: rgb(175, 175, 175);
+}
+
+.waiting {
+    background-color: lightgray;
+}
+
+.kick input, .purge input{
+    background-color: lightgray;
+    border-radius: 5px;
+    border: black solid 1px;
+    /* box-shadow: 2px 3px; */
+}
+
+.kick:hover input, .purge:hover input{
+    background-color: rgb(175, 175, 175);
+    /* box-shadow: 1px 1px; */
+}
+
+
+/* PAST GAME CSS: */
+
+.winners{
+    background-color: lightgray;
+}
+
+.dplayer{
+    background-color: lightgray;
+}
+
+.overMssg {
+    background-color: lightgray;
+}
+
+.killLog{
+    background-color: lightgray;
+}
+
+.log{
+    background-color: lightgray;
 }
