@@ -581,6 +581,11 @@ def rules():
         theme = "0"
     return render_template('rules.html', theme=theme)
 
+#### 404 ROUTING BELOW THIS LINE ####
+@app.route('/<path>/')
+
+
+
 #### DEBUG ROUTING BELOW THIS LINE ####
 
 ### debugging page with database tables ###
