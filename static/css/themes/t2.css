@@ -228,10 +228,12 @@ body {
 
 .winners{
     background-color: var(--dark1);
+    border: 1px solid var(--border);
 }
 
 .dplayer{
     background-color: var(--dark3);
+    border: 1px solid var(--border);
 }
 
 .overMssg {
@@ -241,8 +243,10 @@ body {
 
 .killLog{
     background-color: var(--dark1);
+    border: 1px solid var(--border);
 }
 
 .log{
     background-color: var(--dark1);
+    border: 1px solid var(--border);
 }
