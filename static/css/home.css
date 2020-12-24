@@ -44,6 +44,7 @@
     border: none;
     background: none;
     width: 100%;
+    text-overflow: ellipsis;
 }
 
 @media screen and (min-width:450px)  {
@@ -57,6 +58,7 @@
     font-size: xx-large;
     border: none;
     background: none;
+    text-overflow: ellipsis;
 }
 
 .tooltiptext {
@@ -158,3 +160,4 @@ input:focus + .tooltiptext {
     color: black;
     justify-self: center;
 }
+
