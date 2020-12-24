@@ -10,13 +10,17 @@
 
 .title {
     font-size: 70px;
+    width: inherit;
     justify-self: center;
     text-align: center;
+    word-wrap: break-word;
 }
 
 .code {
     justify-self: center;
     text-align: center;
+    width: inherit;
+    word-wrap: break-word;
 }
 
 .error {
@@ -50,23 +54,30 @@
     }
 }
 
+.radio{
+    height: 50px;
+    margin: 10px;
+    text-align: center;
+    justify-self: center;
+    width: 86%;
+}
+
 #difficulty {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 30px;
-    margin: 10px;
 }
 
 #passon {
     display: grid;
     grid-template-columns: 1fr 1fr 30px;
-    margin: 10px;
 }
 
 #difficulty label span, #passon label span{
     width: 100%;
     float: left;
     text-align:center;
-    padding:13px 0px;
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
 
 #difficulty label input, #passon label input{
@@ -110,14 +121,14 @@
 
 .secret {
     margin-top: 10px;
-    width: 100%;
+    width: initial;
     border-radius: 6px;
+    height: 70px;
 }
 
 .word, .deathMessage{
-    height:  60px;
     width: 100%;
-    padding-top: 15px;
+    height: inherit;
     text-align: center;
     -webkit-user-select: none; /* Safari */        
     -moz-user-select: none; /* Firefox */
@@ -131,16 +142,16 @@
     transition-duration: 0.3s;
     font-size: 0;
     min-width: 10px;
+    font-size: 0;
     border-radius: 0;
 }
 
 .cover {
-    height:  60px;
     width: 80%;
+    height: inherit;
     min-width: 250px;
     position: absolute;
     z-index: 1;
-    padding-top: 15px;
     text-align: center;
     transition-duration: 0.3s;
     -webkit-user-select: none; /* Safari */        
@@ -216,7 +227,6 @@
     width: 100%;
     max-width: 500px;
     margin-top: 10px;
-    padding-top: 10px;
 }
 
 
@@ -229,14 +239,17 @@
     display: grid;
     grid-template-rows: auto auto;
     grid-template-columns: auto 100px;
-    padding: 5px;
 }
 
+.name{
+    word-break: break-all;
+}
 
 .status{
     grid-row: 2 / 3;
     grid-column: 1 / 2;
     font-style: italic;
+    word-break: break-all;
 }
 
 .kick, .purge {
@@ -249,7 +262,6 @@
 }
 
 .kick input, .purge input{
-    padding: 5px;
     height: 100%;
     width: 100%;
 }
@@ -265,3 +277,11 @@
     font-size: large;
 }
 
+@media screen and (max-width:500px)  {
+    .player{
+        grid-template-columns: auto 70px;
+    }
+    .state{
+        font-size: medium;
+    }
+}
