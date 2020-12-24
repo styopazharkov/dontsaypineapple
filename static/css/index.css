@@ -11,14 +11,11 @@
 
 .indexGrid {
     display: grid;
-    grid-template-rows: auto 200px 100px 100px;
+    grid-template-rows: auto auto auto auto;
     width: 86%;
     max-width: 350px;
     margin: auto;
-}
-
-form {
-    height: 100%;
+    padding-bottom: 5px;
 }
 
 .indexGrid2{
@@ -28,42 +25,54 @@ form {
 }
 
 .error{
+    text-align: center;
     justify-self: center;
+    width: 86%;
+    margin-top: 10px;
 }
 
 input{
-    text-align: center;
+    height: 50px;
     margin: 10px;
-    width: 300px;
+    text-align: center;
     justify-self: center;
+    width: 86%;
 }
 
-.loginButton {
-    width: 100px;
-}
 
 .signup, .rules{
     height: 100%;
     display: grid;
-    grid-template-rows: 40% 60%;
+    grid-template-rows: auto auto;
 }
 
 .signup p , .rules p{
+    text-align: center;
+    justify-self: center;
+    width: 86%;
     font-size: large;
     margin-top: 20px;
-    justify-self: center;
 } 
+
 .signup button, .rules button{
     font-size: large;
     margin: 10px;
-    height: 30px;
-    width: 150px;
+    padding: 3px;
+    padding-top: 5px;
+    width: 86%;
+    max-width: 170px;
     justify-self: center;
+    text-align: center;
 }
 
 @media screen and (max-width:400px)  {
     .welcome{
         height: 80px;
+    }
+
+    input{
+        font-size: large;
+        height: 40px;
     }
 }
 

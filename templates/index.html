@@ -19,15 +19,13 @@
             {% if  error %}
                 <p>{{error}}</p>
             {% endif  %}
-        </div>
+         </div>
     
-        <div class="login">
-            <form class="indexGrid2" action="/_login" method = "post">
-                <input class="textbox" type = "text" name = "user" placeholder="Enter your username" value="{{user}}"/>
-                <input class="textbox" type="password" name="password" placeholder="Enter your password">
-                <input class="button" type = "submit" class="loginButton button" value = "Log In" />
-            </form>
-        </div>
+        <form class="indexGrid2 login" action="/_login" method = "post">
+            <input class="textbox" type = "text" name = "user" placeholder="Enter your username" value="{{user}}"/>
+            <input class="textbox" type="password" name="password" placeholder="Enter your password">
+            <input class="button" type = "submit" class="loginButton button" value = "Log In" />
+        </form>
     
         <div class="signup">
             <p>Not a user yet?</p>
