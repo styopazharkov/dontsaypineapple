@@ -98,6 +98,12 @@
     right: 105%;
 }
 
+@media screen and (max-width:350px)  {
+    .tooltiptext{
+        width: 200px;
+    }
+}
+
 .question:hover .tooltiptext {
     visibility: visible;
 }
@@ -167,12 +173,18 @@
     width: 100%;
     height: 100%;
     border-radius: 0;
+    font-size: large;
 }
 
 .start{
     width: 100%;
     height: 100%;
     border-radius: 0;
+    font-size: large;
+}
+
+.disabledStart{
+    font-size: large;
 }
 
 .killedForm {
@@ -199,6 +211,10 @@
         padding-top: 10px;
         font-size: xx-large;
     }
+
+    .cancel, .start, .disabledStart{
+        font-size: x-large;
+    }
 }
 
 .footpad {
@@ -208,15 +224,11 @@
 .players{
     justify-self: center;
     width: 100%;
+    max-width: 500px;
     margin-top: 10px;
     padding-top: 10px;
 }
 
-@media screen and (min-width:600px)  {
-    .players{
-        width: 500px;
-    }
-}
 
 .players h4{
     text-align: center;

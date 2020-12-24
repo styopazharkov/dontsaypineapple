@@ -202,22 +202,27 @@ body {
 
 .winners{
     background-color: lightgray;
+    border: black solid 1px;
 }
 
 .dplayer{
     background-color: lightgray;
+    border: black solid 1px;
 }
 
 .overMssg {
     background-color: lightgray;
+    border: black solid 1px;
 }
 
 .killLog{
     background-color: lightgray;
+    border: black solid 1px;
 }
 
 .log{
     background-color: lightgray;
+    border: black solid 1px;
 }
 
 
