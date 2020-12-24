@@ -24,7 +24,10 @@
     margin: auto;
     margin-top: 80px;
     margin-bottom: 20px;
-    padding: 10px;
+}
+
+.welcome{
+    margin: 10px;
 }
 
 .hello, .status{
@@ -68,17 +71,22 @@
     width: 200px;
     bottom: 100%;
     left: 50%;
-    margin-left: -60px; 
+    margin-left: -100px;
 }
 
 input:focus + .tooltiptext {
     visibility: visible;
   }
 
+.stats{
+    margin: 10px;
+}
+
 .themeChange{
     font-size: medium;
     display: grid;
-    grid-template-columns: auto 80px;
+    grid-template-columns: auto 70px;
+    margin: 10px;
 }
 
 .curTheme {
@@ -96,7 +104,9 @@ input:focus + .tooltiptext {
 /* TODO: make the theme change button look better on mobile */
 .themeChange form {
     width: fit-content;
-    justify-self: center;
+    justify-self: end;
+    margin-top: auto;
+    margin-bottom: auto;
 }
 
 .homeGrid2 {
