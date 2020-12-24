@@ -25,3 +25,15 @@ h2{
 h3 {
     margin-top: 10px;
 }
+
+@media screen and (max-width:250px)  {
+    *{
+        font-size: smaller;
+    }
+}
+
+@media screen and (max-width:400px)  {
+    .welcome{
+        height: 70px;
+    }
+}
