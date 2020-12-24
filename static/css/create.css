@@ -1,26 +1,15 @@
 .createGrid {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
     display: grid;
     grid-template-rows: auto auto;
-    height: auto;
     margin: auto;
+    margin-top: 100px;
+    width: 86%;
+    max-width: 350px;
+    padding-bottom: 5px;
 }
 
-@media screen and (max-width:400px)  {
-    .createGrid{
-        transform: none;
-        width: auto;
-        position: unset;
-        top: unset;
-        left: unset;
-    }
-}
 
 .create {
-    height: 100%;
     display: grid;
     grid-template-rows: auto auto auto auto auto auto;
 }
@@ -28,25 +17,23 @@
 
 .info {
     justify-self: center;
-    padding-top: 15px;
+    text-align: center;
+    width: 86%;
+    margin-top: 10px;
 }
 
-.error p{
-    font-size: large;
-}
 .error {
     justify-self: center;
-    margin: 10px;
-    width: 300px;
-    max-width: 100%;
+    text-align: center;
+    width: 86%;
 }
 
 .textbox, .radio, .submit{
-    text-align: center;
+    height: 50px;
     margin: 10px;
-    width: 300px;
-    max-width: 100%;
+    text-align: center;
     justify-self: center;
+    width: 86%;
 }
 
 #difficulty {
@@ -64,7 +51,8 @@
     width: 100%;
     float: left;
     text-align:center;
-    padding:13px 0px;
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
 
 #difficulty label input, #passon label input{
@@ -100,6 +88,40 @@
     visibility: visible;
   }
 
-.submit{
-    height: 50px;
+
+@media screen and (max-width:400px)  {
+    .textbox, .radio, .submit{
+        font-size: large;
+        height: 40px;
+    }
+
+    #difficulty label span, #passon label span {
+        font-size: large;
+    }
+    
+    .error{
+        font-size: large;
+    }
+    
+    .info{
+        font-size: large;
+    }
+}
+
+@media screen and (max-width:250px)  {
+    .textbox, .radio, .submit{
+        font-size: medium;
+    }
+
+    #difficulty label span, #passon label span {
+        font-size: small;
+    }
+    
+    .error{
+        font-size: medium;
+    }
+    
+    .info{
+        font-size: medium;
+    }
 }
