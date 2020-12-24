@@ -4,6 +4,7 @@
     --dark1: #313436;
     --light1: #cccccc;
     --error: red;
+    --deadred: rgb(136, 0, 0);
     --border: black;
     --gamename: rgb(30, 160, 235);
     --selected: orange;
@@ -157,8 +158,8 @@ body {
     background-color: var(--dark1);
 }
 
-.dead, .purged *{
-    color: red;
+.dead *, .purged *{
+    color: var(--deadred);
 }
 
 .word, .deathMessage{
