@@ -1,50 +1,51 @@
 .signupGrid {
-    position: absolute;
-    top: 47%;
-    left: 50%;
-    transform: translate(-50%, -50%);
     display: grid;
-    grid-template-rows: 30px 1fr;
-    height: 400px;
-    width: fit-content;
+    grid-template-rows: auto auto;
     margin: auto;
-    padding: 20px;
+    margin-top: 100px;
+    width: 86%;
+    max-width: 350px;
+    padding-bottom: 5px;
 }
 
 .signup {
     display: grid;
-    grid-template-rows: 15px 1fr 1fr 1fr 1fr 1fr;
+    grid-template-rows: auto auto auto auto auto auto;
 }
 
 
 .info {
     justify-self: center;
     text-align: center;
-    width: 300px;
+    width: 86%;
+    margin-top: 10px;
 }
 
-.error p{
-    font-size: large;
-}
 .error {
     justify-self: center;
+    text-align: center;
+    width: 86%;
 }
 
 input{
-    text-align: center;
+    height: 50px;
     margin: 10px;
-    width: 300px;
+    text-align: center;
     justify-self: center;
+    width: 86%;
 }
 
 @media screen and (max-width:400px)  {
     input{
-        width: 200px;
+        font-size: large;
+        height: 40px;
+    }
+    
+    .error{
         font-size: large;
     }
     
     .info{
-        width: 200px;
         font-size: large;
     }
 }
