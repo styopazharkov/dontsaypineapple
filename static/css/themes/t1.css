@@ -183,6 +183,7 @@ body {
 
 .waiting {
     background-color: lightgray;
+    border: 1px solid black;
 }
 
 .kick input, .purge input{

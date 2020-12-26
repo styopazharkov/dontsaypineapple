@@ -193,6 +193,7 @@ body {
     border-radius: 8px;
     border: 0;
     box-shadow: 3px 3px;
+    border: black solid 1px;
 }
 
 .kick:hover input, .purge:hover input{
