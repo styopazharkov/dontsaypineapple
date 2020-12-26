@@ -242,14 +242,23 @@
 }
 
 .name{
+    margin: 5px;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
     word-break: break-all;
+    word-break: break-word;
+    hyphens: auto;
 }
 
 .status{
     grid-row: 2 / 3;
     grid-column: 1 / 2;
     font-style: italic;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
     word-break: break-all;
+    word-break: break-word;
+    hyphens: auto;
 }
 
 .kick, .purge {
