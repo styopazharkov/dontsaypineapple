@@ -13,12 +13,25 @@
     width: inherit;
     justify-self: center;
     text-align: center;
+    
+    
+    overflow-wrap: break-word;
     word-wrap: break-word;
+    word-break: break-all;
+    word-break: break-word;
+    hyphens: auto;
 }
 
 @media screen and (max-width:500px)  {
     .title{
         font-size: 50px;
+    }
+}
+
+
+@media screen and (max-width:300px)  {
+    .title{
+        font-size: 35px;
     }
 }
 
@@ -71,6 +84,25 @@
         grid-template-columns: auto auto;
     }
 }
+
+@media screen and (max-width:400px)  {
+    .normSettings *, .adminSettings *{
+        font-size: large;
+    }
+}
+
+@media screen and (max-width:310px)  {
+    .normSettings *, .adminSettings *{
+        font-size: medium;
+    }
+}
+
+@media screen and (max-width:275px)  {
+    .normSettings *, .adminSettings *{
+        font-size: small;
+    }
+}
+
 
 .radio{
     height: 50px;
@@ -130,6 +162,12 @@
 @media screen and (max-width:350px)  {
     .tooltiptext{
         width: 200px;
+    }
+}
+
+@media screen and (max-width:300px)  {
+    .tooltiptext{
+        width: 150px;
     }
 }
 
@@ -286,8 +324,16 @@
     margin-top: 10px;
 }
 
+@media screen and (max-width:500px)  {
+    .players *{
+        font-size: smaller;
+    }
+}
+
+
 .players h4{
     text-align: center;
+    margin-top: 10px;
 }
 
 .player{
