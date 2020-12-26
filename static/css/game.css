@@ -1,3 +1,11 @@
+*{
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-all;
+    word-break: break-word;
+    hyphens: auto;
+}
+
 
 .grid{
     display: grid;
@@ -13,13 +21,6 @@
     width: inherit;
     justify-self: center;
     text-align: center;
-    
-    
-    overflow-wrap: break-word;
-    word-wrap: break-word;
-    word-break: break-all;
-    word-break: break-word;
-    hyphens: auto;
 }
 
 @media screen and (max-width:500px)  {
@@ -50,12 +51,6 @@
     margin-top: 20px;
     display: grid;
     grid-template-rows: auto auto;
-
-    overflow-wrap: break-word;
-    word-wrap: break-word;
-    word-break: break-all;
-    word-break: break-word;
-    hyphens: auto;
 }
 
 .normSettings {
@@ -63,12 +58,6 @@
     display: grid;
     grid-template-rows: auto auto;
     text-align: center;
-
-    overflow-wrap: break-word;
-    word-wrap: break-word;
-    word-break: break-all;
-    word-break: break-word;
-    hyphens: auto;
 }
 
 @media screen and (min-width:800px)  {
@@ -197,12 +186,6 @@
     -ms-user-select: none; /* IE10+/Edge */
     user-select: none; /* Standard */
     transition-duration: 0.3s;
-
-    overflow-wrap: break-word;
-    word-wrap: break-word;
-    word-break: break-all;
-    word-break: break-word;
-    hyphens: auto;
     display: flex;
 }
 
@@ -234,12 +217,6 @@
     -moz-user-select: none; /* Firefox */
     -ms-user-select: none; /* IE10+/Edge */
     user-select: none; /* Standard */
-
-    overflow-wrap: break-word;
-    word-wrap: break-word;
-    word-break: break-all;
-    word-break: break-word;
-    hyphens: auto;
 
     display: flex;
 }
@@ -358,11 +335,6 @@
 .name{
     margin: 5px;
     margin-bottom: 0;
-    overflow-wrap: break-word;
-    word-wrap: break-word;
-    word-break: break-all;
-    word-break: break-word;
-    hyphens: auto;
 }
 
 .status{
@@ -371,11 +343,6 @@
     grid-row: 2 / 3;
     grid-column: 1 / 2;
     font-style: italic;
-    overflow-wrap: break-word;
-    word-wrap: break-word;
-    word-break: break-all;
-    word-break: break-word;
-    hyphens: auto;
 }
 
 .kick, .purge {
