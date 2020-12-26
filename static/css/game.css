@@ -164,6 +164,7 @@
 
 .word p, .deathMessage p{
     margin: auto;
+    padding-left: 10px;
 }
 
 .secret:active:hover  .cover{
@@ -202,6 +203,18 @@
 .cover p{
     margin: auto;
     transition-duration: 0.3s;
+}
+
+@media screen and (max-width:500px)  {
+    .cover p, .deathMessage p, .word p{
+        font-size: smaller;
+    }
+}
+
+@media screen and (max-width:300px)  {
+    .cover p, .deathMessage p, .word p{
+        font-size: small;
+    }
 }
 
 .footbar {
