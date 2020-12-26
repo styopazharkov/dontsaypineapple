@@ -208,6 +208,11 @@ body {
     background-color: #7CB35C;
 }
 
+.pastSettings{
+    background-color: #7CB35C;
+    border-radius: 6px;
+}
+
 .dplayer{
     background-color: #66944C;
 }

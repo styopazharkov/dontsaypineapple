@@ -13,6 +13,19 @@
     text-align: center;
 }
 
+@media screen and (max-width:500px)  {
+    .title{
+        font-size: 50px;
+    }
+}
+
+
+@media screen and (max-width:300px)  {
+    .title{
+        font-size: 35px;
+    }
+}
+
 .code {
     justify-self: center;
     text-align: center;
@@ -22,7 +35,8 @@
     justify-self: center;
 }
 
-.normSettings {
+
+.pastSettings {
     width: 80%;
     margin: auto;
     margin-top: 20px;
@@ -31,10 +45,21 @@
     text-align: center;
 }
 
+.pastSettings div{
+    margin: 5px;
+}
+
 @media screen and (min-width:580px)  {
-    .normSettings {
+    .pastSettings {
         grid-template-rows: auto;
         grid-template-columns: auto auto;
+    }
+}
+
+
+@media screen and (max-width:400px)  {
+    .settings *{
+        font-size: smaller;
     }
 }
 
@@ -48,12 +73,19 @@
     border-radius: 10px;
 }
 
+
 .overMssg {
     margin: 10px;
     border-radius: 5px;
     padding: 5px;
     text-align: center;
     font-size: xx-large;
+}
+
+@media screen and (max-width:500px)  {
+    .overMssg{
+        font-size: x-large;
+    }
 }
 
 .survivalWinner, .killWinners{
@@ -68,6 +100,13 @@
     margin: 5px;
     padding: 5px;
 }
+
+@media screen and (max-width:500px)  {
+    .dplayer{
+        font-size: large;
+    }
+}
+
 
 .killLog{
     display: grid;
@@ -86,6 +125,12 @@
     margin: 10px;
     border-radius: 5px;
     padding: 5px;
+}
+
+@media screen and (max-width:500px)  {
+    .log p{
+        font-size: smaller;
+    }
 }
 
 .footpad{
