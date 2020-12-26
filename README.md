@@ -10,7 +10,7 @@ A complete login system is implemented. Passwords are securely stored hashed wit
 
 ## Project Structure
 This is a Flask application. The main app is in the app.py file. Helper functions are stored in the checks.py, verifiers.py, maff.py, and fetchers.py files. This site uses a SQLite database (the database.db file). The databaseSetup file is used only to create a clean database and not used while the app is running. This is the structure of the site:
-![website structure](dontsaypineapple.tif)
+![website structure](structure.jpg)
 
 ## Support
 Found a bug?
