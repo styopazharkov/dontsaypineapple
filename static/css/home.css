@@ -18,12 +18,18 @@
 
 .homeGrid1{
     display: grid;
-    grid-template-rows: auto auto auto auto;
+    grid-template-rows: auto auto auto auto auto;
     width: 80%;
     align-self: center;
     margin: auto;
     margin-top: 80px;
     margin-bottom: 20px;
+}
+
+.user{
+    justify-self: center;
+    font-size: small;
+    font-weight: bolder;
 }
 
 .welcome{
@@ -60,6 +66,7 @@
     background: none;
     text-overflow: ellipsis;
 }
+
 
 .tooltiptext {
     visibility: hidden;

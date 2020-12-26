@@ -19,9 +19,13 @@
             <p style="color: red;">Error: {{error}}</p>
             {% endif  %}
         </div>
+        <p class="user">
+            {{data['user']}}
+        </p> 
         <form  class="welcome" action="/_rename" method="POST">
             <div class="hello">
-                Hello, <input type="text"  autocomplete="off" name="name" value="{{data['name']}}" maxlength="20" >  ({{data['user']}})
+                Hello, <input type="text"  autocomplete="off" name="name" value="{{data['name']}}" maxlength="20" > 
+
                 <span class="tooltiptext">press enter to save</span>
             </div>
             <div class="status">
