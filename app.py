@@ -328,7 +328,7 @@ def activeGame(code):
         if gameRow['started']:
             data['word'] = json.loads(gameRow['targets'])[session['user']]['word']
             data['target'] = json.loads(gameRow['targets'])[session['user']]['target']
-        data['isAlive'] = session['user'] in gameRow['alive']
+        data['isAlive'] = session['user'] in data['alive']
 
     return render_template('game.html', data = data, error=error)
 
