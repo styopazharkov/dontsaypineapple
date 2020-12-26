@@ -83,7 +83,7 @@
     }
 }
 
-@media screen and (max-width:227px)  {
+@media screen and (max-width:231px)  {
     .normSettings *, .adminSettings *{
         font-size: x-small;
     }
