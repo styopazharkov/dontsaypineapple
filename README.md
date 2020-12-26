@@ -15,5 +15,8 @@ Have suggestions?
 Don't hesitate to email styopa@stanford.edu . 
 Any feedback would be greatly appreciated!
 
-## Word Bank Help
-Our word banks are only 300 words each! Any help on creating larger word banks would be great. 
+### Word Bank Help
+Our word banks are only 300 words each! Any help on creating larger word banks would be great. We are thinking of adding an 'extra hard' word category in addtion to the three we have currently. This would contain thesaurus words. 
+
+### Art Help
+Given my basic drawing software, my slow trackpad, and lack of motivation, I can only do so much art. If you would like to improve on (or add to) any of the artwork or design on the website, send an email! Themes, logos, styles, and colors are all good things to ask about.
