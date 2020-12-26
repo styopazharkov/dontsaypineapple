@@ -42,6 +42,7 @@
     display: grid;
     grid-template-rows: auto auto auto;
     width: fit-content;
+    max-width: 86%;
     margin: auto;
     margin-top: 20px;
     border-radius: 10px;
