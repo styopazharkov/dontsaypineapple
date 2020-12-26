@@ -65,21 +65,29 @@
             <div class="secret">
                 {% if data['user'] in data['alive'] %}
                     <div class="cover">
-                        Press here to see your mission
+                        <p>
+                            Press here to see your mission
+                        </p>
                     </div>
                     <div class = "word" unselectable="on">
-                        Kill {{data['target']}} with '{{data['word']}}'!
+                        <p>
+                            Kill {{data['target']}} with '{{data['word']}}'!
+                        </p>
                     </div>
                 {% else %}
                     <div class="cover">
-                        You are dead. Press to see info.
+                        <p>
+                            You are dead. Press to see info.
+                        </p>
                     </div>
                     <div class = "deathMessage" unselectable="on">
-                        {% if data['user'] in data['purged'] %}
-                            you were purged for {{data['target']}} by host.
-                        {% else %}
-                            {{data['target']}} killed you with '{{data['word']}}'.
-                        {% endif %}
+                        <p>
+                            {% if data['user'] in data['purged'] %}
+                                you were purged for {{data['target']}} by host.
+                            {% else %}
+                                {{data['target']}} killed you with '{{data['word']}}'.
+                            {% endif %}
+                        </p>
                     </div>
                 {% endif %}
             </div>

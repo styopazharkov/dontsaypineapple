@@ -16,6 +16,12 @@
     word-wrap: break-word;
 }
 
+@media screen and (max-width:500px)  {
+    .title{
+        font-size: 50px;
+    }
+}
+
 .code {
     justify-self: center;
     text-align: center;
@@ -31,6 +37,12 @@
     margin-top: 20px;
     display: grid;
     grid-template-rows: auto auto;
+
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-all;
+    word-break: break-word;
+    hyphens: auto;
 }
 
 .normSettings {
@@ -38,6 +50,12 @@
     display: grid;
     grid-template-rows: auto auto;
     text-align: center;
+
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-all;
+    word-break: break-word;
+    hyphens: auto;
 }
 
 @media screen and (min-width:800px)  {
@@ -135,21 +153,34 @@
     -ms-user-select: none; /* IE10+/Edge */
     user-select: none; /* Standard */
     transition-duration: 0.3s;
+
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-all;
+    word-break: break-word;
+    hyphens: auto;
+    display: flex;
+}
+
+.word p, .deathMessage p{
+    margin: auto;
 }
 
 .secret:active:hover  .cover{
     width: 0;
     transition-duration: 0.3s;
-    font-size: 0;
     min-width: 10px;
-    font-size: 0;
     border-radius: 0;
+}
+
+.secret:active:hover  .cover p{
+    transition-duration: 0.3s;
+    font-size: 0;
 }
 
 .cover {
     width: 80%;
     height: inherit;
-    min-width: 250px;
     position: absolute;
     z-index: 1;
     text-align: center;
@@ -158,6 +189,19 @@
     -moz-user-select: none; /* Firefox */
     -ms-user-select: none; /* IE10+/Edge */
     user-select: none; /* Standard */
+
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-all;
+    word-break: break-word;
+    hyphens: auto;
+
+    display: flex;
+}
+
+.cover p{
+    margin: auto;
+    transition-duration: 0.3s;
 }
 
 .footbar {
@@ -229,7 +273,6 @@
     margin-top: 10px;
 }
 
-
 .players h4{
     text-align: center;
 }
@@ -243,6 +286,7 @@
 
 .name{
     margin: 5px;
+    margin-bottom: 0;
     overflow-wrap: break-word;
     word-wrap: break-word;
     word-break: break-all;
@@ -251,6 +295,8 @@
 }
 
 .status{
+    margin: 5px;
+    margin-top: 0;
     grid-row: 2 / 3;
     grid-column: 1 / 2;
     font-style: italic;
