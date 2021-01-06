@@ -380,28 +380,24 @@ def _start(code):
     if error:
         session['error'] = error
         return redirect(url_for('game', code = code))
-
-    with sqlite3.connect("database.db") as con:  
-        con.row_factory = sqlite3.Row
-        cur = con.cursor() 
-        row = cur.execute("SELECT * from Games WHERE code = ? ", (code, )).fetchone()
-        started = 1
-        alive = row['players']
-        players = json.loads(row["players"])
-        settings = json.loads(row['settings'])
-        targets = {}
-        n=len(players)
-        permutation = maff.random_permutation(n)
-        for i in range(n):
-            #TODO implement words here
-            targets[players[permutation[i]]] = {"word": maff.get_word(settings), "target": players[permutation[(i+1)%n]], "assassin": players[permutation[i-1]]}
-        targets = json.dumps(targets)
-        killCount={}
-        for player in players:
-            killCount[player] = 0
-        killCount = json.dumps(killCount)
-        cur.execute("UPDATE Games SET started = ?,  alive = ?, targets = ?, killCount = ? WHERE code = ? ", (started, alive, targets, killCount, code))
-        con.commit()
+    foundGame = PastGame.query.filter_by(code = code).first()
+    foundGame.started = 1
+    foundGame.alive = foundGame.players
+    players = json.loads(foundGame.players)
+    settings = json.loads(foundGame.settings)
+    targets = {}
+    n=len(players)
+    permutation = maff.random_permutation(n)
+    for i in range(n):
+        targets[players[permutation[i]]] = {"word": maff.get_word(settings), "target": players[permutation[(i+1)%n]], "assassin": players[permutation[i-1]]}
+    targets = json.dumps(targets)
+    killCount={}
+    for player in players:
+        killCount[player] = 0
+    killCount = json.dumps(killCount)
+    foundGame.targets = targets
+    foundGame.killCount = killCount
+    db.session.commit()
     return redirect(url_for('game', code = code))
 
 @app.route('/_change_settings/<code>', methods = ['POST'])
