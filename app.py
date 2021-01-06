@@ -348,24 +348,21 @@ def pastGame(code):
     except KeyError:
         error = ""
     data={}
-    with sqlite3.connect("database.db") as con:  
-        con.row_factory = sqlite3.Row
-        cur = con.cursor()
-        gameRow = cur.execute("SELECT * FROM PastGames WHERE code = ? ", (code, )).fetchone()
-        data['code'] = code
-        data['user'] = session['user']
-        data['theme'] = session['theme']
-        data['title'] = gameRow['name']
-        data['settings'] = json.loads(gameRow['settings'])
-        data['host'] = gameRow['host']
-        data['survivalWinner'] = {'code': gameRow['survivalWinner'], 'name': fetchers.get_name(cur, gameRow['survivalWinner'])}
-        data['killWinners'] = [{'code': winner, 'name': fetchers.get_name(cur, winner)} for winner in json.loads(gameRow['killWinners'])]
-        data['killLog'] = [{
-            'method': entry[1],
-            'victim': {'code': entry[2], 'name': fetchers.get_name(cur, entry[2])}, 
-            'assassin': {'code': entry[0], 'name': fetchers.get_name(cur, entry[0])}, 
-            'word': entry[3]
-            } for entry in json.loads(gameRow['killLog'])]
+    foundGame = PastGame.query.filter_by(code = code).first()
+    data['code'] = code
+    data['user'] = session['user']
+    data['theme'] = session['theme']
+    data['title'] = foundGame.name
+    data['settings'] = json.loads(foundGame.settings)
+    data['host'] = foundGame.host
+    data['survivalWinner'] = {'code': foundGame.survivalWinner, 'name': fetchers.get_name(foundGame.survivalWinner)} #TODO: rename code to user 
+    data['killWinners'] = [{'code': winner, 'name': fetchers.get_name(winner)} for winner in json.loads(foundGame.killWinners)]
+    data['killLog'] = [{
+        'method': entry[1],
+        'victim': {'code': entry[2], 'name': fetchers.get_name(entry[2])}, 
+        'assassin': {'code': entry[0], 'name': fetchers.get_name(entry[0])}, 
+        'word': entry[3]
+        } for entry in json.loads(foundGame.killLog)]
     return render_template('pastGame.html', data = data, error=error)
 
 ### _start helper route starts a game that isnt started ###
