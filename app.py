@@ -380,7 +380,7 @@ def _start(code):
     if error:
         session['error'] = error
         return redirect(url_for('game', code = code))
-    foundGame = PastGame.query.filter_by(code = code).first()
+    foundGame = Game.query.filter_by(code = code).first()
     foundGame.started = 1
     foundGame.alive = foundGame.players
     players = json.loads(foundGame.players)
@@ -421,7 +421,7 @@ def  _change_settings(code):
         session['error'] = error
         return redirect(url_for('game', code = code))
 
-    foundGame = PastGame.query.filter_by(code = code).first()
+    foundGame = Game.query.filter_by(code = code).first()
     foundGame.settings = json.dumps(settings)
     db.session.commit()
     return redirect(url_for('game', code = code))
@@ -444,19 +444,14 @@ def _cancel(code):
         session['error'] = error
         return redirect(url_for('home'))
     
-    with sqlite3.connect("database.db") as con:  
-        con.row_factory = sqlite3.Row
-        cur = con.cursor() 
-        players = json.loads(cur.execute("SELECT * from Games WHERE code = ? ", (code, )).fetchone()['players'])
-        for player in players: #delets the game from each players game list
-            cur.execute("SELECT * from Players WHERE user = ? ", (player, ))
-            games = json.loads(cur.fetchone()["games"])
-            games.remove(code) #removes game to the games list of the user
-            games = json.dumps(games) 
-            cur.execute("UPDATE Players SET games = ? WHERE user = ? ", (games, player))
-
-        cur.execute("DELETE FROM Games WHERE code = ? ", (code, )) #deletes the game from the games database
-        con.commit()
+    foundGame = Game.query.filter_by(code = code).first()
+    for player in foundGame.players: #delets the game from each players game list
+        foundPlayer = Player.query.filter_by(user = player).first()
+        games = json.loads(foundPlayer.games)
+        games.remove(code) #removes game to the games list of the user
+        foundPlayer.games = json.dumps(games) 
+    db.session.delete(foundGame)
+    db.session.commit()
     return redirect(url_for('home'))
 
 ### _kick helper route removes a player from a game that hasn't started ###
