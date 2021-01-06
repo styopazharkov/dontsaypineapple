@@ -170,11 +170,10 @@ def _rename():
         session['error'] = error
         return redirect(url_for('home'))
 
-    with sqlite3.connect("database.db") as con:  
-            con.row_factory = sqlite3.Row
-            cur = con.cursor() 
-            cur.execute("UPDATE Players SET name = ?, status = ? WHERE user = ? ", (name, status, session['user']))
-            con.commit()
+    foundPlayer = Player.query.filter_by(user = session['user']).first()
+    foundPlayer.name = name
+    foundPlayer.status = status
+    db.session.commit()
     return redirect(url_for('home'))
 
 @app.route('/_change_theme', methods = ['POST'])
