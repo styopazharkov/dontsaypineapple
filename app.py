@@ -472,21 +472,15 @@ def _kick(code, user):
         session['error'] = error
         return redirect(url_for('game', code = code))
 
-    with sqlite3.connect("database.db") as con:  
-        con.row_factory = sqlite3.Row
-        cur = con.cursor() 
-        cur.execute("SELECT * from Players WHERE user = ? ", (user, ))
-        games = json.loads(cur.fetchone()["games"])
-        games.remove(code) #removes game from the games list of the user
-        games = json.dumps(games) 
-        cur.execute("UPDATE Players SET games = ? WHERE user = ? ", (games, user))
-
-        cur.execute("SELECT * from Games WHERE code = ? ", (code, ))
-        players = json.loads(cur.fetchone()["players"])
-        players.remove(user)  #removes user from the player list of the game
-        players = json.dumps(players) 
-        cur.execute("UPDATE Games SET players = ? WHERE code = ? ", (players, code))
-        con.commit()
+    foundGame = Game.query.filter_by(code = code).first()
+    foundPlayer = Player.query.filter_by(user = user).first()
+    games = json.loads(foundPlayer.games)
+    games.remove(code) #removes game from the games list of the user
+    foundPlayer.games = json.dumps(games) 
+    players = json.loads(foundGame.players)
+    players.remove(user)  #removes user from the player list of the game
+    foundGame.players = json.dumps(players) 
+    db.session.commit()
     return redirect(url_for('game', code = code))
     
 ### route for _killed helper function. This is called when a player presses the 'I was killed button' ###
