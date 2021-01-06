@@ -1,8 +1,9 @@
 #### This file contains checking helper functions. They return either a message or False ####
 from flask import  session
-import sqlite3, json
+import json, re, sqlalchemy
 import hashing
-import re
+from app import db
+from models import Player, PastGame, Game
 
 ### verifier that checks that a username and password is good to log in with. Makes sure they're non-empty and are in the database ###
 ## returns an error message if there is an error. False if there is no error ##
@@ -11,13 +12,12 @@ def check_for_login_error(user, password):
         return "You must have a username"
     if len(password) == 0:
         return "You must have a password."
-    with sqlite3.connect("database.db") as con:
-        con.row_factory = sqlite3.Row
-        cur = con.cursor()
-        if cur.execute("SELECT count(*) FROM Players WHERE user= ? ", (user, )).fetchone()[0] == 0: #checks that username exsts
-            return "No such user exists"
-        if not hashing.verify(password, cur.execute("SELECT * FROM Players WHERE user = ? ", (session['user'], )).fetchone()['password']): # checks that passwords match
-            return "username or password is wrong."
+
+    foundUser = Player.query.filter_by(user=user).first()
+    if not foundUser:
+        return "No such user exists"
+    if not hashing.verify(password, user.password):
+        return "username or password is wrong."
     return  False
         
 ### verifier that checks that a username, password and name are good to sign up with. makes sure it's long and is in the database ###

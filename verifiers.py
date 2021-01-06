@@ -2,6 +2,8 @@
 from flask import  session
 import sqlite3, json
 import hashing
+from app import db
+from models import Player, PastGame, Game
 
 ### verfier that a user is logged in on a page ###
 def verify_session_logged_in():

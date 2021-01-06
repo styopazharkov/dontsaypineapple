@@ -1,6 +1,9 @@
 #### This file contains helper functions that fetch information and modify the database####
 from flask import  session
-import sqlite3, json
+import json
+from app import db
+from models import Player, PastGame, Game
+
 
 def get_active_button_info(game):
     with sqlite3.connect("database.db") as con:  

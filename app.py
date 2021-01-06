@@ -7,14 +7,21 @@
 
 ### The following code is the imported packages ###
 from flask import Flask, redirect, url_for, render_template, request, session, abort
-import sqlite3, json
-import checks, verifiers, maff, fetchers
+import json, os
 import hashing
+from flask_sqlalchemy import SQLAlchemy
 
 ### The following code creates the app variable and assigns a secret key for the session dictionary ###
+## It also creates the database using sqlalchemy ###
 app = Flask(__name__)
 app.secret_key = "An arbitrary key for Don't Say Pineapple"
 
+app.config.from_object(os.environ['APP_SETTINGS'])
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db = SQLAlchemy(app)
+### The folowing code imports sqlalchemy table objects ###
+from models import Player, PastGame, Game
+import checks, verifiers, maff, fetchers
 
 #### PAGE ROUTING BELOW THIS LINE ####
 
@@ -51,13 +58,14 @@ def _login():
         user, password = "", ""
 
     session['user'] = user
-    error = checks.check_for_login_error(user, password)
+    error = checks.check_for_login_error(user, password) #TODO
     if error:
         session['error']=error
         return redirect(url_for('index'))
     else:
         session['loggedIn'] = True
         session['password'] = password
+        
         with sqlite3.connect("database.db") as con: 
             con.row_factory = sqlite3.Row
             cur = con.cursor() 
