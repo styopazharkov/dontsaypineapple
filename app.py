@@ -421,10 +421,9 @@ def  _change_settings(code):
         session['error'] = error
         return redirect(url_for('game', code = code))
 
-    with sqlite3.connect("database.db") as con:  
-        con.row_factory = sqlite3.Row
-        cur = con.cursor() 
-        cur.execute("UPDATE Games SET settings = ? WHERE code = ? ", (json.dumps(settings), code))
+    foundGame = PastGame.query.filter_by(code = code).first()
+    foundGame.settings = json.dumps(settings)
+    db.session.commit()
     return redirect(url_for('game', code = code))
 
     
