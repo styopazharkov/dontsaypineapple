@@ -527,7 +527,7 @@ def _killed(code):
         )
         db.session.add(pastgame)
         db.session.delete(foundGame)#deletes from games
-        db.session.commit()
+    db.session.commit()
     return redirect(url_for('game', code = code))
 
 ### purge page for purging a player by game host ###
@@ -546,29 +546,37 @@ def _purge(code, user):
         session['error'] = error
         return redirect(url_for('game', code = code))
     
-    with sqlite3.connect("database.db") as con:  
-        con.row_factory = sqlite3.Row
-        cur = con.cursor()
-        row = cur.execute("SELECT * from Games WHERE code = ? ", (code, )).fetchone()
-        alive = json.loads(row["alive"])
-        settings = json.loads(row['settings'])
-        alive.remove(user)  #removes user from the alive list of the game
-        purged = json.dumps(json.loads(row["purged"])+[user]) #adds user to the purged list of the game
-        targets = maff.edit_targets_on_kill(user, json.loads(row['targets']), settings)
-        killLog = json.loads(row['killLog'])+[(targets[user]['assassin'], "purged", user, targets[user]['word'])] #adds to kill log
-        if len(alive) > 1:
-            alive, targets,  killLog = json.dumps(alive), json.dumps(targets), json.dumps(killLog) #json encripts everything
-            cur.execute("UPDATE Games SET alive = ?, targets = ?, purged = ?, killLog = ? WHERE code = ? ", (alive, targets, purged, killLog, code))
-        else:
-            players = json.loads(row['players'])
-            survivalWinner = alive[0]
-            killCount = json.loads(row['killCount'])
-            killWinners = maff.create_killWinners(players, killCount)
-            fetchers.distribute_kills_and_wins(cur, players, killCount, survivalWinner, killWinners)
-            players, killWinners, killLog = json.dumps(players), json.dumps(killWinners), json.dumps(killLog)
-            cur.execute("INSERT into PastGames (code, name, settings, host, players, survivalWinner, killWinners, killLog) values (?, ?, ?, ?, ?, ?, ?, ?)",  (code, row['name'], row['settings'], row['host'], players, survivalWinner, killWinners, killLog))   #adds to pastgames
-            cur.execute("DELETE FROM Games WHERE code = ? ", (code, )) #deletes from games
-            con.commit()
+    foundGame = Game.query.filter_by(code = code).first()
+    alive = json.loads(foundGame.alive)
+    alive.remove(user)  #removes user from the alive list of the game
+    settings = json.loads(foundGame.settings)
+    targets = maff.edit_targets_on_kill(user, json.loads(foundGame.targets), settings)
+    killCount = json.loads(foundGame.killCount)
+    killLog = json.loads(foundGame.killLog)+[(targets[user]['assassin'], "purged", user, targets[user]['word'])] #adds to kill log
+    purged = json.loads(foundGame.purged)+[user] #adds user to the purged list of the game
+    if len(alive) > 1:
+        foundGame.alive = json.dumps(alive)
+        foundGame.targets = json.dumps(targets)
+        foundGame.killLog = json.dumps(killLog)
+        foundGame.purged = json.dumps(purged)
+    else:
+        players = json.loads(foundGame.players)
+        survivalWinner = alive[0]
+        killWinners = maff.create_killWinners(players, killCount)
+        fetchers.distribute_kills_and_wins(players, killCount, survivalWinner, killWinners)
+        pastgame=PastGame(
+            code = code,
+            name = foundGame.name, 
+            settings = foundGame.settings, 
+            host = foundGame.host, 
+            players = json.dumps(players),
+            survivalWinner = survivalWinner,
+            killWinners = json.dumps(killWinners),
+            killLog = json.dumps(killLog)
+        )
+        db.session.add(pastgame)
+        db.session.delete(foundGame)#deletes from games
+    db.session.commit()
     return redirect(url_for('game', code = code))
 
 @app.route('/rules/')
