@@ -1,6 +1,6 @@
 #### This file contains checking helper functions. They return either a message or False ####
 from flask import  session
-import json, re, sqlalchemy
+import json, re
 import hashing
 from app import db
 from models import Player, PastGame, Game
@@ -16,7 +16,7 @@ def check_for_login_error(user, password):
     foundUser = Player.query.filter_by(user=user).first()
     if not foundUser:
         return "No such user exists"
-    if not hashing.verify(password, user.password):
+    if not hashing.verify(password, foundUser.password):
         return "username or password is wrong."
     return  False
         
@@ -76,16 +76,13 @@ def check_for_settings_error(settings):
 def check_for_join_error(code):
     if not code:
         return "please enter a game code"
-    with sqlite3.connect("database.db") as con:  
-        con.row_factory = sqlite3.Row
-        cur = con.cursor() 
-        if cur.execute("SELECT count(*) FROM Games WHERE code = ? ", (code, )).fetchone()[0] == 0:
-            return "no such game exists" 
-        row =  cur.execute("SELECT * FROM Games WHERE code = ? ", (code, )).fetchone()
-        if row['started']:
-            return "This game has already started."
-        if session['user'] in json.loads(row['players']):
-            return "You are already in this game."
+    foundGame = Game.query.filter_by(code = code).first()
+    if not foundGame:
+        return "no such game exists"
+    if foundGame.started:
+        return "This game has already started."
+    if session['user'] in json.loads(foundGame.players):
+        return "You are already in this game."
     return False
 
 ### verifier that checks that a code and name are good to c with. makes sure code is long enough, name is non empty, and that the game doesnt already exist ###
@@ -104,86 +101,65 @@ def check_for_create_error(code, name, settings):
         return "Your game must have a name."
     if len(name) > 20:
         return "The name can't be more than 20 letters. Try something simpler :)"
-    with sqlite3.connect("database.db") as con:  
-        con.row_factory = sqlite3.Row
-        cur = con.cursor() 
-        if cur.execute("SELECT count(*) FROM Games WHERE code = ? ", (code, )).fetchone()[0] > 0:
-            return "A game with this code already exists"
-        if cur.execute("SELECT count(*) FROM PastGames WHERE code = ? ", (code, )).fetchone()[0] > 0:
-            return "A game with this code already exists"
+    if foundGame = Game.query.filter_by(code = code).first():
+        return "A game with this code already exists"
+    if foundGame = PastGame.query.filter_by(code = code).first():
+        return "A game with this code already exists"
     return False
 
 def check_for_cancel_error(code):
-    with sqlite3.connect("database.db") as con:
-        con.row_factory = sqlite3.Row
-        cur = con.cursor()
-        if cur.execute("SELECT count(*) FROM Games WHERE code = ? ", (code, )).fetchone()[0] == 0:
-            return "Game has already ended or does not exist."
-        if cur.execute("SELECT * FROM Games WHERE code= ? ", (code, )).fetchone()["started"]:
-            return "This game has already started."
+    foundGame = Game.query.filter_by(code = code).first()
+    if not foundGame:
+        return "Game has already ended or does not exist."
+    if foundGame.started:
+        return "This game has already started."
     return False
 
 def check_for_start_error(code):
-    with sqlite3.connect("database.db") as con:
-        con.row_factory = sqlite3.Row
-        cur = con.cursor()
-        if len(json.loads(cur.execute("SELECT * FROM Games WHERE code= ? ", (code, )).fetchone()["players"])) < 2:
-            return "You need at least 2 players to play!"
-    return False
-
-### verifies that a cancel is valid ###
-def check_for_cancel_error(code):
-    with sqlite3.connect("database.db") as con:
-        con.row_factory = sqlite3.Row
-        cur = con.cursor()
-        if cur.execute("SELECT count(*) FROM Games WHERE code = ? ", (code, )).fetchone()[0] == 0:
-            return "This game has already ended or does not exist"
+    foundGame = Game.query.filter_by(code = code).first()
+    if not foundGame:
+        return "Game has already ended or does not exist."
+    if foundGame.started:
+        return "This game has already started."
+    if len(json.loads(foundGame.players)) < 2:
+        return "You need at least 2 players to play!"
     return False
 
 ### verifies that a kick is valid ###
 def check_for_kick_error(code, user):
-    with sqlite3.connect("database.db") as con:
-        con.row_factory = sqlite3.Row
-        cur = con.cursor()
-        if cur.execute("SELECT count(*) FROM Games WHERE code = ? ", (code, )).fetchone()[0] == 0:
-            return "This game has already ended."
-        row = cur.execute("SELECT * FROM Games WHERE code= ? ", (code, )).fetchone()
-        if row['started']:
-            return "This game has already started"
-        if user not in json.loads(row["players"]):
-            return "This user is not in the game"
-        if user == row['host']:
-            return "You can't kick yourself. Think about the game you're leaving with no supervisor o.o"
+    foundGame = Game.query.filter_by(code = code).first()
+    if not foundGame:
+        return "Game has already ended or does not exist."
+    if foundGame.started:
+        return "This game has already started."
+    if user not in json.loads(foundGame.players):
+        return "This user is not in the game"
+    if user == foundGame.host:
+        return "You can't kick yourself. Think about the game you're leaving with no supervisor o.o"
     return False
 
 ### verifies that a kill is valid ###
 def check_for_killed_error(code, user):
-    with sqlite3.connect("database.db") as con:
-        con.row_factory = sqlite3.Row
-        cur = con.cursor()
-        if cur.execute("SELECT count(*) FROM Games WHERE code = ? ", (code, )).fetchone()[0] == 0:
-            return "This game has already ended."
-        if user not in json.loads(cur.execute("SELECT * FROM Games WHERE code= ? ", (code, )).fetchone()["alive"]):
-            return "You are already dead!"
+    foundGame = Game.query.filter_by(code = code).first()
+    if not foundGame:
+        return "Game has already ended or does not exist."
+    if user not in json.loads(foundGame.alive):
+        return "You are already dead!"
     return False
 
 ### verifies that a purge is valid ###
 def check_for_purge_error(code, user):
-    with sqlite3.connect("database.db") as con:
-        con.row_factory = sqlite3.Row
-        cur = con.cursor()
-        if cur.execute("SELECT count(*) FROM Games WHERE code = ? ", (code, )).fetchone()[0] == 0:
-            return "This game has already ended."
-        if user not in json.loads(cur.execute("SELECT * FROM Games WHERE code= ? ", (code, )).fetchone()["alive"]):
-            return "This player is already dead!"
+    foundGame = Game.query.filter_by(code = code).first()
+    if not foundGame:
+        return "Game has already ended or does not exist."
+    if user not in json.loads(foundGame.alive):
+        return "You are already dead!"
     return False
 
 ### verifies that a user is an actual player in the game ###
 def check_if_game_complete(code):
-    with sqlite3.connect("database.db") as con:  
-        cur = con.cursor() 
-        if cur.execute("SELECT count(*) FROM Games WHERE code = ? ", (code, )).fetchone()[0] > 0:
-            return "active"
-        if cur.execute("SELECT count(*) FROM PastGames WHERE code = ? ", (code, )).fetchone()[0] > 0:
-            return "past"
+    if Game.query.filter_by(code = code).first():
+        return "active"
+    if PastGame.query.filter_by(code = code).first():
+        return "past"
     return False

@@ -30,12 +30,12 @@ def distribute_kills_and_wins(cur, players, killCount, survivalWinner, killWinne
         cur.execute("UPDATE Players SET stats = ? WHERE user = ? ", (stats, player))
 
 ### gets the name of a user from username ###
-def get_name(cur, user):
-    return cur.execute("SELECT * from Players WHERE user = ?", (user, )).fetchone()['name']
+def get_name(user):
+    return Player.query.filter_by(user=user).first().name
 
 ### gets the status of a user from username ###
-def get_status(cur, user):
-    return cur.execute("SELECT * from Players WHERE user = ?", (user, )).fetchone()['status']
+def get_status(user):
+    return Player.query.filter_by(user=user).first().status
 
-def get_theme(cur, user):
-    return cur.execute("SELECT * from Players WHERE user = ?", (user, )).fetchone()['theme']
+def get_theme(user):
+    return Player.query.filter_by(user=user).first().theme

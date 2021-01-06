@@ -1,6 +1,6 @@
 #### This file contains verifier helper functions. They all return a boolean value ####
 from flask import  session
-import sqlite3, json
+import json
 import hashing
 from app import db
 from models import Player, PastGame, Game

@@ -58,18 +58,14 @@ def _login():
         user, password = "", ""
 
     session['user'] = user
-    error = checks.check_for_login_error(user, password) #TODO
+    error = checks.check_for_login_error(user, password)
     if error:
         session['error']=error
         return redirect(url_for('index'))
     else:
         session['loggedIn'] = True
         session['password'] = password
-        
-        with sqlite3.connect("database.db") as con: 
-            con.row_factory = sqlite3.Row
-            cur = con.cursor() 
-            session['theme'] = str(fetchers.get_theme(cur, user))
+        session['theme'] = str(fetchers.get_theme(user))
         return redirect(url_for('home'))
             
 ### signup page route ###
@@ -107,19 +103,26 @@ def _signup():
         session['name']=name
         return redirect(url_for('signup'))
     else:
-        theme = 0
+        try:
+            player=Player(
+                user = user,
+                password = hashing.hashpass(password),
+                name = name,
+                games = json.dumps([]),
+                theme = 0,
+                stats = json.dumps({"played": 0, "survivalWins": 0, "killWins": 0, "kills": 0}),
+                status = ""
+            )
+            db.session.add(player)
+            db.session.commit()
+        except Exception as e:
+            return(str(e))
         session['theme'] = "0"
-        hashPass = hashing.hashpass(password)
-        games = json.dumps([])
-        stats = json.dumps({"played": 0, "survivalWins": 0, "killWins": 0, "kills": 0})
-        with sqlite3.connect("database.db") as con:
-            cur = con.cursor() 
-            cur.execute("INSERT into Players (user, password, name, games, theme, stats, status) values (?, ?, ?, ?, ?, ?, ?)", (user, hashPass, name, games, theme, stats, ""))   #creates new user
-            con.commit()
         session['loggedIn'] = True
         session['user'] = user
         session['password'] = password
         return redirect(url_for('home'))
+
 ### home page route ###
 ## Home page of a specific user ##
 ## Has: welcome, active games, past games, join new and create buttons, edit pf button (TODO), logout button ##
