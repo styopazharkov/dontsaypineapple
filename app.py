@@ -268,17 +268,26 @@ def _create():
         session['name'] = name
         return redirect(url_for('create'))
     else:
-        host, started, players = session['user'], 0, json.dumps([session['user']]) #sets defaults
-        alive, purged, targets, killCount, killLog = json.dumps([]), json.dumps([]), json.dumps({}), json.dumps({}), json.dumps([]) #sets defaults
-        settings = json.dumps(settings)
-        with sqlite3.connect("database.db") as con:  
-            con.row_factory = sqlite3.Row
-            cur = con.cursor() 
-            cur.execute("INSERT into Games (code, name, settings, host, started, players, alive, purged, targets, killCount, killLog) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", (code, name, settings, host, started, players, alive, purged, targets, killCount, killLog))   #creates new user
-            cur.execute("SELECT * from Players WHERE user = ? ", (session['user'], ))
-            games = json.dumps(json.loads(cur.fetchone()["games"])+[code]) #adds game to the games list of the user
-            cur.execute("UPDATE Players SET games = ? WHERE user = ? ", (games, session['user']))
-            con.commit()
+        try:
+            game=Game(
+                code = code,
+                name = name, 
+                settings = json.dumps(settings), 
+                host = session['user'], 
+                started = 0, 
+                players = json.dumps([session['user']]), 
+                alive = json.dumps([]), 
+                purged = json.dumps([]), 
+                targets = json.dumps({}), 
+                killCount = json.dumps({}), 
+                killLog = json.dumps([])
+            )
+            db.session.add(player) #adds game to game table
+            foundPlayer = Player.query.filter_by(user = session['user']).first()
+            foundPlayer.games = json.dumps(json.loads(foundPlayer.games)+[code]) #adds game to the games list of the user
+            db.session.commit()
+        except Exception as e:
+            return(str(e))
         return redirect(url_for('game', code = code))
 
 ### game page route ###
