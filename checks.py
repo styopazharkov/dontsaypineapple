@@ -23,7 +23,6 @@ def check_for_login_error(user, password):
 ### verifier that checks that a username, password and name are good to sign up with. makes sure it's long and is in the database ###
 ## returns an error message if there is an error. False if there is no error ##
 def check_for_signup_error(user, password, passwordRepeat, name):
-    #TODO: check that the username only contains normal characters
     if len(user) < 5:
         return "username must be at least 5 letters!"
     if len(user) > 20:
@@ -46,10 +45,8 @@ def check_for_signup_error(user, password, passwordRepeat, name):
         return "Name must be at least 2 characters!"
     if len(user) > 20:
         return "Name can't be more than 20 characters! And if yours is, think of a nickname."
-    with sqlite3.connect("database.db") as con:
-        cur = con.cursor()
-        if cur.execute("SELECT count(*) FROM Players WHERE user= ? ", (user, )).fetchone()[0] > 0:
-            return "Oh no! Someone already took this username."
+    if Player.query.filter_by(user=user).first():
+        return "Oh no! Someone already took this username."
     return  False
 
 
