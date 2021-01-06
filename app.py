@@ -139,21 +139,21 @@ def home():
     
     data = {} #data that will be put into html template
     data['user'] = session['user']
-    with sqlite3.connect("database.db") as con:  
-        con.row_factory = sqlite3.Row  
-        cur = con.cursor()  
-        row = cur.execute("SELECT * from Players WHERE user = ?", (session['user'], )) .fetchone()
-        data['name'] = row["name"]
-        data['status'] = row["status"]
-        data['theme'] = session['theme']
+    try: 
+        foundPlayer = Player.query.filter_by(user = session['user']).first()
+        data['name'] = foundPlayer.name
+        data['status'] = foundPlayer.status
+        data['theme'] = str(foundPlayer.theme)
         data['activeGames'], data['pastGames'] = [], []
-        games = json.loads(row["games"])
+        games = json.loads(foundPlayer.games)
         for game in games: #sorts games into active and past ones
             if checks.check_if_game_complete(game) == 'active':
                 data['activeGames'].append(fetchers.get_active_button_info(game))
             else:
                 data['pastGames'].append(fetchers.get_past_button_info(game))
-        data['stats'] = json.loads(row['stats'])
+        data['stats'] = json.loads(foundPlayer.stats)
+    except Exception as e:
+	    return(str(e))
     return render_template('home.html', data=data, error = error)
 
 ### helper route for renaming and setting the status ###
