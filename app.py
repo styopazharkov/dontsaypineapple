@@ -182,14 +182,12 @@ def _change_theme():
         session['error']="You cant access _change_theme page before logging in!"
         return redirect(url_for('index'))
 
-    with sqlite3.connect("database.db") as con: 
-        con.row_factory = sqlite3.Row
-        cur = con.cursor() 
-        theme = fetchers.get_theme(cur, session['user'])
-        theme = (theme + 1)%4
-        cur.execute("UPDATE Players SET theme = ? WHERE user = ? ", (theme, session['user']))
-        session['theme'] = str(theme)
-        con.commit()
+    foundPlayer = Player.query.filter_by(user = session['user']).first()
+    theme = foundPlayer.theme
+    theme = (theme + 1)%4
+    session['theme'] = str(theme)
+    foundPlayer.theme = theme
+    db.session.commit()
     return redirect(url_for('home'))
     
 
