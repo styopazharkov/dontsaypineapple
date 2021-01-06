@@ -6,28 +6,38 @@ from models import Player, PastGame, Game
 
 
 def get_active_button_info(game):
-    with sqlite3.connect("database.db") as con:  
-        con.row_factory = sqlite3.Row  
-        cur = con.cursor()  
-        row = cur.execute("SELECT * from Games WHERE code = ?", (game, )) .fetchone()
-    return {'name': row['name'], 'code': game, 'numberOfPlayers': len(json.loads(row['players'])), 'numberOfAlive': len(json.loads(row['alive'])), 'started': row['started'], 'host': row['host']}
+    foundGame = Game.query.filter_by(code = code).first()
+    return {
+        'name': foundGame.name,
+        'code': game,
+        'numberOfPlayers': len(json.loads(foundGame.players)), 
+        'numberOfAlive': len(json.loads(foundGame.alive)), 
+        'started': foundGame.started, 
+        'host': foundGame.host
+        }
 
 def get_past_button_info(game):
-    with sqlite3.connect("database.db") as con:  
-        con.row_factory = sqlite3.Row  
-        cur = con.cursor()  
-        row = cur.execute("SELECT * from pastGames WHERE code = ?", (game, )) .fetchone()
-    return {'name': row['name'], 'code': game, 'numberOfPlayers': len(json.loads(row['players'])), 'host': row['host'], 'killWinners': row['killWinners'], 'survivalWinner': row['survivalWinner']}
+    foundGame = PastGame.query.filter_by(code = code).first()
+    return {
+        'name': foundGame.name, 
+        'code': game, 
+        'numberOfPlayers': len(json.loads(foundGame.players)), 
+        'host': foundGame.host, 
+        'killWinners': foundGame.killWinners, 
+        'survivalWinner': foundGame.survivalWinner
+        }
 
-def distribute_kills_and_wins(cur, players, killCount, survivalWinner, killWinners):
+#distributes kills (actually modifies the database)
+def distribute_kills_and_wins(players, killCount, survivalWinner, killWinners):
     for player in players:
-        stats = json.loads(cur.execute("SELECT * from Players WHERE user = ? ", (player, )).fetchone()["stats"])
+        foundPlayer = Player.query.filter_by(user = player).first()
+        stats = json.loads(foundPlayer.stats)
         stats["played"] += 1
         stats["kills"] += killCount[player]
         stats["survivalWins"] += int(player == survivalWinner)
         stats["killWins"] += (int(player in killWinners)/len(killWinners))
-        stats=json.dumps(stats)
-        cur.execute("UPDATE Players SET stats = ? WHERE user = ? ", (stats, player))
+        foundPlayer.stats = json.dumps(stats)
+        db.session.commit()
 
 ### gets the name of a user from username ###
 def get_name(user):
