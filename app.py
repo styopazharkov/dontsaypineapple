@@ -282,7 +282,7 @@ def _create():
                 killCount = json.dumps({}), 
                 killLog = json.dumps([])
             )
-            db.session.add(player) #adds game to game table
+            db.session.add(game) #adds game to game table
             foundPlayer = Player.query.filter_by(user = session['user']).first()
             foundPlayer.games = json.dumps(json.loads(foundPlayer.games)+[code]) #adds game to the games list of the user
             db.session.commit()
@@ -497,29 +497,37 @@ def _killed(code):
         session['error'] = error
         return redirect(url_for('game', code = code))
 
-    with sqlite3.connect("database.db") as con:  
-        con.row_factory = sqlite3.Row
-        cur = con.cursor() 
-        row = cur.execute("SELECT * from Games WHERE code = ? ", (code, )).fetchone()
-        alive = json.loads(row["alive"])
-        alive.remove(user)  #removes user from the alive list of the game
-        settings = json.loads(row['settings'])
-        targets = maff.edit_targets_on_kill(user, json.loads(row['targets']), settings)
-        killCount = json.loads(row['killCount'])
-        killCount[targets[user]['assassin']] += 1 #adds to assassin's kill count
-        killLog = json.loads(row['killLog'])+[(targets[user]['assassin'], "killed", user, targets[user]['word'])] #adds to kill log
-        if len(alive) > 1: #if the game is not yet over
-            alive, targets, killCount, killLog = json.dumps(alive), json.dumps(targets), json.dumps(killCount), json.dumps(killLog) #json encripts everything
-            cur.execute("UPDATE Games SET alive = ?, targets = ?, killCount = ?, killLog = ? WHERE code = ? ", (alive, targets, killCount, killLog, code)) 
-        else:  #the game has just finished
-            players = json.loads(row['players'])
-            survivalWinner = alive[0]
-            killWinners = maff.create_killWinners(players, killCount)
-            fetchers.distribute_kills_and_wins(cur, players, killCount, survivalWinner, killWinners)
-            players, killWinners, killLog = json.dumps(players), json.dumps(killWinners), json.dumps(killLog)
-            cur.execute("INSERT into PastGames (code, name, settings, host, players, survivalWinner, killWinners, killLog) values (?, ?, ?, ?, ?, ?, ?, ?)",  (code, row['name'], row['settings'], row['host'], players, survivalWinner, killWinners, killLog))   #adds to pastgames
-            cur.execute("DELETE FROM Games WHERE code = ? ", (code, )) #deletes from games
-        con.commit()
+    foundGame = Game.query.filter_by(code = code).first()
+    alive = json.loads(foundGame.alive)
+    alive.remove(user)  #removes user from the alive list of the game
+    settings = json.loads(foundGame.settings)
+    targets = maff.edit_targets_on_kill(user, json.loads(foundGame.targets), settings)
+    killCount = json.loads(foundGame.killCount)
+    killCount[targets[user]['assassin']] += 1 #adds to assassin's kill count
+    killLog = json.loads(foundGame.killLog)+[(targets[user]['assassin'], "killed", user, targets[user]['word'])] #adds to kill log
+    if len(alive) > 1: #if the game is not yet over
+        foundGame.alive = json.dumps(alive)
+        foundGame.targets = json.dumps(targets)
+        foundGame.killCount = json.dumps(killCount)
+        foundGame.killLog = json.dumps(killLog)
+    else:  #the game has just finished
+        players = json.loads(foundGame.players)
+        survivalWinner = alive[0]
+        killWinners = maff.create_killWinners(players, killCount)
+        fetchers.distribute_kills_and_wins(players, killCount, survivalWinner, killWinners)
+        pastgame=PastGame(
+            code = code,
+            name = foundGame.name, 
+            settings = foundGame.settings, 
+            host = foundGame.host, 
+            players = json.dumps(players),
+            survivalWinner = survivalWinner,
+            killWinners = json.dumps(killWinners),
+            killLog = json.dumps(killLog)
+        )
+        db.session.add(pastgame)
+        db.session.delete(foundGame)#deletes from games
+        db.session.commit()
     return redirect(url_for('game', code = code))
 
 ### purge page for purging a player by game host ###
