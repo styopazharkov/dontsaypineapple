@@ -222,16 +222,11 @@ def _join():
         session['error'] = error
         return redirect(url_for('join'))
     else:
-        with sqlite3.connect("database.db") as con:  
-            con.row_factory = sqlite3.Row
-            cur = con.cursor() 
-            cur.execute("SELECT * from Games WHERE code = ? ", (code, ))
-            players = json.dumps(json.loads(cur.fetchone()["players"])+[session['user']]) #adds user to the player list of the game
-            cur.execute("UPDATE Games SET players = ? WHERE code = ? ", (players, code))
-            cur.execute("SELECT * from Players WHERE user = ? ", (session['user'], ))
-            games = json.dumps(json.loads(cur.fetchone()["games"])+[code]) #adds game to the games list of the user
-            cur.execute("UPDATE Players SET games = ? WHERE user = ? ", (games, session['user']))
-            con.commit()
+        foundPlayer = Player.query.filter_by(user = session['user']).first()
+        foundGame = Game.query.filter_by(user = code).first()
+        foundGame.players = json.dumps(json.loads(foundGame.players)+[session['user']])#adds user to the player list of the game
+        foundPlayer.games = json.dumps(json.loads(foundPlayer.games)+[code]) #adds game to the games list of the user
+        db.session.commit()
         return redirect(url_for('game', code = code))
 
 ### create page ###
