@@ -319,28 +319,25 @@ def activeGame(code):
         error = ""
 
     data={}
-    with sqlite3.connect("database.db") as con:  
-        con.row_factory = sqlite3.Row
-        cur = con.cursor()
-        gameRow = cur.execute("SELECT * FROM Games WHERE code = ? ", (code, )).fetchone()
-        data['code'] = code
-        data['user'] = session['user']
-        data['title'] = gameRow['name']
-        data['admin'] = (gameRow['host'] == session['user'])
-        data['started'] = gameRow['started']
-        data['settings'] = json.loads(gameRow['settings'])
-        data['host'] = gameRow['host']
-        data['players'] = []
-        data['theme'] = session['theme']
-        for player in  json.loads(gameRow['players']):
-            data['players'].append({'user': player, 'name': fetchers.get_name(cur, player), 'status': fetchers.get_status(cur, player)})
-        data['numberOfPlayers'] = len(data['players'])
-        data['alive'] = json.loads(gameRow['alive'])
-        data['purged'] = json.loads(gameRow['purged'])
-        if gameRow['started']:
-            data['word'] = json.loads(gameRow['targets'])[session['user']]['word']
-            data['target'] = json.loads(gameRow['targets'])[session['user']]['target']
-        data['isAlive'] = session['user'] in data['alive']
+    foundGame = Game.query.filter_by(code = code).first()
+    data['code'] = code
+    data['user'] = session['user']
+    data['title'] = foundGame.name
+    data['admin'] = (foundGame.host == session['user'])
+    data['started'] = foundGame.started
+    data['settings'] = json.loads(foundGame.settings)
+    data['host'] = foundGame.host
+    data['theme'] = session['theme']
+    data['players'] = []
+    for player in  json.loads(foundGame.players):
+        data['players'].append({'user': player, 'name': fetchers.get_name(player), 'status': fetchers.get_status(player)})
+    data['numberOfPlayers'] = len(data['players'])
+    data['alive'] = json.loads(foundGame.alive)
+    data['purged'] = json.loads(foundGame.purged)
+    if foundGame.started:
+        data['word'] = json.loads(foundGame.targets)[session['user']]['word']
+        data['target'] = json.loads(foundGame.targets)[session['user']]['target']
+    data['isAlive'] = session['user'] in data['alive']
 
     return render_template('game.html', data = data, error=error)
 
