@@ -101,9 +101,9 @@ def check_for_create_error(code, name, settings):
         return "Your game must have a name."
     if len(name) > 20:
         return "The name can't be more than 20 letters. Try something simpler :)"
-    if foundGame = Game.query.filter_by(code = code).first():
+    if Game.query.filter_by(code = code).first():
         return "A game with this code already exists"
-    if foundGame = PastGame.query.filter_by(code = code).first():
+    if PastGame.query.filter_by(code = code).first():
         return "A game with this code already exists"
     return False
 
