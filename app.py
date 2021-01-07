@@ -606,6 +606,9 @@ def back_rules():
 ### debugging page with database tables ###
 @app.route('/debug/')
 def debug():
+    if not verifiers.verify_session_logged_in() or not session['user'] == 'admin':
+        session['error']="You cant access debug page"
+        return redirect(url_for('index'))
     playerRows = Player.query.all()   #rows of the Players table
     gameRows = Game.query.all()   #rows of the Games table
     pastRows = PastGame.query.all()   #rows of the pastGames table

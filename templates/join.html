@@ -13,7 +13,7 @@
     <button class="back button" onclick="window.location.href='{{ url_for( 'home')}}';">Back</button>
     
     <div class="joinGrid">
-        <p class="info">Join an Existing Game</p>
+        <p class="info">Ask host for game code</p>
         <form class="join" action="/_join/" method="POST">
             <div class="error">
                 {% if  error %}
