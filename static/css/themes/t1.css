@@ -27,6 +27,11 @@ body {
     border-bottom-left-radius: 5px;
 }
 
+.backrules {
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 5px;
+}
+
 .tooltiptext{
     background-color: rgb(175, 175, 175);
     color: black;

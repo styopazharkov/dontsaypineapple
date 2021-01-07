@@ -10,6 +10,11 @@ body {
     background-color: lightgray;
 }
 
+.backrules {
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+}
+
 .back:hover{
     background-color: gray;
 }

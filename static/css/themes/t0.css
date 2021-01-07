@@ -34,6 +34,11 @@ body {
     border-bottom-left-radius: 10px;
 }
 
+.backrules {
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 10px;
+}
+
 .tooltiptext{
     background-color: black;
     color: #fff;

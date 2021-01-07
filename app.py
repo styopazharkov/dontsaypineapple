@@ -587,6 +587,15 @@ def rules():
         theme = "0"
     return render_template('rules.html', theme=theme)
 
+@app.route('/back_rules/')
+def back_rules():
+    if session['loggedIn']:
+        return redirect(url_for('home'))
+    else:
+        return redirect(url_for('index'))
+
+
+
 #### 404 ROUTING BELOW THIS LINE ####
 @app.route('/<path>/')
 

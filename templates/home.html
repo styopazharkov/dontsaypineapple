@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/themes/t'+data['theme']+'.css') }}">
 </head>
 <body>
+
+    <button class="back button backrules" onclick="window.location.href='{{ url_for( 'rules')}}';">Rules</button>
     <button class="back button" onclick="window.location.href='{{ url_for( 'index')}}';">Log Out</button>
 
 

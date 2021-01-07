@@ -51,6 +51,10 @@ body{
     z-index: 2;
 }
 
+.backrules{
+    right: unset;
+    left: 0;
+}
 
 .footpad{
     height: 100px;
