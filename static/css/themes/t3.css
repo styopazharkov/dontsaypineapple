@@ -5,7 +5,7 @@
     --color3: #FFD6DA;
     --text1: black
     --error: red;
-    --deadred: rgb(136, 0, 0);
+    --deadred: rgb(78, 0, 0);
     --border: black;
     --gamename: black;
     --selected: black;
@@ -95,11 +95,11 @@ body {
 }
 
 .game {
-    /* nothing here */
+    box-shadow: 3px 3px;
 }
 
 .game:hover{
-    /* nothing here */
+    box-shadow: 1px 1px;
 }
 
 .create{
@@ -149,17 +149,17 @@ body {
 }
 
 .player {
-    background-color: var(--color3);
+    background-color: var(--color2);
     border: var(--border) solid 1px;
     border-radius: 5px;
 }
 
 .dead {
-    background-color: var(--color3);
+    background-color: var(--color2);
 }
 
 .purged {
-    background-color: var(--color3);
+    background-color: var(--color2);
 }
 
 .notStarted {
@@ -224,12 +224,12 @@ body {
     background-color: var(--color2);
     border-radius: 5px;
     border: black solid 1px;
-    /* box-shadow: 2px 3px; */
+    box-shadow: 2px 3px;
 }
 
 .kick:hover input, .purge:hover input{
     background-color: var(--color1);
-    /* box-shadow: 1px 1px; */
+    box-shadow: 1px 1px;
 }
 
 
