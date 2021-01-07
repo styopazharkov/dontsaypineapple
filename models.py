@@ -75,17 +75,17 @@ class PastGame(db.Model):
     host = db.Column(db.String(), nullable=False)
     players = db.Column(db.String(), nullable=False)
     survivalWinner = db.Column(db.String(), nullable=False)
-    killWinner = db.Column(db.String(), nullable=False)
+    killWinners = db.Column(db.String(), nullable=False)
     killLog = db.Column(db.String(), nullable=False)
 
-    def __init__(self, code, name, settings, host, players, survivalWinner, killWinner, killLog):
+    def __init__(self, code, name, settings, host, players, survivalWinner, killWinners, killLog):
         self.code = code
         self.name = name
         self.settings = settings
         self.host = host
         self.players = players
         self.survivalWinner = survivalWinner
-        self.killWinner = killWinner
+        self.killWinners = killWinners
         self.killLog = killLog
 
 

@@ -5,22 +5,22 @@ from app import db
 from models import Player, PastGame, Game
 
 
-def get_active_button_info(game):
+def get_active_button_info(code):
     foundGame = Game.query.filter_by(code = code).first()
     return {
         'name': foundGame.name,
-        'code': game,
+        'code': code,
         'numberOfPlayers': len(json.loads(foundGame.players)), 
         'numberOfAlive': len(json.loads(foundGame.alive)), 
         'started': foundGame.started, 
         'host': foundGame.host
         }
 
-def get_past_button_info(game):
+def get_past_button_info(code):
     foundGame = PastGame.query.filter_by(code = code).first()
     return {
         'name': foundGame.name, 
-        'code': game, 
+        'code': code, 
         'numberOfPlayers': len(json.loads(foundGame.players)), 
         'host': foundGame.host, 
         'killWinners': foundGame.killWinners, 

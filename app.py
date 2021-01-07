@@ -223,7 +223,7 @@ def _join():
         return redirect(url_for('join'))
     else:
         foundPlayer = Player.query.filter_by(user = session['user']).first()
-        foundGame = Game.query.filter_by(user = code).first()
+        foundGame = Game.query.filter_by(code = code).first()
         foundGame.players = json.dumps(json.loads(foundGame.players)+[session['user']])#adds user to the player list of the game
         foundPlayer.games = json.dumps(json.loads(foundPlayer.games)+[code]) #adds game to the games list of the user
         db.session.commit()
@@ -597,19 +597,9 @@ def rules():
 ### debugging page with database tables ###
 @app.route('/debug/')
 def debug():
-    with sqlite3.connect("database.db") as con:  
-        con.row_factory = sqlite3.Row  
-        cur = con.cursor()  
-
-        cur.execute("SELECT * from Players")   
-        playerRows = cur.fetchall()   #rows of the Players table
-
-        cur.execute("SELECT * from Games")   
-        gameRows = cur.fetchall()   #rows of the Games table
-
-        cur.execute("SELECT * from pastGames")   
-        pastRows = cur.fetchall()   #rows of the pastGames table
-
+    playerRows = Player.query.all()   #rows of the Players table
+    gameRows = Game.query.all()   #rows of the Games table
+    pastRows = PastGame.query.all()   #rows of the pastGames table
     return render_template('debug.html', playerRows = playerRows, gameRows = gameRows, pastRows=pastRows)
 
 #### MAIN APP RUN BELOW THIS LINE ####

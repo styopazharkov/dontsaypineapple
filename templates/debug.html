@@ -35,14 +35,14 @@
         </thead>  
         {% for row in playerRows %}  
         <tr>  
-        <td>{{row["id"]}}</td>  
-        <td>{{row["user"]}}</td>
-        <td>{{row["password"][:10]}}</td>
-        <td>{{row["name"]}}</td>  
-        <td>{{row["games"]}}</td>  
-        <td>{{row["theme"]}}</td>  
-        <td>{{row["stats"]}}</td>  
-        <td>{{row["status"]}}</td>  
+        <td>{{row.id}}</td>  
+        <td>{{row.user}}</td>
+        <td>{{row.password[:10]}}</td>
+        <td>{{row.name}}</td>  
+        <td>{{row.games}}</td>  
+        <td>{{row.theme}}</td>  
+        <td>{{row.stats}}</td>  
+        <td>{{row.status}}</td>  
         </tr>  
         {% endfor %}   
         </table> 
@@ -64,18 +64,18 @@
             </thead>  
             {% for row in gameRows %}  
             <tr>  
-            <td>{{row["id"]}}</td>  
-            <td>{{row["code"]}}</td>
-            <td>{{row["name"]}}</td>  
-            <td>{{row["settings"]}}</td>
-            <td>{{row["host"]}}</td>  
-            <td>{{row["started"]}}</td>  
-            <td>{{row["players"]}}</td>  
-            <td>{{row["alive"]}}</td>  
-            <td>{{row["purged"]}}</td>  
-            <td>{{row["targets"]}}</td>  
-            <td>{{row["killCount"]}}</td>  
-            <td>{{row["killLog"]}}</td>
+            <td>{{row.id}}</td>  
+            <td>{{row.code}}</td>
+            <td>{{row.name}}</td>  
+            <td>{{row.settings}}</td>
+            <td>{{row.host}}</td>  
+            <td>{{row.started}}</td>  
+            <td>{{row.players}}</td>  
+            <td>{{row.alive}}</td>  
+            <td>{{row.purged}}</td>  
+            <td>{{row.targets}}</td>  
+            <td>{{row.killCount}}</td>  
+            <td>{{row.killLog}}</td>
             </tr>  
             {% endfor %}   
             </table> 
@@ -94,15 +94,15 @@
                 </thead>  
                 {% for row in  pastRows %}  
                 <tr>  
-                <td>{{row["id"]}}</td>  
-                <td>{{row["code"]}}</td>
-                <td>{{row["name"]}}</td>  
+                <td>{{row.id}}</td>  
+                <td>{{row.code}}</td>
+                <td>{{row.name}}</td>  
                 <td>{{row['settings']}}</td>
-                <td>{{row["host"]}}</td>  
-                <td>{{row["players"]}}</td>  
-                <td>{{row["survivalWinner"]}}</td> 
-                <td>{{row["killWinners"]}}</td>
-                <td>{{row["killLog"]}}</td>
+                <td>{{row.host}}</td>  
+                <td>{{row.players}}</td>  
+                <td>{{row.survivalWinner}}</td> 
+                <td>{{row.killWinners}}</td>
+                <td>{{row.killLog}}</td>
                 </tr>  
                 {% endfor %}   
                 </table> 

@@ -18,7 +18,7 @@ def verify_session_logged_in():
 
 ### verifies that a user is an actual player in the (active) game ###
 def verify_user_in_game(user, code):
-    foundGame = Game.query.filter_by(code = code)
+    foundGame = Game.query.filter_by(code = code).first()
     if not foundGame:
         return False
     return user in json.loads(foundGame.players)
@@ -26,7 +26,7 @@ def verify_user_in_game(user, code):
 ## verifies that the session user is the host ##
 def verify_host(code):
     user = session['user']
-    foundGame = Game.query.filter_by(code = code)
+    foundGame = Game.query.filter_by(code = code).first()
     if not foundGame:
         return False
     return user == foundGame.host
