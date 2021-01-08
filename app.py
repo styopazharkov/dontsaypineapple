@@ -597,8 +597,8 @@ def back_rules():
 
 
 #### 404 ROUTING BELOW THIS LINE ####
-@app.route('/<path>/')
-
+# @app.route('/<path>/')
+#TODO: create 404 page
 
 
 #### DEBUG ROUTING BELOW THIS LINE ####
