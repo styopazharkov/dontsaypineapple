@@ -445,7 +445,7 @@ def _cancel(code):
         return redirect(url_for('home'))
     
     foundGame = Game.query.filter_by(code = code).first()
-    for player in foundGame.players: #delets the game from each players game list
+    for player in json.loads(foundGame.players): #delets the game from each players game list
         foundPlayer = Player.query.filter_by(user = player).first()
         games = json.loads(foundPlayer.games)
         games.remove(code) #removes game to the games list of the user
