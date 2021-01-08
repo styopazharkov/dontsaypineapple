@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Don't Say Pineapple - Home</title>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/404.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/themes/t0.css') }}">
+</head>
+<body>
+
+    <div class="box">
+        <h1>
+            Oh no, this page doesn't exist :(
+        </h1>
+        <button class="button" onclick="window.location.href='{{ url_for( 'index')}}';">Go to the login page instead.</button>
+    </div>
+</body>
+</html>

@@ -597,8 +597,9 @@ def back_rules():
 
 
 #### 404 ROUTING BELOW THIS LINE ####
-# @app.route('/<path>/')
-#TODO: create 404 page
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
 
 
 #### DEBUG ROUTING BELOW THIS LINE ####
