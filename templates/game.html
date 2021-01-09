@@ -119,22 +119,22 @@
                             <script>
                                 function kick(){
                                     if (confirm('Are you sure you want to kick this player?')) {
-                                        form.submit();
+                                        document.getElementById("kickform").submit();
                                     }
                                 }
                             </script>
-                            <form class="kick" action="/_kick/{{data['code']}}/{{player['user']}}" method="post">
+                            <form class="kick" action="/_kick/{{data['code']}}/{{player['user']}}" id="kickform" method="post">
                                 <input class="button" onclick="kick();" type="button" value="kick">
                             </form>
                         {% elif player['user'] in data['alive'] %}
                             <script>
                                 function purge(){
                                     if (confirm('Are you sure you want to purge this player?')) {
-                                        form.submit();
+                                        document.getElementById("purgeform").submit();
                                     }
                                 }
                             </script>
-                            <form class="purge" action="/_purge/{{data['code']}}/{{player['user']}}" method="post">
+                            <form class="purge" action="/_purge/{{data['code']}}/{{player['user']}}" id="purgeform" method="post">
                                 <input class="button"onclick="purge();" type="button" value="purge">
                             </form>
                         {% endif %}
@@ -188,11 +188,11 @@
                 <script>
                     function killed(){
                         if (confirm('Are you sure you want to report yourself killed?')) {
-                            form.submit();
+                            document.getElementById("killedform").submit();
                         }
                     }
                 </script>
-                <form class="killedForm" action="/_killed/{{data['code']}}" method="post">
+                <form class="killedForm" action="/_killed/{{data['code']}}" method="post"  id="killedform">
                     <input class="killed button" onclick="killed();" type="button" value="Report Yourself Killed">
                 </form>
             </div>
