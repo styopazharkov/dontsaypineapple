@@ -134,6 +134,7 @@ vehicle
 democracy
 improvement
 involvement
+expenditure
 general
 enterprise
 van
