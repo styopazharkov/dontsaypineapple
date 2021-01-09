@@ -120,7 +120,6 @@ study
 street
 committee
 rate
-word
 food
 language
 experience
