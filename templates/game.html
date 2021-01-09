@@ -173,8 +173,15 @@
                 {% else %}
                     <button disabled class="disabledStart" type="button" >Need 2 players to Start Game</button>
                 {% endif %}
-                <form action="/_cancel/{{data['code']}}" method="post">
-                    <input class="cancel button" type="submit" value="Cancel Game">
+                <script>
+                    function cancel(){
+                        if (confirm('Are you sure you want to cancel this game?')) {
+                            document.getElementById("cancelform").submit();
+                        }
+                    }
+                </script>
+                <form action="/_cancel/{{data['code']}}" id="cancelform" method="post">
+                    <input class="button"onclick="cancel();" type="button" value="Cancel Game">
                 </form>
             {% else %}
                 <div class="waiting"> 
