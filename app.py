@@ -14,8 +14,6 @@ from flask_sqlalchemy import SQLAlchemy
 ### The following code creates the app variable and assigns a secret key for the session dictionary ###
 ## It also creates the database using sqlalchemy ###
 app = Flask(__name__)
-app.secret_key = "An arbitrary key for Don't Say Pineapple"
-
 app.config.from_object(os.environ['APP_SETTINGS'])
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)

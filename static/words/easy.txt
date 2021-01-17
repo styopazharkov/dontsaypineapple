@@ -247,7 +247,6 @@ couple
 technology
 defense
 list
-chairman
 loss
 activity
 contract
@@ -311,7 +310,7 @@ blood
 statement
 sound
 election
-parliament
+pay
 site
 mark
 importance
