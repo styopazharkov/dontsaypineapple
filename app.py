@@ -123,7 +123,7 @@ def _signup():
 
 ### home page route ###
 ## Home page of a specific user ##
-## Has: welcome, active games, past games, join new and create buttons, edit pf button (TODO), logout button ##
+## Has: welcome, active games, past games, join new and create buttons, edit pf button , logout button ##
 @app.route('/home')
 def home():
     if not verifiers.verify_session_logged_in(): #verifies that user is logged in
