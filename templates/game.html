@@ -119,23 +119,23 @@
                             <script>
                                 function kick(){
                                     if (confirm('Are you sure you want to kick this player?')) {
-                                        document.getElementById("kickform").submit();
+                                        document.getElementById("kickform:{{player['user']}}").submit();
                                     }
                                 }
                             </script>
-                            <form class="kick" action="/_kick/{{data['code']}}/{{player['user']}}" id="kickform" method="post">
+                            <form class="kick" action="/_kick/{{data['code']}}/{{player['user']}}" id="kickform:{{player['user']}}" method="post">
                                 <input class="button" onclick="kick();" type="button" value="kick">
                             </form>
                         {% elif player['user'] in data['alive'] %}
                             <script>
-                                function purge(){
+                                function purge(user){
                                     if (confirm('Are you sure you want to purge this player?')) {
-                                        document.getElementById("purgeform").submit();
+                                        document.getElementById("purgeform:"+user).submit();
                                     }
                                 }
                             </script>
-                            <form class="purge" action="/_purge/{{data['code']}}/{{player['user']}}" id="purgeform" method="post">
-                                <input class="button"onclick="purge();" type="button" value="purge">
+                            <form class="purge" action="/_purge/{{data['code']}}/{{player['user']}}" id="purgeform:{{player['user']}}" method="post">
+                                <input class="button"onclick="purge({{player['user']}});" type="button" value="purge">
                             </form>
                         {% endif %}
                     {% else %}
