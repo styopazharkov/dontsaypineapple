@@ -543,12 +543,11 @@ def _purge(code, user):
     if error:
         session['error'] = error
         return redirect(url_for('game', code = code))
+    return redirect(":"+user+":")
     
     foundGame = Game.query.filter_by(code = code).first()
     alive = json.loads(foundGame.alive)
-    oldalive = str(alive)
     alive.remove(user)  #removes user from the alive list of the game
-    return redirect(str(alive)+":"+user+":"+oldalive )
     settings = json.loads(foundGame.settings)
     targets = maff.edit_targets_on_kill(user, json.loads(foundGame.targets), settings)
     killCount = json.loads(foundGame.killCount)
