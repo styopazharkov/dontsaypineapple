@@ -531,6 +531,8 @@ def _killed(code):
 ### purge page for purging a player by game host ###
 @app.route('/_purge/<code>/<user>', methods = ['POST'])
 def _purge(code, user):
+    return redirect(":"+user+":")
+
     if not verifiers.verify_session_logged_in():
         session['error']="You cant access _purge page before logging in!"
         return redirect(url_for('index'))
@@ -542,9 +544,7 @@ def _purge(code, user):
     error = checks.check_for_purge_error(code, user)
     if error:
         session['error'] = error
-        return redirect(url_for('game', code = code))
-    return redirect(":"+user+":")
-    
+        return redirect(url_for('game', code = code))    
     foundGame = Game.query.filter_by(code = code).first()
     alive = json.loads(foundGame.alive)
     alive.remove(user)  #removes user from the alive list of the game
