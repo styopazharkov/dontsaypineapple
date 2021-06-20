@@ -128,14 +128,14 @@
                             </form>
                         {% elif player['user'] in data['alive'] %}
                             <script>
-                                function purge(user){
+                                function purge(player){
                                     if (confirm('Are you sure you want to purge this player?')) {
-                                        document.getElementById("purgeform:"+user).submit();
+                                        document.getElementById("purgeform:"+player['user']).submit();
                                     }
                                 }
                             </script>
                             <form class="purge" action="/_purge/{{data['code']}}/{{player['user']}}" id="purgeform:{{player['user']}}" method="post">
-                                <input class="button"onclick="purge(\"{{player['user']}\");" type="button" value="purge">
+                                <input class="button"onclick="purge({{player}});" type="button" value="purge">
                             </form>
                         {% endif %}
                     {% else %}
