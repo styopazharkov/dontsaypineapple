@@ -117,14 +117,14 @@
                     {% if data['admin'] %}
                         {% if not data['started'] and player['user'] != data['host']%}
                             <script>
-                                function kick(){
+                                function kick(player){
                                     if (confirm('Are you sure you want to kick this player?')) {
-                                        document.getElementById("kickform:{{player['user']}}").submit();
+                                        document.getElementById("kickform:"+player['user']).submit();
                                     }
                                 }
                             </script>
                             <form class="kick" action="/_kick/{{data['code']}}/{{player['user']}}" id="kickform:{{player['user']}}" method="post">
-                                <input class="button" onclick="kick();" type="button" value="kick">
+                                <input class="button" onclick="kick({{player}});" type="button" value="kick">
                             </form>
                         {% elif player['user'] in data['alive'] %}
                             <script>
