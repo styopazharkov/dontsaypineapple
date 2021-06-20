@@ -135,7 +135,7 @@
                                 }
                             </script>
                             <form class="purge" action="/_purge/{{data['code']}}/{{player['user']}}" id="purgeform:{{player['user']}}" method="post">
-                                <input class="button"onclick="purge({{player['user']}});" type="button" value="purge">
+                                <input class="button"onclick="purge(\"{{player['user']}\");" type="button" value="purge">
                             </form>
                         {% endif %}
                     {% else %}
