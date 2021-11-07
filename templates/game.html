@@ -69,7 +69,7 @@
                             Press here to see your mission
                         </p>
                     </div>
-                    <div class = "word" unselectable="on">
+                    <div class = "word unselectable" unselectable="on">
                         <p>
                             Kill {{data['target']}} with '{{data['word']}}'!
                         </p>
@@ -80,7 +80,7 @@
                             You are dead. Press to see info.
                         </p>
                     </div>
-                    <div class = "deathMessage" unselectable="on">
+                    <div class = "deathMessage unselectable" unselectable="on">
                         <p>
                             {% if data['user'] in data['purged'] %}
                                 you were purged for {{data['target']}} by host.
@@ -92,9 +92,8 @@
                 {% endif %}
             </div>
         {% endif %}
-
-        <div class = "players" unselectable="on">
-            <h4 unselectable="on">Players:</h4>   
+        <div class = "players" >
+            <h4 class="unselectable">Players:</h4>   
             {% for player in data['players'] %}
                 <div class="player 
                 {% if player['user'] in data['purged'] %}
