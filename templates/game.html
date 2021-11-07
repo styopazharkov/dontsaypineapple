@@ -60,9 +60,9 @@
             {% endif %}
         </div>
 
-        <!-- TODO make this block -->
         {% if data['started'] %}
-            <div class="secret">
+            <!-- The ontouchstart is a hacky way to make :active work on iPhones -->
+            <div class="secret" ontouchstart="">
                 {% if data['user'] in data['alive'] %}
                     <div class="cover">
                         <p>
